@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <h2>My Events</h2><hr>
     <div v-for = "events in this.user_events" :key="this.user_events.event_id">
         <h3>{{ events.event_name }}</h3>
@@ -7,7 +7,20 @@
         <br>
     </div>
 
+</template> -->
+
+<template>
+    <div class="events-container">
+        <h2>My Events</h2>
+        <hr>
+        <div v-for="event in user_events" :key="event.event_id" class="event-card">
+            <h3>{{ event.event_name }}</h3>
+            <p class="event-date">Date: {{ event.time }}</p>
+            <p class="event-location">{{ event.location }}</p>
+        </div>
+    </div>
 </template>
+
 
 <script>
     import firebaseApp from '../firebase.js';
@@ -84,4 +97,58 @@
     }
 
 </script>
+
+<style>
+.events-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+hr {
+    margin-bottom: 20px;
+}
+
+.event-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h3 {
+    color: #005792;
+    margin: 0 0 10px 0;
+}
+
+.event-date, .event-location {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+    .events-container {
+        padding: 10px;
+    }
+
+    .event-card {
+        padding: 15px;
+    }
+}
+</style>
+
 

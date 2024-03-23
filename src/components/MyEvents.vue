@@ -47,7 +47,7 @@
         methods: {
             async fetchUserEvents() {
                 try {
-                    //pbtain 
+                    //obtain 
                     const users = await getDocs(collection(db, "users"));
                     users.forEach((u) => {
                         // console.log(u.uid);

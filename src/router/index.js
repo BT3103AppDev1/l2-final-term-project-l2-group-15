@@ -4,6 +4,7 @@ import Login from "@/views/Login.vue";
 import Landing from "@/views/Landing.vue";
 import Register from "@/views/Register.vue";
 import UserDashboard from "@/views/UserDashboard.vue";
+import UpdateProfile from "@/views/UpdateProfile.vue";
 
 const routes = [
   {
@@ -25,6 +26,12 @@ const routes = [
     path: "/user_dashboard/:userId",
     name: "UserDashboard",
     component: UserDashboard,
+    meta: {requiresAuth: true},
+  },
+  {
+    path: "/update_profile/:userId",
+    name: "UpdateProfile",
+    component: UpdateProfile,
     meta: {requiresAuth: true},
   },
 ];

@@ -16,12 +16,8 @@
     },
     data() {
         return {
-            user_id: getAuth().currentUser.uid,
+            user_id: "",
         };
     },
-    mounted() {
-        this.user_id = getAuth().currentUser.uid
-        console.log("User ID is", this.user_id)
-    }
   };
   </script>

@@ -35,7 +35,7 @@ export default {
     data() {
         return {
             groups: [],
-            user: getAuth().currentUser.uid,
+            user: "",
             isOpen: false,
         };
     },
@@ -54,7 +54,6 @@ export default {
 
     mounted() {
         this.fetchGroups();
-        console.log(this.user)
     },
 
   };

@@ -58,16 +58,7 @@ export default {
       user: getAuth().currentUser.uid,
         };
     },
-
-    props: {
-        user: {
-            type: String,
-            required: true
-        }
-    },
-
-
-
+    
     methods: {
         openFileInput() {
             this.$refs.fileInput.click(); 

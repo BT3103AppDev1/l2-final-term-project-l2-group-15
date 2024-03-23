@@ -4,8 +4,8 @@
     <div class="loginbox">
       <h3>Login</h3>
       <p>
-        <label for="Email">Email</label
-        ><input type="text" placeholder="Email" v-model="email" />
+        <label for="Email">Email</label>
+        <input type="text" placeholder="Email" v-model="email" />
       </p>
       <p>
         <label for="password">Password</label>
@@ -13,8 +13,8 @@
       </p>
       <p><button @click="login">Login</button></p>
       <AuthPopup
-        :isVisible="loginStatus === 'success'"
-        @close="loginStatus = ''"
+        :isVisible = "loginStatus === 'success'"
+        @close="route_user" 
       >
         <p class="success-message">Successfully logged in!</p>
       </AuthPopup>
@@ -31,19 +31,30 @@ import { ref } from "vue";
 import firebaseApp from "@/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import AuthPopup from "@/components/AuthPopup.vue";
+import { useRouter } from 'vue-router';
 
 const email = ref("");
 const password = ref("");
-const loginStatus = ref("");
+let loginStatus = ref("");
 const errorMessage = ref("");
+let user_id = ref("")
 
 const auth = getAuth();
+const router = useRouter();
+
+const route_user = () => {
+  loginStatus = '';
+  console.log(user_id);
+  router.push({ name: "UserDashboard", params: {userId : user_id}});
+}
 
 const login = () => {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((data) => {
       console.log("Login Success");
+      user_id = data.user.uid;
       loginStatus.value = "success";
+      // router.push({ name: "UserDashboard"});
     })
     .catch((error) => {
       console.log(error.code);

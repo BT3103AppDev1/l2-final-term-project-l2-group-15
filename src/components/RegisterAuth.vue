@@ -98,6 +98,8 @@ const register = async () => {
       dateOfBirth: dateOfBirth.value,
       gender: gender.value,
       telegramHandle: telegramHandle.value,
+      events: [],
+      groups: [],
     };
     const usersCollection = collection(firestore, "users");
     await addDoc(usersCollection, userData);

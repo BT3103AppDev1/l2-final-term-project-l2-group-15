@@ -44,7 +44,7 @@ const router = useRouter();
 
 const route_user = () => {
   loginStatus = '';
-  // console.log(user_id);
+  console.log(user_id);
   router.push({ name: "UserDashboard", params: {userId : user_id}});
 }
 

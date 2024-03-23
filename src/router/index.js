@@ -38,11 +38,11 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const auth = getAuth();
   const user = auth.currentUser;
-  
+  // console.log("LOL")
   // Check if the route requires authentication
   if (to.matched.some(record => record.meta.requiresAuth)) {
     // If the user is not logged in, or their email is not verified, redirect to login page
-    if (!user || !user.emailVerified) {
+    if (!user) {
       next({ name: 'Login' }); // Redirect to the Login page
     } else {
       next(); // Proceed to the route

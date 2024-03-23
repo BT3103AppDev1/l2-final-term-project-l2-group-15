@@ -2,7 +2,7 @@
   <div v-if="isVisible" class="modal-overlay">
     <div class="modal-content" @click.stop>
       <slot></slot>
-      <p><button @click="close">Close</button></p>
+      <p><button class="close-button" @click="close">Close</button></p>
     </div>
   </div>
 </template>
@@ -38,4 +38,5 @@ export default {
   padding: 50px;
   border-radius: 5px;
 }
+
 </style>

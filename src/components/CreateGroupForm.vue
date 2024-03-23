@@ -45,7 +45,8 @@
 
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
-import { doc, addDoc, collection} from "firebase/firestore";
+import { addDoc, collection} from "firebase/firestore";
+import { getAuth } from 'firebase/auth';
 
 export default {
 
@@ -54,6 +55,7 @@ export default {
       imageUrl: '',
       formData: {}, 
       imageFile: null,
+      user: getAuth().currentUser.uid,
         };
     },
 

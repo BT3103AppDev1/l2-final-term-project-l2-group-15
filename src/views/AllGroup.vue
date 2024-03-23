@@ -1,6 +1,6 @@
 <template>
     <Navbar_global />
-    <GroupList :user="this.user_id" />
+    <GroupList/>
   </template>
   
   <script>
@@ -16,7 +16,7 @@
     },
     data() {
         return {
-            user_id: this.$route.params.userId,
+            user_id: getAuth().currentUser.uid,
         };
     },
     mounted() {

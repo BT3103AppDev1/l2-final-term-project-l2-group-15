@@ -38,22 +38,20 @@
   </template>
   
   <script> 
+  import { getAuth } from 'firebase/auth';
+
   export default {
     props: {
         group: {
             type: Object,
             required: true
         },
-
-        user: {
-          type: String,
-          required: true
-        }
     },
 
     data() {
         return {
-            showPopup: false
+            showPopup: false,
+            user: getAuth().currentUser.uid,
         }
     },
 

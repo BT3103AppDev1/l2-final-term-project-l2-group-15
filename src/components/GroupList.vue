@@ -13,11 +13,11 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
     <div v-if="isOpen" class="modal">
         <div class="modal-content">
           <button class="close-btn" @click="isOpen = false">Close</button>
-          <CreateGroupForm :user="this.user"/>
+          <CreateGroupForm/>
         </div>
     </div>
         <div v-for="group in groups" :key="group.id" class="group">
-            <GroupListComponent :group="group" :user="user" />
+            <GroupListComponent :group="group" />
         </div>
   </div>
 </template>
@@ -25,7 +25,8 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
 <script>
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
-import { doc, getDocs, collection} from "firebase/firestore";
+import { getDocs, collection} from "firebase/firestore";
+import { getAuth } from 'firebase/auth';
 
 export default {
     components: {
@@ -34,16 +35,9 @@ export default {
     data() {
         return {
             groups: [],
-            user: "",
+            user: getAuth().currentUser.uid,
             isOpen: false,
         };
-    },
-
-    props: {
-        user: {
-            type: String,
-            required: true
-        }
     },
 
     methods: {
@@ -60,6 +54,7 @@ export default {
 
     mounted() {
         this.fetchGroups();
+        console.log(this.user)
     },
 
   };

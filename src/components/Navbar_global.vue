@@ -3,6 +3,7 @@
     <li><router-link to="/">Home</router-link></li>
     <li><router-link to="/marketplace">MarketPlace</router-link></li>
     <li><router-link to="/all_groups">Groups</router-link></li>
+    <li><router-link to="/my_groups">My Groups</router-link></li>
     <router-link :to="{ name : 'UpdateProfile' }"><div class="profile-container">Profile<img id="user_logo" src="@/assets/user.png" alt="user logo"></div></router-link>
     <li><router-link to="/marketplace">Log Out</router-link></li>
   </ul>

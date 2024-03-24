@@ -7,7 +7,6 @@
             <h3>{{ group.GroupName}}</h3>
             <p>{{ group.GroupLocation }}</p>
             <p>{{ group.GrouoDescription }}</p>
-            <button class="join-btn-default" @click="joinGroup">Join Group</button>
             <button class="info-btn" @click="toggle">More Info</button>
         </div>
 
@@ -30,18 +29,6 @@
                         <p><strong>Last event:</strong> 12/5/2023</p>
                         <p><strong>Admin:</strong> {{ group.GroupAdmin }}</p>
                     </div>
-                <button class="join-btn" @click="joinGroup">Join</button>
-                </div>
-            </div>
-        </div>
-
-        <div v-if="showSuccess" class="modal">
-            <div class="modal-content">
-                <span class="close" @click="toggleSuccess">&times;</span>
-                    <div class="modal-header">
-                </div>
-                <div class="success-msg">
-                  <h1>Success</h1>
                 </div>
             </div>
         </div>
@@ -67,7 +54,6 @@
         return {
             showPopup: false,
             user: getAuth().currentUser.uid,
-            showSuccess: false,
         }
     },
 
@@ -76,16 +62,12 @@
           this.showPopup = !this.showPopup
         },
 
-        toggleSuccess() {
-          this.showSuccess = false
-        },
-
         joinGroup() {
           let group_id = this.group.id
           let user_id = this.user
           this.updateUserDBJoin(user_id, group_id)
           this.updateGroupDBJoin(group_id, user_id)
-          this.showSuccess= true
+          this.$router.push('/my_groups')
         },
 
         async updateUserDBJoin(documentId, newGroupId) {
@@ -157,22 +139,12 @@
   margin-top: 0;
 }
 
-.success-msg {
-  font-size: 5vh;
-  color: rgb(24, 232, 24);
-}
-
-.join-btn-default, .info-btn {
+.info-btn {
   margin-top: 10px;
   cursor: pointer;
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
-}
-
-.join-btn-default {
-  background-color: #4CAF50; 
-  color: white;
 }
 
 .info-btn {

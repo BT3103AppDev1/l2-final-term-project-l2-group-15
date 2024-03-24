@@ -1,17 +1,15 @@
 <template>
     <Navbar_global />
-    <GroupList/>
-  </template>
-  
-  <script>
+    <h1>Marketplace</h1>
+</template>
+
+<script>
   import Navbar_global from "@/components/Navbar_global.vue";
-  import GroupList from "@/components/GroupList.vue";
   import { getAuth } from 'firebase/auth';
   
   export default {
-    name: "Login",
+    name: "Marketplace",
     components: {
-      GroupList,
       Navbar_global,
     },
     data() {

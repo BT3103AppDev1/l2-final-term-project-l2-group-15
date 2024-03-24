@@ -56,8 +56,8 @@
                         
                         if (u_.uid === this.user) {
                             const user_events = u_.events;
-                            const fetchPromises = user_events.map(obj => this.fetchSingleDocument(db, "Events", obj));
-
+                           /* const fetchPromises = user_events.map(obj => this.fetchSingleDocument(db, "Events", obj));
+                            
                             Promise.all(fetchPromises).then(events => {
                                 events.forEach(e => {
                                     let user_event = {
@@ -73,10 +73,10 @@
                                 });
                             }).catch(error => {
                                 console.error("Error fetching user events:", error);
-                            });
+                            }); */
                         }
                     })
-                    console.log(this.user_events)                        
+                    /*console.log(this.user_events)  */                      
                 } catch (error) {
                     console.error("Error fetching documents: ", error)
                 }

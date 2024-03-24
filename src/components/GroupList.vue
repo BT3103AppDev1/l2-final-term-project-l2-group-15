@@ -48,13 +48,11 @@ export default {
             id: doc.id,
             ...doc.data()
           }));
-        console.log(this.groups)
         }
     },
 
     mounted() {
         this.fetchGroups();
-        console.log(this.user)
     },
 
   };

@@ -6,6 +6,7 @@ import Register from "@/views/Register.vue";
 import UserDashboard from "@/views/UserDashboard.vue";
 import AllGroup from "@/views/AllGroup.vue";
 import UpdateProfile from "@/views/UpdateProfile.vue";
+import Marketplace from "@/views/Marketplace.vue";
 
 const routes = [
   {
@@ -36,6 +37,14 @@ const routes = [
     component: AllGroup,
     meta: {requiresAuth: true},
   },
+
+  {
+    path: "/marketplace/",
+    name: "Marketplace",
+    component: Marketplace,
+    meta: {requiresAuth: true},
+  },
+  
   {
     path: "/update_profile/",
     name: "UpdateProfile",

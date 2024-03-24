@@ -102,63 +102,8 @@ export default {
       }
     },
   }
-  // beforeMount() {
-  //   //retrieve the user from the database
-  //   this.fetchUsers()
-  // },
-  // methods : {
-  //   async fetchUsers() {
-  //     let users = await getDocs(collection(db, "users"));
-  //     users.forEach((u) => {
-  //       let user = u.data()
-  //       if (user.uid === this.user) {
-
-  //       }
-  //     })
-  //   }
-  // }
 }
 
-// const email = ref("");
-// const password = ref("");
-// const username = ref("");
-// const address = ref("");
-// const postalCode = ref("");
-// const dateOfBirth = ref("");
-// const gender = ref("");
-// const telegramHandle = ref("");
-// const registrationStatus = ref("");
-// const errorMessage = ref("");
-
-// const update = async () => {
-//   try {
-//     const { user } = await createUserWithEmailAndPassword(
-//       auth,
-//       email.value,
-//       password.value
-//     );
-//     const userData = {
-//       uid: user.uid,
-//       username: username.value,
-//       email: user.email,
-//       address: address.value,
-//       postalCode: postalCode.value,
-//       dateOfBirth: dateOfBirth.value,
-//       gender: gender.value,
-//       telegramHandle: telegramHandle.value,
-//       events: [],
-//       groups: [],
-//     };
-//     const usersCollection = collection(firestore, "users");
-//     await addDoc(usersCollection, userData);
-//     console.log("Registration Success");
-//     registrationStatus.value = "success";
-//   } catch (error) {
-//     console.error("Error during registration:", error);
-//     registrationStatus.value = "error";
-//     errorMessage.value = error.message;
-//   }
-// };
 </script>
 
 <style scoped>

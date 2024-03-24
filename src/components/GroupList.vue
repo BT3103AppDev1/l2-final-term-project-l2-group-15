@@ -5,7 +5,7 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
 
 <template>
   <div>
-    <h1>List of All Groups Available</h1>
+    <h1>All Groups Near Me</h1>
     <div class="btn-container">
         <button class="create-group-btn" @click="isOpen = true">Create Group</button>
     </div>
@@ -61,6 +61,7 @@ export default {
 <style scoped>
 h1 {
   background-color: white;
+  margin-left: 30px;
 }
 
 .btn-container {

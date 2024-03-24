@@ -77,21 +77,27 @@ export default {
       switch (field) {
         case 'username':
           obj = {username: this.username}
+          this.username = ""; // Reset username after update
           break;
         case 'address':
           obj = {address: this.address}
+          this.address = ""; // Reset address after update
           break;
         case 'postalCode':
           obj = {postalCode: this.postalCode}
+          this.postalCode = ""; // Reset postalCode after update
           break;
         case 'dateOfBirth':
           obj = {dateOfBirth: this.dateOfBirth}
+          this.dateOfBirth = ""; // Reset dateOfBirth after update
           break;
         case 'gender':
           obj = {gender: this.gender}
+          this.gender = ""; // Reset gender after update
           break;
         case 'telegramHandle':
           obj = {telegramHandle: this.telegramHandle}
+          this.telegramHandle = ""; // Reset telegramHandle after update
           break;
       }
       try {
@@ -114,6 +120,7 @@ export default {
 .registerbox {
   margin-left: 30%;
   margin-right: 30%;
+  padding: 25px;
   border: 1px solid;
   border-radius: 12px;
 }

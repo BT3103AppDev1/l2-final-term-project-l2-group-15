@@ -3,6 +3,7 @@
     <h1>Welcome back to ConnectHub!</h1>
     <div class="loginbox">
       <h3>Login</h3>
+      <br>
       <p>
         <label for="Email">Email</label>
         <input type="text" placeholder="Email" v-model="email" />
@@ -12,12 +13,12 @@
         <input type="password" placeholder="Password" v-model="password" />
       </p>
       <p><button @click="login">Login</button></p>
-      <AuthPopup
+      <AuthPopup_login
         :isVisible = "loginStatus === 'success'"
         @close="route_user" 
       >
         <p class="success-message">Successfully logged in!</p>
-      </AuthPopup>
+      </AuthPopup_login>
 
       <AuthPopup :isVisible="loginStatus === 'error'" @close="loginStatus = ''">
         <p class="error-message">Login failed: {{ errorMessage }}</p>
@@ -31,6 +32,7 @@ import { ref } from "vue";
 import firebaseApp from "@/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import AuthPopup from "@/components/AuthPopup.vue";
+import AuthPopup_login from "@/components/AuthPopup_login.vue";
 import { useRouter } from 'vue-router';
 
 const email = ref("");
@@ -70,11 +72,13 @@ const login = () => {
 }
 
 .loginbox {
-  margin-top: 150px;
+  margin-top: 110px;
   margin-left: 30%;
   margin-right: 30%;
+  padding: 30px;
   border: 1px solid;
   border-radius: 12px;
+  box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.1);
 }
 
 .loginbox p {

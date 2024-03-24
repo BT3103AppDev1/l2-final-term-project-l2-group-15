@@ -8,6 +8,11 @@ import AllGroup from "@/views/AllGroup.vue";
 import UpdateProfile from "@/views/UpdateProfile.vue";
 import Marketplace from "@/views/Marketplace.vue";
 import MyGroups from "@/views/MyGroups.vue";
+import SpecificGroupHome from "@/views/SpecificGroupHome.vue";
+import Test from '@/views/Test.vue';
+import Test2 from '@/views/Test2.vue';
+
+
 
 const routes = [
   {
@@ -59,6 +64,24 @@ const routes = [
     component: UpdateProfile,
     meta: {requiresAuth: true},
   },
+
+  {
+    path: '/specific_group_home',
+    name: 'SpecificGroupHome',
+    component: SpecificGroupHome,
+  },
+
+  {
+    path: '/Test',
+    name: 'Test',
+    component: Test
+  },
+
+  {
+    path: '/Test2',
+    name: 'Test2',
+    component: Test2
+  }
 ];
 
 const router = createRouter({

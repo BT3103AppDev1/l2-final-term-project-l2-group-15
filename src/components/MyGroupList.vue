@@ -5,7 +5,7 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
 
 <template>
   <div>
-    <h1>List of My Groups</h1>
+    <h1>My Groups</h1>
     <div class="btn-container">
         <button class="create-group-btn" @click="isOpen = true">Create Group</button>
     </div>
@@ -16,10 +16,12 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
           <CreateGroupForm/>
         </div>
     </div>
+      <div class = "groupFlexbox">
         <div v-for="group in group_list" :key="group.id" class="group">
-            <MyGroupListComponent :group="group" />
+          <MyGroupListComponent :group="group" />
         </div>
-  </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -74,6 +76,7 @@ export default {
 <style scoped>
 h1 {
   background-color: white;
+  margin-left: 30px;
 }
 
 .btn-container {
@@ -99,23 +102,9 @@ h1 {
   background-color: #dc3545; /* Bootstrap danger */
 }
 
-.modal {
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+.groupFlexbox {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 10% auto; /* 10% from the top and centered */
-  padding: 20px;
-  border: 1px solid #888;
-  width: 75%; /* Could be more or less, depending on screen size */
-  height: 75%; /* Adjust based on content */
-}
 </style>

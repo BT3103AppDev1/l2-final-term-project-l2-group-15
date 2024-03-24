@@ -4,7 +4,7 @@
             <span>{{ group.GroupImage }}</span>
         </div>
         <div class="group-details">
-            <h3>{{ group.GroupName}}</h3>
+            <h3>{{ group.GroupName }}</h3>
             <p>{{ group.GroupLocation }}</p>
             <p>{{ group.GrouoDescription }}</p>
             <button class="join-btn-default" @click="joinGroup">Join Group</button>
@@ -26,7 +26,7 @@
                 <div class="modal-body">
                     <p class="description">Group Description: {{ group.GroupDescription }}</p>
                     <div class="group-stats">
-                        <p><strong>Total members:</strong> 20 </p>
+                        <p><strong>Total members:</strong> {{ group.GroupMembers.length }} </p>  <!-- change to update-->
                         <p><strong>Last event:</strong> 12/5/2023</p>
                         <p><strong>Admin:</strong> {{ group.GroupAdmin }}</p>
                     </div>
@@ -90,11 +90,10 @@
 
         async updateUserDBJoin(documentId, newGroupId) {
           const db = getFirestore(firebaseApp)
-          try {
+          try { // there no catch error
             const documentRef = doc(db, 'users', documentId);
             const documentSnapshot = await getDoc(documentRef);
 
-        
             if (documentSnapshot.exists()) {
                 await updateDoc(documentRef, {
                     groups: arrayUnion(newGroupId)
@@ -105,9 +104,9 @@
             } catch (error) {
                 console.error('Error updating document: ', error);
             }
-          },
+        },
 
-          async updateGroupDBJoin(documentId, newUserId) {
+        async updateGroupDBJoin(documentId, newUserId) {
           const db = getFirestore(firebaseApp)
           try {
             const documentRef = doc(db, 'group', documentId);
@@ -125,8 +124,8 @@
                 console.error('Error updating document: ', error);
             }
           }
+          }
         }
-      }
   </script>
   
   <style scoped>

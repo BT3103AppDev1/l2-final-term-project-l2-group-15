@@ -5,6 +5,7 @@ import Landing from "@/views/Landing.vue";
 import Register from "@/views/Register.vue";
 import UserDashboard from "@/views/UserDashboard.vue";
 import AllGroup from "@/views/AllGroup.vue";
+import UpdateProfile from "@/views/UpdateProfile.vue";
 
 const routes = [
   {
@@ -33,6 +34,12 @@ const routes = [
     path: "/all_groups/",
     name: "All Groups",
     component: AllGroup,
+    meta: {requiresAuth: true},
+  },
+  {
+    path: "/update_profile/:userId",
+    name: "UpdateProfile",
+    component: UpdateProfile,
     meta: {requiresAuth: true},
   },
 ];

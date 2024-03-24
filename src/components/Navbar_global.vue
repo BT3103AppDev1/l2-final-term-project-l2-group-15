@@ -3,14 +3,19 @@
     <li><router-link to="/">Home</router-link></li>
     <li><router-link to="/Test">MarketPlace</router-link></li>
     <li><router-link to="/all_groups">Groups</router-link></li>
-    <router-link to="/Test"><div class="profile-container">Profile<img id="user_logo" src="@/assets/user.png" alt="user logo"></div></router-link>
+    <router-link :to="{ name : 'UpdateProfile' }"><div class="profile-container">Profile<img id="user_logo" src="@/assets/user.png" alt="user logo"></div></router-link>
     <li><router-link to="/Test">Log Out</router-link></li>
   </ul>
 </template>
 
 <script>
 export default {
-  name: "Navbar_global"
+  name: "Navbar_global",
+  data() {
+    return {
+        user: String,
+    }
+  }
 }
 </script>
 

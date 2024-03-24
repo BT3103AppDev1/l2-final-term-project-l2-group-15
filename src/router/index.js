@@ -37,7 +37,7 @@ const routes = [
     meta: {requiresAuth: true},
   },
   {
-    path: "/update_profile/:userId",
+    path: "/update_profile/",
     name: "UpdateProfile",
     component: UpdateProfile,
     meta: {requiresAuth: true},

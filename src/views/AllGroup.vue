@@ -16,8 +16,10 @@
     },
     data() {
         return {
-            user_id: "",
+            user_id: getAuth().currentUser.uid,
         };
+
+        mounted
     },
   };
   </script>

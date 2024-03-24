@@ -65,7 +65,7 @@
 import { ref } from "vue";
 import firebaseApp from "@/firebase";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, collection, addDoc, setDoc} from "firebase/firestore";
 import { firestore } from "@/firebase";
 import AuthPopup from "@/components/AuthPopup.vue";
 
@@ -98,9 +98,14 @@ const register = async () => {
       dateOfBirth: dateOfBirth.value,
       gender: gender.value,
       telegramHandle: telegramHandle.value,
+      events: [],
+      groups: [],
     };
-    const usersCollection = collection(firestore, "users");
-    await addDoc(usersCollection, userData);
+
+    const userDocRef = doc(firestore, "users", user.uid);
+
+    await setDoc(userDocRef, userData);
+
     console.log("Registration Success");
     registrationStatus.value = "success";
   } catch (error) {
@@ -109,6 +114,7 @@ const register = async () => {
     errorMessage.value = error.message;
   }
 };
+
 </script>
 
 <style>

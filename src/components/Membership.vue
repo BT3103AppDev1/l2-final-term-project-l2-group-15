@@ -6,7 +6,7 @@
       <hr>
   
       <div class = 'Members-content'>
-        <ol class = "eachMember" v-for="member in members">
+        <ol class = "eachMember" v-for="member in membersNames">
           <li>{{ member }}</li>
         </ol>
       </div>
@@ -23,10 +23,18 @@ const db = getFirestore(firebaseApp)
 export default {
     name: "Membership",
 
+    props: {
+        group: {
+            type: String,
+            required: true
+        },
+    },
+
     data() {
       return {
         num_members : 0,
-        members: [] // Array to hold member data
+        members: [], // Array to hold member data
+        membersNames: [] // 
       }
     },
 
@@ -37,8 +45,9 @@ export default {
           const docs = await getDocs(collection(db, "group"));
           docs.forEach((doc) => {
             const documentData = doc.data();
-            if (documentData.GroupID === "Group 1") {
+            if (documentData.GroupName == this.group) {
               this.num_members = documentData.GroupMembers.length;
+              this.members = documentData.GroupMembers
               console.log(documentData.GroupMembers.length)
               console.log("group size retrieve success!")
             }
@@ -51,35 +60,15 @@ export default {
       displaySizeMembers()
 
       const displayMembers = async () => {
-        let memberIDs = null
-        try {
-          console.log("trying to retrieve members")
-          const groups = await getDocs(collection(db, "group"));
-          // search whole groups collection for right group
-          groups.forEach((g) => {
-            const gData = g.data();
-            if (gData.GroupID === "Group 1") {
-              // save all group members array
-              memberIDs = gData.GroupMembers
-              console.log(memberIDs)
-              console.log("retrieve members success!")
-            }
-          })
-        } catch (error) {
-          console.error("Error retrieving group members:", error);
-        }
-
         try {
           console.log("trying to match members")
           const users = await getDocs(collection(db, 'users'));
-          let members = [];
           users.forEach((u) => {
             const uData = u.data();
-            if (memberIDs.includes(uData.uid)) {
-              members.push(uData.email);
+            if (this.members.includes(uData.uid)) {
+              this.membersNames.push(uData.email);
             }
           })
-          this.members = members;
           console.log("match members success!")
         } catch (error) {
           console.error("Error matching group members", error);

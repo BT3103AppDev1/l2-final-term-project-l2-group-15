@@ -15,13 +15,6 @@
   
   export default {
       name: "Recent_discussions",
-
-      props: {
-        group: {
-          type: Object,
-          required: true
-        }
-      }
   }
   </script>
     

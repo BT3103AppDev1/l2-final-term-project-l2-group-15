@@ -24,6 +24,13 @@ export default {
     }
   },
 
+  props: {
+        group: {
+            type: String,
+            required: true
+        },
+  },
+
   async mounted() {
     try {
       console.log("trying to get group description")
@@ -31,7 +38,7 @@ export default {
       docs.forEach((doc) => {
         const documentData = doc.data();
         // search whole groups collection for right group
-        if (documentData.GroupID === "Group 1") {
+        if (documentData.GroupName == this.group) {
           this.about_description = documentData.GroupDescription;
           console.log("group description retrieve success!")
         }

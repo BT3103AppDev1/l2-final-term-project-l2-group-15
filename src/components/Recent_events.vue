@@ -9,20 +9,14 @@
   </template>
     
   <script>
-      import firebaseApp from "../firebase.js"
-      import { getFirestore } from "firebase/firestore"
-      import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
-      
-      export default {
-          name: "Recent_events",
+  import firebaseApp from "../firebase.js"
+  import { getFirestore } from "firebase/firestore"
+  import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+  
+  export default {
+      name: "Recent_events",
 
-          props: {
-            group: {
-              type: Object,
-              required: true
-            }
-          }
-      }
+  }
   </script>
     
   <style scoped>

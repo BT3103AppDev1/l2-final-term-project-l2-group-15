@@ -5,18 +5,20 @@
   import Recent_events from '@/components/Recent_events.vue'
   import Recent_discussions from '@/components/Recent_discussion.vue'
   import Membership from '@/components/Membership.vue'
+  import { getFirestore, doc, getDoc } from 'firebase/firestore'
+
 </script>
 
 <template>
   <body>
       <Navbar_global />
-        <h1>Dashboard</h1>
+        <h1>{{ group }} Dashboard</h1>
       <Navbar_groups />
     <div class = flexbox>
       <div class = "events"><Recent_events /></div>
-      <div class = "about"><About /></div>
+      <div class = "about"><About :group="group"/></div>
       <div class = "discussions"><Recent_discussions /></div>
-      <div class = "membership"><Membership /></div>
+      <div class = "membership"><Membership :group="group"/></div>
     </div>
     <hr>
   </body>
@@ -25,6 +27,24 @@
 <script>
 export default {
   name: "SpecificGroupHome",
+  
+  data() {
+    return {
+      user: '',
+      group: '',
+    }
+  },
+
+  created() {
+    try {
+      this.user = this.$route.params.user // string
+      this.group = this.$route.params.group; // firebase object
+      console.log(this.group)
+      console.log("group name retrieved")
+    } catch (error) {
+      console.error('Error:', error);
+    }
+}
 }
 </script>
 

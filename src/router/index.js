@@ -66,7 +66,7 @@ const routes = [
   },
 
   {
-    path: '/specific_group_home',
+    path: '/specific_group_home/:group/:user',
     name: 'SpecificGroupHome',
     component: SpecificGroupHome,
   },

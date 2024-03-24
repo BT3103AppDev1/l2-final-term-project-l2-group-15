@@ -4,7 +4,7 @@
             <span>{{ group.GroupImage }}</span>
         </div>
         <div class="group-details">
-          <router-link to='specific_group_home'>
+          <router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupName, user : user}}">
             <h3 id="groupName">{{ group.GroupName }}</h3>
           </router-link>
           <p id="groupLocation">{{ group.GroupLocation }}</p>
@@ -13,12 +13,8 @@
     </div>
   </template>
   
-  <script> 
+<script> 
   import { getAuth } from 'firebase/auth';
-  import firebaseApp from '../firebase.js';
-  import { getFirestore } from "firebase/firestore";  
-  import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
-  import { useRouter } from 'vue-router';
 
   export default {
     props: {
@@ -34,7 +30,7 @@
         }
     }
 }
-  </script>
+</script>
   
 <style scoped>
 .group-list-item {

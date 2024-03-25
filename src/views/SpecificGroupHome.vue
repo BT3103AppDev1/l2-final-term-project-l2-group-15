@@ -13,7 +13,7 @@
   <body>
       <Navbar_global />
         <h1>{{ group }} Dashboard</h1>
-      <Navbar_groups />
+      <Navbar_groups :group="group" :user="user" />
     <div class = flexbox>
       <div class = "events"><Recent_events /></div>
       <div class = "about"><About :group="group"/></div>

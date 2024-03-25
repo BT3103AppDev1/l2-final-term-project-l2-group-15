@@ -19,7 +19,7 @@
   export default {
     props: {
         group: {
-            type: Object,
+            type: String,
             required: true
         },
     },

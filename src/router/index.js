@@ -9,6 +9,8 @@ import UpdateProfile from "@/views/UpdateProfile.vue";
 import Marketplace from "@/views/Marketplace.vue";
 import MyGroups from "@/views/MyGroups.vue";
 import SpecificGroupHome from "@/views/SpecificGroupHome.vue";
+import AllDiscussion from "@/views/AllDiscussion.vue";
+import ViewDiscussion from "@/views/ViewDiscussion.vue";
 import Test from '@/views/Test.vue';
 import Test2 from '@/views/Test2.vue';
 
@@ -69,6 +71,21 @@ const routes = [
     path: '/specific_group_home/:group/:user',
     name: 'SpecificGroupHome',
     component: SpecificGroupHome,
+    meta: {requiresAuth: true},
+  },
+
+  {
+    path: '/all_discussion/:group/:user',
+    name: 'AllDiscussion',
+    component: AllDiscussion,
+    meta: {requiresAuth: true},
+  },
+
+  {
+    path: '/view_discussion/:group/:user/:discussionID',
+    name: 'ViewDiscussion',
+    component: ViewDiscussion,
+    meta: {requiresAuth: true},
   },
 
   {

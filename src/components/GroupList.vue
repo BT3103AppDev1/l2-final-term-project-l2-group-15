@@ -25,7 +25,7 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
 <script>
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
-import { getDocs, collection} from "firebase/firestore";
+import { getDocs, onSnapshot, collection} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 
 export default {
@@ -41,17 +41,17 @@ export default {
     },
 
     methods: {
-    async fetchGroups() {
-        const db = getFirestore(firebaseApp)
-        const querySnapshot = await getDocs(collection(db, "group"));
-        this.groups = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }));
-        }
-    },
+      fetchGroups() {
+    const db = getFirestore(firebaseApp);
+    const unsubscribe = onSnapshot(collection(db, "group"), (querySnapshot) => {
+      this.groups = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      });
+    }},
 
-    mounted() {
+    created() {
         this.fetchGroups();
     },
 

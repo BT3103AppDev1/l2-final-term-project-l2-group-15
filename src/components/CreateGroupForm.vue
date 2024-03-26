@@ -98,7 +98,7 @@ export default {
                 GroupDescription: groupDescription,
                 GroupImage: groupImage,
                 GroupMembers: [],
-                GroupAdmin: [], 
+                GroupAdmin: [this.user], 
                 GroupEvents: [],
                 GroupDiscussion: [],
             }

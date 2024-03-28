@@ -50,6 +50,7 @@ export default {
             const userDocRef = doc(db, 'users', this.user); 
             const docSnap = await getDoc(userDocRef);
             let group_listid = docSnap.data().groups
+            console.log(group_listid)
             this.fetchGroupObject(group_listid)
             console.log(this.group_list)
             },
@@ -59,10 +60,12 @@ export default {
                 const db = getFirestore(firebaseApp)
                 const groupDocRef = doc(db, 'group', groupId);
                 const docSnap = await getDoc(groupDocRef);
+                console.log("Test", groupId, "data", docSnap.data())
             if (docSnap.exists()) {
                 this.group_list.push(docSnap.data());
                 }
             }
+            console.log(this.group_list)
         }
     },
 

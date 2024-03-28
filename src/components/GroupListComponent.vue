@@ -4,10 +4,10 @@
             <span>{{ group.GroupImage }}</span>
         </div>
         <div class="group-details">
-            <h3>{{ group.GroupName}}</h3>
+            <h3>{{ group.GroupName }}</h3>
             <p>{{ group.GroupLocation }}</p>
             <p>{{ group.GrouoDescription }}</p>
-            <button class="join-btn-default">Join Group</button>
+            <button class="join-btn-default" @click="joinGroup">Join Group</button>
             <button class="info-btn" @click="toggle">More Info</button>
         </div>
 
@@ -26,11 +26,22 @@
                 <div class="modal-body">
                     <p class="description">Group Description: {{ group.GroupDescription }}</p>
                     <div class="group-stats">
-                        <p><strong>Total members:</strong> 20 </p>
+                        <p><strong>Total members:</strong> {{ group.GroupMembers.length }} </p>  <!-- change to update-->
                         <p><strong>Last event:</strong> 12/5/2023</p>
                         <p><strong>Admin:</strong> {{ group.GroupAdmin }}</p>
                     </div>
-                <button class="join-btn">Join</button>
+                <button class="join-btn" @click="joinGroup">Join</button>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="showSuccess" class="modal">
+            <div class="modal-content">
+                <span class="close" @click="toggleSuccess">&times;</span>
+                    <div class="modal-header">
+                </div>
+                <div class="success-msg">
+                  <h1>Success</h1>
                 </div>
             </div>
         </div>
@@ -39,6 +50,10 @@
   
   <script> 
   import { getAuth } from 'firebase/auth';
+  import firebaseApp from '../firebase.js';
+  import { getFirestore } from "firebase/firestore";  
+  import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
+  import { useRouter } from 'vue-router';
 
   export default {
     props: {
@@ -52,15 +67,65 @@
         return {
             showPopup: false,
             user: getAuth().currentUser.uid,
+            showSuccess: false,
         }
     },
 
     methods: {
         toggle() {
-            this.showPopup = !this.showPopup
+          this.showPopup = !this.showPopup
+        },
+
+        toggleSuccess() {
+          this.showSuccess = false
+        },
+
+        joinGroup() {
+          let group_id = this.group.id
+          let user_id = this.user
+          this.updateUserDBJoin(user_id, group_id)
+          this.updateGroupDBJoin(group_id, user_id)
+          this.showSuccess= true
+        },
+
+        async updateUserDBJoin(documentId, newGroupId) {
+          const db = getFirestore(firebaseApp)
+          try { // there no catch error
+            const documentRef = doc(db, 'users', documentId);
+            const documentSnapshot = await getDoc(documentRef);
+
+            if (documentSnapshot.exists()) {
+                await updateDoc(documentRef, {
+                    groups: arrayUnion(newGroupId)
+                  });
+              } else {
+                console.log('Document does not exist.');
+                }
+            } catch (error) {
+                console.error('Error updating document: ', error);
+            }
+        },
+
+        async updateGroupDBJoin(documentId, newUserId) {
+          const db = getFirestore(firebaseApp)
+          try {
+            const documentRef = doc(db, 'group', documentId);
+            const documentSnapshot = await getDoc(documentRef);
+
+        
+            if (documentSnapshot.exists()) {
+                await updateDoc(documentRef, {
+                    GroupMembers: arrayUnion(newUserId),
+                  });
+              } else {
+                console.log('Document does not exist.');
+                }
+            } catch (error) {
+                console.error('Error updating document: ', error);
+            }
+          }
+          }
         }
-    }
-  }
   </script>
   
   <style scoped>
@@ -89,6 +154,11 @@
 
 .group-details h3 {
   margin-top: 0;
+}
+
+.success-msg {
+  font-size: 5vh;
+  color: rgb(24, 232, 24);
 }
 
 .join-btn-default, .info-btn {

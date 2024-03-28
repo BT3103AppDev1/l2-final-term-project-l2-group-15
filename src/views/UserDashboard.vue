@@ -24,6 +24,11 @@
     //this is just to test
     mounted() {
         console.log(this.$route.params.userId)
+    },
+    components: {
+      NavBar,
+      MyEvents,
+      Dashboard,
     }
   };
   </script>

@@ -1,32 +1,138 @@
 <template>
     <div class="Discussions-container">
-      <div class="discussions-content">
         <h2>Recent Discussions</h2>
         <hr>
-        <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</span>
+        <!-- boon long code -->
+        <div v-for="discussion in discussions" :key="discussion.id" class="discussion-item">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Image">
+            <div class="discussion-content">
+                <div class="discussion-title"> {{ discussion.title }} </div>
+                <div class="discussion-info">
+                    <div>Posted By: {{ discussion.username }}</div>
+                    <div>{{ formatDate(discussion.ts) }}</div>
+                </div>
+            </div>
+            <button @click="navigate(discussion.id, this.user, this.group)">View Discussion</button>
+        </div>
+        <!-- BL code ends -->
       </div>
-    </div>
   </template>
     
   <script>
-  import firebaseApp from "../firebase.js"
-  import { getFirestore } from "firebase/firestore"
-  import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
-  
-  export default {
-      name: "Recent_discussions",
+import firebaseApp from '../firebase.js'
+import { getFirestore } from 'firebase/firestore'
+import { collection, query, onSnapshot, orderBy, where, limit} from 'firebase/firestore'
+
+const db = getFirestore(firebaseApp);
+
+export default {
+  name: "Recent_discussions",
+
+  data() {
+      return {
+          discussions: [],
+          isPopupVisible: false,
+          noDiscussion: false
+      };
+  },
+
+  created() {
+      try {
+          this.user = this.$route.params.user // user id
+          this.group = this.$route.params.group; // group id
+          console.log(this.group)
+          console.log("group name retrieved")
+      } catch (error) {
+          console.error('Error:', error);
+      }
+      this.getDiscussions();
+  },
+
+  methods: {
+      async getDiscussions(){
+        // add limit 5
+          const q = query(collection(db, "Discussions"), where("GroupID", "==", this.group), orderBy("Timestamp", "desc"), limit(5));
+          onSnapshot(q, (querySnapshot) => {
+              this.discussions = querySnapshot.docs.map(doc => {
+                  const data = doc.data();
+                  return {
+                      id: data.DiscussionID,
+                      username: data.CreatedBy,
+                      ts: data.Timestamp,
+                      title: data.DiscussionTitle  
+                  };          
+              });
+              if (this.discussions.length == 0) {
+                  this.noDiscussion = true;
+              }
+          });
+      },
+      formatDate(dt) {
+          if (dt) {
+              const formattedDate = dt.toDate().toLocaleDateString('en-US'); // e.g., "MM/DD/YYYY"
+              const formattedTime = dt.toDate().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+              return `${formattedDate} ${formattedTime}`;
+          };
+      },
+      togglePopup() {
+          this.isPopupVisible = !this.isPopupVisible;
+      },
+      navigate(id, user, group) {
+          console.log(id);
+          if (id) {
+              this.$router.push({name:'ViewDiscussion', params:{discussionID: id, user: user, group: group}})
+          } else {
+              console.error("Missing DiscussionID")
+          }
+      }
   }
-  </script>
-    
-  <style scoped>
-    h2 {
-      font-size: 24px;
-      margin-top: 0px;
-      margin-bottom: 5px;
-    }
+}
+</script>
   
-    hr {
-      margin-bottom: 20px;
-    }
-  </style>
-  
+<style scoped>
+h2 {
+  font-size: 24px;
+  margin-top: 0px;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+hr {
+  margin-bottom: 20px;
+}
+
+.discussion-item {
+  background-color: #f8f8f8; /* Light grey background */
+  border-radius: 8px; /* Rounded corners */
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px; /* Space between panels */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.discussion-item img {
+  width: 60px; 
+  height: 60px;
+  border-radius: 50%; /* Circular avatar */
+  margin-right: 10px;
+}
+
+.discussion-content {
+  flex-grow: 1;
+}
+
+.discussion-title {
+  font-weight: bold;
+  margin-bottom: 5px; 
+}
+
+.discussion-info {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.discussion-info > div {
+  margin-bottom: 3px; 
+}
+</style>

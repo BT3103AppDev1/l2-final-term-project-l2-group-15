@@ -20,7 +20,7 @@
                         </div>
                     <div class="modal-title">
                         <h3>{{ group.GroupName }}</h3>
-                        <p class="distance">5km away from you</p> <!-- Add distance here -->
+                        <p class="distance">{{ distance }} km away from you</p> <!-- Add distance here -->
                     </div>
                 </div>
                 <div class="modal-body">
@@ -61,6 +61,11 @@
             type: String,
             required: true
         },
+
+        distance: {
+          type: String, 
+          required: true
+        }
     },
 
     data() {

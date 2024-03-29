@@ -12,7 +12,7 @@ import SpecificGroupHome from "@/views/SpecificGroupHome.vue";
 import AllDiscussion from "@/views/AllDiscussion.vue";
 import ViewDiscussion from "@/views/ViewDiscussion.vue";
 import Test from '@/views/Test.vue';
-import Test2 from '@/views/Test2.vue';
+import Events from '@/views/Events.vue';
 
 
 
@@ -95,9 +95,10 @@ const routes = [
   },
 
   {
-    path: '/Test2',
-    name: 'Test2',
-    component: Test2
+    path: '/events/:group/:user',
+    name: 'Events',
+    component: Events,
+    meta: {requiresAuth: true},
   }
 ];
 

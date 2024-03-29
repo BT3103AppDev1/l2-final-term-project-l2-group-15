@@ -1,19 +1,8 @@
-<!-- <template>
-    <h2>My Events</h2><hr>
-    <div v-for = "events in this.user_events" :key="this.user_events.event_id">
-        <h3>{{ events.event_name }}</h3>
-        <p>Date: {{ events.time }}</p>
-        <p>{{ events.location }}</p>
-        <br>
-    </div>
-
-</template> -->
-
 <template>
     <div class="events-container">
         <h2>My Events</h2>
         <hr>
-        <div v-for="event in user_events" :key="event.EventId" class="event-card">
+        <div v-for="event in group_events" :key="event.EventId" class="event-card">
             <h3>{{ event.EventName }}</h3>
             <p class="event-date">Date: {{ event.EventTime }}</p>
             <p class="event-location">{{ event.EventLocation }}</p>
@@ -33,8 +22,9 @@
     export default {
         data() {
             return {
-                user_events: [],
+                group_events: [],
                 user: getAuth().currentUser.uid,
+                groupId: this.$route.params.group,
             };
         },
 
@@ -43,12 +33,12 @@
         },
 
         created() {
-            this.fetchUserEvents();
+            this.fetchGroupEvents();
         },
 
         methods: {
-            async fetchUserEvents() {
-                const ref = doc(db, "users", this.user);
+            async fetchGroupEvents() {
+                const ref = doc(db, "group", this.groupId);
                 try {
                     const snapshot = await getDoc(ref);
                     if (snapshot.exists()) {

@@ -12,7 +12,7 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
           Filter Distance
           <i class="fa fa-caret-down"></i>
         </button>
-        <div class="final__dropdown__menu" v-if="isDropdownOpen">
+        <div class="dropdown-menu" v-if="isDropdownOpen" @mouseleave="closeDropdown">
           <button class="dropdown-option" @click="filterDistance(999999)">reset</button>
           <button class="dropdown-option" @click="filterDistance(0.5)">0.5 km</button>
           <button class="dropdown-option" @click="filterDistance(1)">1 km</button>
@@ -97,6 +97,10 @@ export default {
 
     toggleDropdown() {
       this.isDropdownOpen = !this.isDropdownOpen;
+    },
+
+    closeDropdown() {
+      this.isDropdownOpen = false;
     },
 
     // fill filteredGroups array based on dist
@@ -213,6 +217,16 @@ h1 {
 .filter-distance-btn {
   background-color: #007bff; /* Bootstrap primary */
   margin-left: 20px; /* Adjust as needed */
+}
+
+.dropdown-menu {
+  position: absolute;
+  margin-left: 26.5px;
+  display: grid;
+  background-color: #e4e4e493; /* Match the color palette */
+  width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  color: black;
 }
 
 .close-btn {

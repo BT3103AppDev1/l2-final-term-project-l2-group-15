@@ -5,7 +5,7 @@
         </div>
         <div class="group-details">
             <h3>{{ group.GroupName }}</h3>
-            <p>{{ group.GroupLocation }}</p>
+            <p>Postal Code: {{ group.GroupLocation }}</p>
             <p>{{ group.GrouoDescription }}</p>
             <button class="join-btn-default" @click="joinGroup">Join Group</button>
             <button class="info-btn" @click="toggle">More Info</button>
@@ -133,13 +133,22 @@
         }
   </script>
   
-  <style scoped>
-  .group-list-item {
+<style scoped>
+.group-list-item {
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #f5f4f4;
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 10px;
   margin-bottom: 1rem;
   padding: 10px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.group-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .group-image {

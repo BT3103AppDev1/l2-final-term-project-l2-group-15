@@ -7,7 +7,6 @@
           <router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}">
             <h3 id="groupName">{{ group.GroupName }}</h3>
           </router-link>
-          <p id="groupLocation">{{ group.GroupLocation }}</p>
           <p id="groupDescription">{{ group.GroupDescription }}</p>
         </div>
     </div>
@@ -44,9 +43,15 @@
     margin-right: 20px;
     height: 400px;
     width: 350px;
-    border: solid rgb(83, 83, 83);
+    border: solid rgb(216, 216, 216);
     border-radius: 5px;
     padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.group-list-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .group-image {

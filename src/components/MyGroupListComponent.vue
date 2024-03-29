@@ -74,6 +74,12 @@
 #groupDescription {
   font-size: auto;
   color: grey;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3; /* Limit to 3 lines in WebKit browsers */
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  line-height: 1.5em; /* Adjust line height for readability */
 }
 
 #groupLocation {

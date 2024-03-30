@@ -10,16 +10,6 @@
           <div v-if="!isMember">
             <button class="join-btn-default" @click="joinGroup">Join Group</button>
             <button class="info-btn" @click="toggle">More Info</button>
-            <div v-if="showSuccess" class="modal">
-            <div class="modal-content">
-                <span class="close" @click="toggleSuccess">&times;</span>
-                    <div class="modal-header">
-                </div>
-                <div class="success-msg">
-                  <h1>Success</h1>
-                </div>
-            </div>
-        </div>
           </div>
           <div v-else>
             <button class="view-btn-default" @click="viewGroup">View Group</button>
@@ -57,6 +47,17 @@
               </div>
           </div>
       </div>
+
+      <div v-if="showSuccess" class="modal">
+            <div class="modal-content">
+                <span class="close" @click="toggleSuccess">&times;</span>
+                    <div class="modal-header">
+                </div>
+                <div class="success-msg">
+                  <h1>Success</h1>
+                </div>
+            </div>
+        </div>
 </template>
 
 <script> 

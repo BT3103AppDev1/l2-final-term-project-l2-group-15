@@ -38,7 +38,7 @@ export default {
       }
     },
 
-    async created() {
+    async mounted() {
       this.setupRealtimeListeners();
     },
 
@@ -47,7 +47,7 @@ export default {
         const groupRef = collection(db, "group");
         onSnapshot(groupRef, (snapshot) => {
           snapshot.docChanges().forEach((change) => {
-            if (change.doc.data().GroupId === this.group) {
+            if (change.doc.data().GroupId == this.group) {
               this.num_members = change.doc.data().GroupMembers.length;
               this.members = change.doc.data().GroupMembers;
             }

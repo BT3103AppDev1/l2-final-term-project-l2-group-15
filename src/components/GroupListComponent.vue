@@ -6,10 +6,20 @@
       <div class="group-details">
           <h3>{{ group.GroupName }}</h3>
           <p>Postal Code: {{ group.GroupLocation }}</p>
-          <p>{{ group.GrouoDescription }}</p>
+          <p>{{ group.GroupDescription }}</p>
           <div v-if="!isMember">
             <button class="join-btn-default" @click="joinGroup">Join Group</button>
             <button class="info-btn" @click="toggle">More Info</button>
+            <div v-if="showSuccess" class="modal">
+            <div class="modal-content">
+                <span class="close" @click="toggleSuccess">&times;</span>
+                    <div class="modal-header">
+                </div>
+                <div class="success-msg">
+                  <h1>Success</h1>
+                </div>
+            </div>
+        </div>
           </div>
           <div v-else>
             <button class="view-btn-default" @click="viewGroup">View Group</button>
@@ -47,17 +57,6 @@
               </div>
           </div>
       </div>
-
-      <div v-if="showSuccess" class="modal">
-            <div class="modal-content">
-                <span class="close" @click="toggleSuccess">&times;</span>
-                    <div class="modal-header">
-                </div>
-                <div class="success-msg">
-                  <h1>Success</h1>
-                </div>
-            </div>
-        </div>
 </template>
 
 <script> 
@@ -93,7 +92,7 @@ export default {
 
   methods: {
       viewGroup() {
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupId, user: this.user } })
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
       },
 
       toggle() {
@@ -102,7 +101,7 @@ export default {
 
       toggleSuccess() {
         this.showSuccess = false
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupId, user: this.user } })
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
       },
 
       joinGroup() {
@@ -111,7 +110,7 @@ export default {
         let user_id = this.user
         this.updateUserDBJoin(user_id, group_id)
         this.updateGroupDBJoin(group_id, user_id)
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupId, user: this.user } })
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
       },
 
       async updateUserDBJoin(documentId, newGroupId) {

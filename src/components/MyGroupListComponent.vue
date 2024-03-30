@@ -15,15 +15,15 @@
   </div>
 
   <div v-if="showSuccess" class="modal">
-            <div class="modal-content">
-                <span class="close" @click="toggleSuccess">&times;</span>
-                    <div class="modal-header">
-                </div>
-                <div class="success-msg">
-                  <h1>Success</h1>
-                </div>
-            </div>
+    <div class="modal-content">
+        <span class="close" @click="toggleSuccess">&times;</span>
+            <div class="modal-header">
         </div>
+        <div class="success-msg">
+          <h1>Success</h1>
+        </div>
+    </div>
+  </div>
 </template>
   
 <script> 
@@ -145,6 +145,7 @@ export default {
 .group-list-item {
   display: flex;
   flex-wrap: wrap;
+  text-align: center;
   width: 25%;
   background-color: #f5f5f5;
   height: 400px;
@@ -177,10 +178,6 @@ export default {
 }
 
 .group-details {
-  display: block;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
   font-size: 20px;
 }
 

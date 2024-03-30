@@ -355,7 +355,7 @@
 @media (max-width: 768px) {
   .modal-content {
     margin: 20% auto;
-    width: 95%;
+    width: 90%;
   }
 }
   </style>

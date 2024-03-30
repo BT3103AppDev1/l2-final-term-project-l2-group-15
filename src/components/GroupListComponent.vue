@@ -221,7 +221,7 @@ export default {
   color: rgb(24, 232, 24);
 }
 
-.join-btn-default, .info-btn, .view-btn-default {
+.join-btn-default, .info-btn {
   margin-top: 10px;
   cursor: pointer;
   padding: 5px 10px;
@@ -231,14 +231,11 @@ export default {
 
 .join-btn-default {
   background-color: #4CAF50; 
+  color: white;
 }
 
 .info-btn {
   background-color: #008CBA;
-}
-
-.view-btn-default {
-  background-color: rgb(109, 181, 253);
 }
 
 .modal {
@@ -325,7 +322,7 @@ export default {
   margin: 4px 0;
 }
 
-.join-btn, .view-btn {
+.join-btn {
   display: block;
   width: 100%;
   padding: 10px;
@@ -338,11 +335,6 @@ export default {
   text-align: center;
   cursor: pointer;
 }
-
-.view-btn {
-  background-color: rgb(109, 181, 253);
-}
-
 
 /* Responsive adjustments */
 @media (max-width: 768px) {

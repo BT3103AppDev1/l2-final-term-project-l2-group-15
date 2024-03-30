@@ -99,11 +99,11 @@ h1 {
 }
 
 .modal-content {
-  background-color: white;
+  background-color: #fefefe;
   margin: 10% auto; /* 10% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 100%; /* Could be more or less, depending on screen size */
-  height: 130%; /* Adjust based on content */
+  width: 75%; /* Could be more or less, depending on screen size */
+  height: 75%; /* Adjust based on content */
 }
 </style>

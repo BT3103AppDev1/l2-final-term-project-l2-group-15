@@ -129,8 +129,12 @@ export default {
             let groupDescription = document.getElementById("groupDescription").value
             // Need to solve Firebase Cloud Storage Issue
             // let groupImage = this.imageFile
-            let groupImage = "Random First"
+            let groupImage = "Check firebase storage"
             let groupID = this.generateGroupID()
+            if (!this.imageFile || !groupName || !groupLocation || !groupDescription) {
+                alert('Please ensure all forms are filled');
+                return;
+            }
             // Need to add User ID to GroupAdmin and GroupMembers
             const groupData = {
                 GroupName: groupName,

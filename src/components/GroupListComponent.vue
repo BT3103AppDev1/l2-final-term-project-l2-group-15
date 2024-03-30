@@ -92,7 +92,7 @@ export default {
 
   methods: {
       viewGroup() {
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupName, user: this.user } })
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.Id, user: this.user } })
       },
 
       toggle() {
@@ -101,7 +101,7 @@ export default {
 
       toggleSuccess() {
         this.showSuccess = false
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupName, user: this.user } })
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.Id, user: this.user } })
       },
 
       joinGroup() {
@@ -109,7 +109,7 @@ export default {
         let user_id = this.user
         this.updateUserDBJoin(user_id, group_id)
         this.updateGroupDBJoin(group_id, user_id)
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupName, user: this.user } })
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.Id, user: this.user } })
       },
 
       async updateUserDBJoin(documentId, newGroupId) {

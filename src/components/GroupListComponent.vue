@@ -6,7 +6,6 @@
       <div class="group-details">
           <h3>{{ group.GroupName }}</h3>
           <p>Postal Code: {{ group.GroupLocation }}</p>
-          <p>{{ group.GroupDescription }}</p>
           <div v-if="!isMember">
             <button class="join-btn-default" @click="joinGroup">Join Group</button>
             <button class="info-btn" @click="toggle">More Info</button>

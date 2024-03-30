@@ -151,8 +151,8 @@ export default {
     margin-bottom: 1rem;
     margin-left: 20px;
     margin-right: 20px;
-    height: 400px;
-    width: 350px;
+    height: 300px;
+    width: 200px;
     border: solid rgb(216, 216, 216);
     border-radius: 5px;
     padding: 20px;

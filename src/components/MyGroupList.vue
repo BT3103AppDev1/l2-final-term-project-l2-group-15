@@ -1,6 +1,5 @@
 <script setup>
 import MyGroupListComponent from '@/components/MyGroupListComponent.vue';
-import CreateGroupForm from '@/components/CreateGroupForm.vue';
 </script>
 
 <template>
@@ -76,6 +75,7 @@ h1 {
 .groupFlexbox {
   display: flex;
   flex-wrap: wrap;
+  text-align: center;
 }
 
 </style>

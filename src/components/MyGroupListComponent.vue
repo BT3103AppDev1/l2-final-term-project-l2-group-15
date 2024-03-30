@@ -7,13 +7,14 @@
       <router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}">
         <h3 id="groupName">{{ group.GroupName }}</h3>
       </router-link>
-      <p id="groupLocation">{{ group.GroupLocation }}</p>
+      <!-- <p id="groupLocation">{{ group.GroupLocation }}</p> -->
       <p id="groupDescription">{{ group.GroupDescription }}</p>
       <button class="leave-group-btn" @click="leaveGroup">Leave Group</button>
       <button class="delete-group-btn" @click="deleteGroup">Delete Group</button>
     </div>
+  </div>
 
-    <div v-if="showSuccess" class="modal">
+  <div v-if="showSuccess" class="modal">
             <div class="modal-content">
                 <span class="close" @click="toggleSuccess">&times;</span>
                     <div class="modal-header">
@@ -23,7 +24,6 @@
                 </div>
             </div>
         </div>
-  </div>
 </template>
   
 <script> 
@@ -36,7 +36,7 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 export default {
   props: {
       group: {
-          type: Object,
+          type: String,
           required: true
       },
   },
@@ -141,22 +141,20 @@ export default {
 }
 </script>
   
-<style>
+<style scoped>
 .group-list-item {
-    display: block;
-    align-items: center;
-    align-self: center;
-    width: 25%;
-    background-color: #f5f5f5;
-    margin-bottom: 1rem;
-    margin-left: 20px;
-    margin-right: 20px;
-    height: 300px;
-    width: 200px;
-    border: solid rgb(216, 216, 216);
-    border-radius: 5px;
-    padding: 20px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-wrap: wrap;
+  width: 25%;
+  background-color: #f5f5f5;
+  height: 400px;
+  width: 300px;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 50px;
+  margin-left: 50px;
+  border: solid rgb(216, 216, 216);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .group-list-item:hover {
@@ -165,10 +163,11 @@ export default {
 }
 
 .group-image {
-  width: 150px; /* Adjust as needed */
-  height: 150px; /* Adjust as needed */
+  width: 600px; /* Adjust as needed */
+  height: 200px; /* Adjust as needed */
+  text-align: center;
   overflow: hidden;
-  margin-right: 20px;
+  border-radius: 5px;
 }
 
 .group-image img {
@@ -178,9 +177,27 @@ export default {
 }
 
 .group-details {
-  flex: 1;
-  width: 100%;
-  min-width: 300px; 
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 20px;
+}
+
+#groupDescription {
+  text-align: center;
+  font-size: 15px;
+  color: grey;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1; /* Limit to 3 lines in WebKit browsers */
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+}
+
+#groupLocation {
+  font-size: auto;
+  color: grey;
 }
 
 .group-buttons {
@@ -196,6 +213,11 @@ export default {
   border: none;
   cursor: pointer;
   border-radius: 5px;
+}
+
+.success-msg {
+  font-size: 5vh;
+  color: rgb(24, 232, 24);
 }
 
 </style>

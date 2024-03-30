@@ -16,6 +16,7 @@
             <button class="info-btn" @click="toggle">More Info</button>
           </div>
       </div>
+    </div>
 
       <div v-if="showPopup" class="modal">
           <div class="modal-content">
@@ -36,6 +37,7 @@
                       <p><strong>Last event:</strong> 12/5/2023</p>
                       <p><strong>Admin:</strong> {{ group.GroupAdmin }}</p>
                   </div>
+                  
                 <div class="join" v-if="! isMember">
               <button class="join-btn" @click="joinGroup">Join</button>
                 </div>
@@ -47,16 +49,15 @@
       </div>
 
       <div v-if="showSuccess" class="modal">
-          <div class="modal-content">
-              <span class="close" @click="toggleSuccess">&times;</span>
-                  <div class="modal-header">
-              </div>
-              <div class="success-msg">
-                <h1>Success</h1>
-              </div>
-          </div>
-      </div>
-  </div>
+            <div class="modal-content">
+                <span class="close" @click="toggleSuccess">&times;</span>
+                    <div class="modal-header">
+                </div>
+                <div class="success-msg">
+                  <h1>Success</h1>
+                </div>
+            </div>
+        </div>
 </template>
 
 <script> 
@@ -92,7 +93,7 @@ export default {
 
   methods: {
       viewGroup() {
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.Id, user: this.user } })
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupId, user: this.user } })
       },
 
       toggle() {
@@ -101,15 +102,16 @@ export default {
 
       toggleSuccess() {
         this.showSuccess = false
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.Id, user: this.user } })
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupId, user: this.user } })
       },
 
       joinGroup() {
+        this.showSucess = true;
         let group_id = this.group.id
         let user_id = this.user
         this.updateUserDBJoin(user_id, group_id)
         this.updateGroupDBJoin(group_id, user_id)
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.Id, user: this.user } })
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupId, user: this.user } })
       },
 
       async updateUserDBJoin(documentId, newGroupId) {
@@ -190,11 +192,18 @@ export default {
 .group-list-item {
   display: flex;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #f5f4f4;
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 10px;
   margin-bottom: 1rem;
   padding: 10px;
-  width: 1000px;
-  height: 200px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.group-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .group-image {
@@ -205,6 +214,20 @@ export default {
   align-items: center;
   height: 100px;
   max-width: 20%; 
+}
+
+.group-image {
+  width: 150px; /* Adjust as needed */
+  height: 150px; /* Adjust as needed */
+  overflow: hidden;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.group-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the entire space */
 }
 
 .group-details {
@@ -227,6 +250,7 @@ export default {
   padding: 5px 10px;
   border: none;
   border-radius: 5px;
+  margin-right: 10px;
 }
 
 .join-btn-default {
@@ -351,4 +375,4 @@ export default {
     width: 95%;
   }
 }
-  </style>
+</style>

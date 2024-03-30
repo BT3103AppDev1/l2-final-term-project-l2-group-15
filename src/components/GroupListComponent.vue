@@ -69,8 +69,8 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 export default {
   props: {
       group: {
-          type: Object,
-          required: true
+        type: Object,
+        required: true
       },
 
       distance: {
@@ -105,12 +105,11 @@ export default {
       },
 
       joinGroup() {
-        this.showSucess = true;
         let group_id = this.group.id
         let user_id = this.user
         this.updateUserDBJoin(user_id, group_id)
         this.updateGroupDBJoin(group_id, user_id)
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
+        this.showSuccess = true;
       },
 
       async updateUserDBJoin(documentId, newGroupId) {

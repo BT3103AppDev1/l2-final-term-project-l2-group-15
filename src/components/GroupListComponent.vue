@@ -1,7 +1,7 @@
 <template>
     <div class="group-list-item">
         <div class="group-image">
-            <span>{{ group.GroupImage }}</span>
+            <img :src='fileURL' alt="No Group Logo"/>
         </div>
         <div class="group-details">
             <h3>{{ group.GroupName }}</h3>
@@ -16,7 +16,7 @@
                 <span class="close" @click="toggle">&times;</span>
                     <div class="modal-header">
                         <div class="modal-image">
-                            <img :src="group.imageSrc" alt="Group Logo" />
+                            <img :src="fileURL" alt="Group Logo" />
                         </div>
                     <div class="modal-title">
                         <h3>{{ group.GroupName }}</h3>
@@ -53,7 +53,7 @@
   import firebaseApp from '../firebase.js';
   import { getFirestore } from "firebase/firestore";  
   import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
-  import { useRouter } from 'vue-router';
+  import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
   export default {
     props: {
@@ -68,6 +68,8 @@
             showPopup: false,
             user: getAuth().currentUser.uid,
             showSuccess: false,
+            fileURL: null,
+            fileID: this.group.GroupId
         }
     },
 
@@ -78,6 +80,7 @@
 
         toggleSuccess() {
           this.showSuccess = false
+          this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group.GroupName, user: this.user } })
         },
 
         joinGroup() {
@@ -91,26 +94,26 @@
         async updateUserDBJoin(documentId, newGroupId) {
           const db = getFirestore(firebaseApp)
           try { // there no catch error
-            const documentRef = doc(db, 'users', documentId);
-            const documentSnapshot = await getDoc(documentRef);
+            const documentRef = doc(db, 'users', documentId)
+            const documentSnapshot = await getDoc(documentRef)
 
             if (documentSnapshot.exists()) {
                 await updateDoc(documentRef, {
                     groups: arrayUnion(newGroupId)
                   });
               } else {
-                console.log('Document does not exist.');
+                console.log('Document does not exist.')
                 }
             } catch (error) {
-                console.error('Error updating document: ', error);
+                console.error('Error updating document: ', error)
             }
         },
 
         async updateGroupDBJoin(documentId, newUserId) {
           const db = getFirestore(firebaseApp)
           try {
-            const documentRef = doc(db, 'group', documentId);
-            const documentSnapshot = await getDoc(documentRef);
+            const documentRef = doc(db, 'group', documentId)
+            const documentSnapshot = await getDoc(documentRef)
 
         
             if (documentSnapshot.exists()) {
@@ -118,18 +121,36 @@
                     GroupMembers: arrayUnion(newUserId),
                   });
               } else {
-                console.log('Document does not exist.');
+                console.log('Document does not exist.')
                 }
             } catch (error) {
-                console.error('Error updating document: ', error);
+                console.error('Error updating document: ', error)
             }
-          }
-          }
-        }
+          },
+
+        async getImage(fileID) {
+          console.log(fileID)
+          let storage = getStorage()
+          let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
+          let fileRef = ref(storage, filePath)
+          let fileURL = await getDownloadURL(fileRef)
+          this.fileURL = fileURL
+          console.log("url is here", fileURL)
+        },
+      },
+
+    mounted() {
+      try {
+        this.getImage(this.group.GroupId)
+      } catch {
+        this.fileURL = null
+      }
+    }
+    }
   </script>
   
   <style scoped>
-  .group-list-item {
+.group-list-item {
   display: flex;
   align-items: center;
   background-color: #f5f5f5;

@@ -49,8 +49,9 @@
 
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
-import { doc, getDoc, updateDoc, addDoc, collection, arrayUnion} from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc, arrayUnion} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 export default {
 
@@ -64,43 +65,60 @@ export default {
     },
     
     methods: {
+
+        generateGroupID() {
+              const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+              let randomString = '';
+              for (let i = 0; i < 10; i++) {
+                  const randomIndex = Math.floor(Math.random() * charset.length)
+                  randomString += charset[randomIndex]
+              }
+              return "GRP" + randomString
+        },
+
         openFileInput() {
-            this.$refs.fileInput.click(); 
+            this.$refs.fileInput.click()
         },
 
         handleImageChange(event) {
-            let file = event.target.files[0];
+            let file = event.target.files[0]
             if (file) {
-                this.formData.image = file;
-                this.imageFile = file;
-                this.imageUrl = URL.createObjectURL(file); // For preview
+                this.formData.image = file
+                this.imageFile = file
+                this.imageUrl = URL.createObjectURL(file) // For preview
             }
         },
 
         deleteImage() {
             if (this.imageUrl) {
                 console.log("deleting image...")
-                this.imageUrl = '';
-                this.imageFile = null;
+                this.imageUrl = ''
+                this.imageFile = null
             }
         },
 
         async updateUserDBJoin(documentId, newGroupId) {
           const db = getFirestore(firebaseApp)
           try { // there no catch error
-            const documentRef = doc(db, 'users', documentId);
-            const documentSnapshot = await getDoc(documentRef);
+            const documentRef = doc(db, 'users', documentId)
+            const documentSnapshot = await getDoc(documentRef)
 
             if (documentSnapshot.exists()) {
                 await updateDoc(documentRef, {
                     groups: arrayUnion(newGroupId)
                   });
               } else {
-                console.log('Document does not exist.');
+                console.log('Document does not exist.')
                 }
             } catch (error) {
-                console.error('Error updating document: ', error);
+                console.error('Error updating document: ', error)
             }
+        },
+
+        async addPic(file, picID) {
+            let storage = getStorage()
+            let storageRef = ref(storage, picID);
+            await uploadBytes(storageRef, file);
         },
 
         async createGroup() {
@@ -112,7 +130,7 @@ export default {
             // Need to solve Firebase Cloud Storage Issue
             // let groupImage = this.imageFile
             let groupImage = "Random First"
-
+            let groupID = this.generateGroupID()
             // Need to add User ID to GroupAdmin and GroupMembers
             const groupData = {
                 GroupName: groupName,
@@ -123,16 +141,17 @@ export default {
                 GroupAdmin: [this.user], 
                 GroupEvents: [],
                 GroupDiscussion: [],
+                GroupId: groupID
             }
-        
+            console.log(groupID)
         try {
-            const newGroupRef = await addDoc(collection(db, "group"), groupData);
-            console.log("Document written with ID:", newGroupRef.id);
-            console.log("User is", this.user)
-            this.updateUserDBJoin(this.user, newGroupRef.id)
+            this.addPic(this.imageFile, groupID)
+            await setDoc(doc(db, "group", groupID), groupData)
+            console.log("Document written with ID:", groupID)
+            this.updateUserDBJoin(this.user, groupID)
             document.getElementById('myform').reset()
             this.$emit("added")
-            //this.$router.push({ name: 'SpecificGroupHome', params: { group: groupName, user: this.user } });
+            this.$router.push({ name: 'SpecificGroupHome', params: { group: groupName, user: this.user } })
         } catch(error) {
             console.log("Error when adding document: ", error)
         }

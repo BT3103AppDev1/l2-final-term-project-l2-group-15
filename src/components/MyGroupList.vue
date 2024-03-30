@@ -6,16 +6,7 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
 <template>
   <div>
     <h1>My Groups</h1>
-    <div class="btn-container">
-        <button class="create-group-btn" @click="isOpen = true">Create Group</button>
-    </div>
-    <br>
-    <div v-if="isOpen" class="modal">
-        <div class="modal-content">
-          <button class="close-btn" @click="isOpen = false">Close</button>
-          <CreateGroupForm/>
-        </div>
-    </div>
+    <br/>
       <div class = "groupFlexbox">
         <div v-for="group in group_list" :key="group.id" class="group">
           <MyGroupListComponent :group="group" />
@@ -29,7 +20,6 @@ import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
 import { doc, getDoc, collection} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
-import GroupList from './GroupList.vue';
 
 export default {
     components: {
@@ -50,9 +40,7 @@ export default {
             const userDocRef = doc(db, 'users', this.user); 
             const docSnap = await getDoc(userDocRef);
             let group_listid = docSnap.data().groups
-            console.log(group_listid)
             this.fetchGroupObject(group_listid)
-            console.log(this.group_list)
             },
 
         async fetchGroupObject(group_listid) {
@@ -60,12 +48,10 @@ export default {
                 const db = getFirestore(firebaseApp)
                 const groupDocRef = doc(db, 'group', groupId);
                 const docSnap = await getDoc(groupDocRef);
-                console.log("Test", groupId, "data", docSnap.data())
             if (docSnap.exists()) {
                 this.group_list.push(docSnap.data());
                 }
             }
-            console.log(this.group_list)
         }
     },
 
@@ -85,24 +71,6 @@ h1 {
 .btn-container {
   display: flex;
   justify-content: flex-end;
-}
-
-.create-group-btn, .close-btn {
-  cursor: pointer;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  font-weight: bold;
-}
-
-.create-group-btn {
-  background-color: #007bff; /* Bootstrap primary */
-  margin-right: 20px; /* Adjust as needed */
-}
-
-.close-btn {
-  background-color: #dc3545; /* Bootstrap danger */
 }
 
 .groupFlexbox {

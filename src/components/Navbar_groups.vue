@@ -12,11 +12,11 @@ export default {
   name: "Navbar_groups",
   props: {
         group: {
-            type: Object,
+            type: String,
             required: true
         },
         user: {
-            type: Object,
+            type: String,
             required: true
         }
     }

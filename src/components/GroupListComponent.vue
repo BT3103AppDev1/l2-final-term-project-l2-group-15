@@ -240,6 +240,7 @@ export default {
 .success-msg {
   font-size: 5vh;
   color: rgb(24, 232, 24);
+  text-align: center;
 }
 
 .join-btn-default, .info-btn, .view-btn-default {

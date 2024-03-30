@@ -143,18 +143,17 @@ export default {
   
 <style scoped>
 .group-list-item {
-  display: flex;
-  flex-wrap: wrap;
-  text-align: center;
+  display: block;
   width: 25%;
   background-color: #f5f5f5;
   height: 400px;
-  width: 300px;
+  width: 350px;
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 50px;
   margin-left: 50px;
   border: solid rgb(216, 216, 216);
+  border-radius: 10px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -164,11 +163,13 @@ export default {
 }
 
 .group-image {
-  width: 600px; /* Adjust as needed */
+  align-content: center;
+  width: 350px; /* Adjust as needed */
   height: 200px; /* Adjust as needed */
   text-align: center;
   overflow: hidden;
-  border-radius: 5px;
+  border-radius: 10px;
+  margin-bottom: 25px;
 }
 
 .group-image img {

@@ -4,7 +4,7 @@
       <img :src='fileURL' alt="No Group Logo"/>
     </div>
     <div class="group-details">
-      <router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupName, user : user}}">
+      <router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}">
         <h3 id="groupName">{{ group.GroupName }}</h3>
       </router-link>
       <p id="groupLocation">{{ group.GroupLocation }}</p>

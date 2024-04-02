@@ -2,7 +2,7 @@
     <body>
         <div class="header">
             <Navbar_global />
-            <h1>{{ this.group }} Discussion</h1>
+            <h1>{{ groupName }} Discussion</h1>
             <Navbar_groups :group="group" :user="user" />
         </div>
         <div class="flexbox">
@@ -15,6 +15,11 @@
 import DiscussionItem from '@/components/DiscussionItem.vue';
 import Navbar_global from '@/components/Navbar_global.vue';
 import Navbar_groups from '@/components/Navbar_groups.vue';
+import firebaseApp from "../firebase.js"
+import { getFirestore } from "firebase/firestore"
+import { collection, getDocs } from "firebase/firestore";
+
+const db = getFirestore(firebaseApp);
   
 export default {
     name: 'App',
@@ -27,7 +32,8 @@ export default {
         return {
             user: '',
             discussionID: '',
-            group: ''
+            group: '',
+            groupName: '',
         }
     },
     created() {
@@ -39,8 +45,25 @@ export default {
             console.log("Discussion retrieved")
         } catch (error) {
             console.error('Error:', error);
-        }       
-    }
+        }
+        this.getGroupName();
+    },
+
+    methods: {
+        async getGroupName() {
+        try {
+            const docs = await getDocs(collection(db, "group"));
+            docs.forEach((doc) => {
+            if (doc.data().GroupId == this.group) {
+                this.groupName = doc.data().GroupName;
+                console.log("Group name retrieved successfully:", this.groupName);
+            }
+            });
+        } catch (error) {
+            console.error("Error retrieving group name:", error);
+        }
+        }
+  }
 }
 </script>
 

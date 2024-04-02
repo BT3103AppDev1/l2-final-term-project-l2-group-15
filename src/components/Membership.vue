@@ -16,7 +16,7 @@
 <script>
 import firebaseApp from "../firebase.js"
 import { getFirestore } from "firebase/firestore"
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 
 const db = getFirestore(firebaseApp)
 
@@ -39,45 +39,34 @@ export default {
     },
 
     async mounted() {
-      const displaySizeMembers = async () => {
-        try {
-          console.log("trying to get group size")
-          const docs = await getDocs(collection(db, "group"));
-          docs.forEach((doc) => {
-            const documentData = doc.data();
-            if (documentData.GroupName == this.group) {
-              this.num_members = documentData.GroupMembers.length;
-              this.members = documentData.GroupMembers
-              console.log(documentData.GroupMembers.length)
-              console.log("group size retrieve success!")
+      this.setupRealtimeListeners();
+    },
+
+    methods: {
+      setupRealtimeListeners() {
+        const groupRef = collection(db, "group");
+        onSnapshot(groupRef, (snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            if (change.doc.data().GroupId == this.group) {
+              this.num_members = change.doc.data().GroupMembers.length;
+              this.members = change.doc.data().GroupMembers;
             }
           });
-        } catch (error) {
-          console.error("Error retrieving number of group members:", error);
-        }
-      }
+        });
 
-      displaySizeMembers()
-
-      const displayMembers = async () => {
-        try {
-          console.log("trying to match members")
-          const users = await getDocs(collection(db, 'users'));
-          users.forEach((u) => {
-            const uData = u.data();
-            if (this.members.includes(uData.uid)) {
-              this.membersNames.push(uData.email);
+        const usersRef = collection(db, "users");
+        onSnapshot(usersRef, (snapshot) => {
+          this.membersNames = [];
+          snapshot.forEach((doc) => {
+            const userData = doc.data();
+            if (this.members.includes(userData.uid)) {
+              this.membersNames.push(userData.username);
             }
-          })
-          console.log("match members success!")
-        } catch (error) {
-          console.error("Error matching group members", error);
-        }
-      }
-
-      displayMembers()
+          });
+        });
+      },
+    }
   }
-}
 </script>
     
 <style scoped>

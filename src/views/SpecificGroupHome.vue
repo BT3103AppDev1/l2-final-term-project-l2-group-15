@@ -5,19 +5,17 @@
   import Recent_events from '@/components/Recent_events.vue'
   import Recent_discussions from '@/components/Recent_discussion.vue'
   import Membership from '@/components/Membership.vue'
-  import { getFirestore, doc, getDoc } from 'firebase/firestore'
-
 </script>
 
 <template>
   <body>
       <Navbar_global />
-        <h1>{{ group }} Dashboard</h1>
+        <h1>{{ groupName }} Dashboard</h1>
       <Navbar_groups :group="group" :user="user" />
     <div class = flexbox>
-      <div class = "events"><Recent_events /></div>
+      <div class = "events"><Recent_events :group="group"/></div>
       <div class = "about"><About :group="group"/></div>
-      <div class = "discussions"><Recent_discussions /></div>
+      <div class = "discussions"><Recent_discussions :group="group"/></div>
       <div class = "membership"><Membership :group="group"/></div>
     </div>
     <hr>
@@ -25,6 +23,12 @@
 </template>
 
 <script>
+import firebaseApp from "../firebase.js"
+import { getFirestore } from "firebase/firestore"
+import { collection, getDocs } from "firebase/firestore";
+
+const db = getFirestore(firebaseApp);
+
 export default {
   name: "SpecificGroupHome",
   
@@ -32,82 +36,99 @@ export default {
     return {
       user: '',
       group: '',
+      groupName: '',
     }
   },
 
   created() {
     try {
       this.user = this.$route.params.user // string
-      this.group = this.$route.params.group; // firebase object
+      this.group = this.$route.params.group; // string
       console.log(this.group)
-      console.log("group name retrieved")
+      this.getGroupName();
     } catch (error) {
       console.error('Error:', error);
     }
-}
+  },
+
+  methods: {
+    async getGroupName() {
+      try {
+        const docs = await getDocs(collection(db, "group"));
+        docs.forEach((doc) => {
+          if (doc.data().GroupId == this.group) {
+            this.groupName = doc.data().GroupName;
+            console.log("Group name retrieved successfully:", this.groupName);
+          }
+        });
+      } catch (error) {
+        console.error("Error retrieving group name:", error);
+      }
+    }
+  }
 }
 </script>
 
 <style scoped>
-  h1 {
-    padding: 0px;
-    margin-top: 7px;
-    margin-bottom: 7px;
-    margin-left: 10pt;
-    font-family: 'Open Sans', Arial, sans-serif;
-  }
+h1 {
+  padding: 0px;
+  margin-top: 7px;
+  margin-bottom: 7px;
+  margin-left: 10pt;
+  font-family: 'Open Sans', Arial, sans-serif;
+}
 
-  hr {
-    border: none; /* Remove the default border */
-    height: 1.041px; /* Set the height of the horizontal line */
-    background-color: #ffffff; /* Set the background color to white */
-    margin: 0; /* Optional: Add some margin above and below the horizontal line */
-    padding: none;
-  }
+hr {
+  border: none; /* Remove the default border */
+  height: 1.041px; /* Set the height of the horizontal line */
+  background-color: #ffffff; /* Set the background color to white */
+  margin: 0; /* Optional: Add some margin above and below the horizontal line */
+  padding: none;
+}
 
-  .about {
-    text-align: left;
-    border: 2px solid #ccc; /* Border style */
-    padding: 20px; /* Add padding to create space between content and border */
-    width: 48%; 
-    height: auto;
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    float: right; /* Align the container to the right */
-    background-color: white;
-    margin: 10px;
-    height: 60%;
-    overflow: scroll;
-    overflow-x: hidden;
+.about {
+  text-align: left;
+  border: 2px solid #ccc; /* Border style */
+  padding: 20px; /* Add padding to create space between content and border */
+  width: 48%; 
+  height: auto;
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+  float: right; /* Align the container to the right */
+  background-color: white;
+  margin: 10px;
+  height: 60%;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 .events {
   text-align: left;
-    border: 2px solid #ccc; /* Border style */
-    padding: 20px; /* Add padding to create space between content and border */
-    width: 48%; 
-    height: auto;
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    float: right; /* Align the container to the right */
-    background-color: white;
-    margin: 10px;
-    height: 60%;
-    overflow: scroll;
-    overflow-x: hidden;
+  border: 2px solid #ccc; /* Border style */
+  padding: 20px; /* Add padding to create space between content and border */
+  width: 48%; 
+  height: auto;
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+  float: right; /* Align the container to the right */
+  background-color: white;
+  margin: 10px;
+  height: 60%;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 .discussions {
   text-align: left;
-    border: 2px solid #ccc; /* Border style */
-    padding: 20px; /* Add padding to create space between content and border */
-    width: 48%; 
-    height: auto;
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    float: right; /* Align the container to the right */
-    background-color: white;
-    margin: 10px;
-    height: 60%;
-    overflow: scroll;
-    overflow-x: hidden;
+  border: 2px solid #ccc; /* Border style */
+  padding: 20px; /* Add padding to create space between content and border */
+  width: 48%; 
+  height: auto;
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+  float: right; /* Align the container to the right */
+  background-color: white;
+  margin: 10px;
+  height: 60%;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 .membership {

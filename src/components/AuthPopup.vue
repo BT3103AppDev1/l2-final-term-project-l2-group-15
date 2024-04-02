@@ -11,11 +11,15 @@
 export default {
   props: {
     isVisible: Boolean,
+    userId: String,
+    registrationStatus: String,
   },
   methods: {
     close() {
       this.$emit("close");
-      this.$router.push('/login');
+      if (this.registrationStatus === "success") {
+        this.$router.push(`/user_dashboard/${this.userId}`);
+      }
     },
   },
 };
@@ -39,5 +43,4 @@ export default {
   padding: 50px;
   border-radius: 5px;
 }
-
 </style>

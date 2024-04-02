@@ -40,8 +40,6 @@ export default {
         try {
             this.user = this.$route.params.user // user id
             this.group = this.$route.params.group; // group id
-            console.log(this.group)
-            console.log("group name retrieved")
         } catch (error) {
             console.error('Error:', error);
         }      

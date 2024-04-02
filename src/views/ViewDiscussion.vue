@@ -41,7 +41,6 @@ export default {
             this.user = this.$route.params.user // user id
             this.discussionID = this.$route.params.discussionID; // discussion id
             this.group = this.$route.params.group; // group name
-            console.log(this.group)
             console.log("Discussion retrieved")
         } catch (error) {
             console.error('Error:', error);

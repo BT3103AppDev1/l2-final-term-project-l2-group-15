@@ -3,12 +3,16 @@
         <div class="discussionHeader">
             <h1>{{ discussion.DiscussionTitle }}</h1>
             <p>{{ discussion.DiscussionText }}</p>
+            <div class="discussionInfo">
+              <p><strong>Posted By:</strong> {{ this.createdByUsername }}</p>
+              <p><strong>Posted On:</strong> {{ formatDate(discussion.Timestamp) }}</p>
+            </div>
         </div>
         <div class="discussionReplies">
             <div v-for="reply in replies" :key="reply.id" class="replyItem">
                 <div class="reply-metadata">
                     <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png" alt="Profile Image">
-                    <div class="reply-username">{{ reply.username }}</div>
+                    <div class="reply-username"><strong>{{ reply.username }}</strong></div>
                 </div>
                 <div class="replyContent">
                     <div class="reply-text">{{ reply.replyText }}</div>
@@ -26,7 +30,7 @@
 <script>
 import firebaseApp from '../firebase.js'
 import { getFirestore } from 'firebase/firestore'
-import { collection, doc, getDoc, setDoc, serverTimestamp, query, onSnapshot, where, orderBy } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, setDoc, serverTimestamp, query, onSnapshot, where, orderBy } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp);
 
@@ -49,7 +53,8 @@ export default {
         return {
             newReply: '',
             replies: [],
-            discussion: {}
+            discussion: {},
+            createdByUsername: '' // username of user who created the discussion
         }
     },
     created() {
@@ -63,6 +68,7 @@ export default {
 
             if (docSnap.exists()) {
                 this.discussion = docSnap.data();
+                this.createdByUsername = await this.getUsername(this.discussion.CreatedBy);
             } else {
                 console.log("Discussion cannot be found!")
             }
@@ -101,17 +107,34 @@ export default {
         },
         async getReplies() {
             const q = await query(collection(db, "Replies"), where("DiscussionID", "==", this.discussionID), orderBy("Timestamp", "asc"));
-            onSnapshot(q, (querySnapshot) => {
-                this.replies = querySnapshot.docs.map(doc => {
+            onSnapshot(q, async (querySnapshot) => {
+                const repliesPromises = querySnapshot.docs.map(async doc => {
                     const data = doc.data();
+                    const username = await this.getUsername(data.CreatedBy);
                     return {
                         id: data.ReplyID,
-                        username: data.CreatedBy,
+                        userid: data.CreatedBy,
                         ts: data.Timestamp,
-                        replyText: data.ReplyText 
+                        replyText: data.ReplyText,
+                        username: username
                     };          
                  });
+                 this.replies = await Promise.all(repliesPromises);
             });
+        },
+        async getUsername(userid) {
+          try {
+            const docs = await getDocs(collection(db, "users"));
+            for (const doc of docs.docs) {
+              if (doc.data().uid == userid) {
+                const username = doc.data().username;
+                console.log("Username retrieved successfully:", username);
+                return username; 
+              }
+            }
+          } catch (error) {
+            console.error("Error retrieving username:", error);
+          }
         },
         formatDate(dt) {
             if (dt) {
@@ -146,9 +169,10 @@ export default {
   margin: 0 0 10px 0; /* Spacing below the title */
 }
 
-.discussionHeader p {
-  margin: 0; /* Reset margin for the paragraph */
-  color: #555; /* Darker text color for contrast */
+.discussionInfo p {
+    text-align: right; /* Aligns text inside paragraphs to the right */
+    margin: 0; /* Reset margin for the paragraph */
+    color: #0f1135; /* Darker text color for contrast */
 }
 
 .discussionReplies {

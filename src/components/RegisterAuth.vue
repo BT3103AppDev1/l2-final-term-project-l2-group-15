@@ -84,8 +84,7 @@
   </div>
 </template>
 
-<script setup>
-import { ref, computed } from "vue";
+<script>
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -98,139 +97,188 @@ import { firestore } from "@/firebase";
 import AuthPopup from "@/components/AuthPopup.vue";
 import GoogleAdditionalInfoPopup from "@/components/GoogleAdditionalInfoPopup.vue";
 
-const email = ref("");
-const password = ref("");
-const username = ref("");
-const address = ref("");
-const postalCode = ref("");
-const dateOfBirth = ref("");
-const gender = ref("");
-const telegramHandle = ref("");
-const registrationStatus = ref("");
-const errorMessage = ref("");
-const showPopup = ref(false);
-const userId = ref("");
-
-const auth = getAuth();
-
-// Email registration
-const register = async () => {
-  let userCreated = false;
-  try {
-    const { user } = await createUserWithEmailAndPassword(
-      auth,
-      email.value,
-      password.value
-    );
-    userCreated = true;
-
-    // Check for postal code validity
-    if (!isPostalCodeValid.value) {
-      registrationStatus.value = "error";
-      throw new Error("Postal code must be exactly 6 digits.");
-    }
-
-    const userData = {
-      uid: user.uid,
-      username: username.value,
-      email: user.email,
-      address: address.value,
-      postalCode: postalCode.value,
-      dateOfBirth: dateOfBirth.value,
-      gender: gender.value,
-      telegramHandle: telegramHandle.value,
-      events: [],
-      groups: [],
+export default {
+  components: {
+    AuthPopup,
+    GoogleAdditionalInfoPopup,
+  },
+  data() {
+    return {
+      email: "",
+      password: "",
+      username: "",
+      address: "",
+      postalCode: "",
+      dateOfBirth: "",
+      gender: "",
+      telegramHandle: "",
+      registrationStatus: "",
+      errorMessage: "",
+      showPopup: false,
+      userId: "",
+      auth: getAuth(),
     };
+  },
+  methods: {
+    async isPostalCodeValid(postalCode) {
+      const regex = /^\d{6}$/;
+      if (!regex.test(postalCode)) {
+        return false;
+      } else {
+        const url = `https://www.onemap.gov.sg/api/common/elastic/search?searchVal=${postalCode}&returnGeom=Y&getAddrDetails=Y&pageNum=1`;
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
 
-    userId.value = user.uid;
-    const userDocRef = doc(firestore, "users", user.uid);
-    await setDoc(userDocRef, userData);
-    console.log("Registration Success");
-    registrationStatus.value = "success";
-  } catch (error) {
-    console.error("Error during registration:", error);
-    registrationStatus.value = "error";
-    errorMessage.value = error.message;
-    if (userCreated) {
-      const user = auth.currentUser;
-      if (user) {
-        await deleteUser(user).catch((deleteError) => {
-          console.error("Error deleting user:", deleteError);
-        });
+          // Check if there is a result
+          if (data.found > 0) {
+            // Iterate through result to find valid postal code
+            for (const result of data.results) {
+              if (result.POSTAL === postalCode) {
+                return true;
+              } else {
+                return false;
+              }
+            }
+          } else {
+            return false;
+          }
+        } catch (error) {
+          console.error("Error fetching data: " + error.message);
+          return false;
+        }
       }
-    }
-  }
+    },
+
+    // Registration Function
+    async register() {
+      let userCreated = false;
+      try {
+        const { user } = await createUserWithEmailAndPassword(
+          this.auth,
+          this.email,
+          this.password
+        );
+        userCreated = true;
+
+        const postalCodeValid = await this.isPostalCodeValid(this.postalCode);
+
+        if (!postalCodeValid) {
+          this.registrationStatus = "error";
+          throw new Error("Postal code invalid. Please try again.");
+        }
+
+        const userData = {
+          uid: user.uid,
+          username: this.username,
+          email: user.email,
+          address: this.address,
+          postalCode: this.postalCode,
+          dateOfBirth: this.dateOfBirth,
+          gender: this.gender,
+          telegramHandle: this.telegramHandle,
+          events: [],
+          groups: [],
+        };
+
+        this.userId = user.uid;
+        const userDocRef = doc(firestore, "users", user.uid);
+        await setDoc(userDocRef, userData);
+        console.log("Registration Success");
+        this.registrationStatus = "success";
+      } catch (error) {
+        console.error("Error during registration:", error);
+        this.registrationStatus = "error";
+        this.errorMessage = error.message;
+
+        if (userCreated) {
+          const user = this.auth.currentUser;
+          if (user) {
+            await deleteUser(user).catch((deleteError) => {
+              console.error("Error deleting user:", deleteError);
+            });
+          }
+        }
+      }
+    },
+
+    // Google Registration Function
+    async registerWithGoogle(event) {
+      // Prevent form from submitting
+      event.preventDefault();
+      event.stopPropagation();
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(this.auth, provider);
+        const user = result.user;
+        this.showPopup = true;
+        this.userId = user.uid;
+        const userDocRef = doc(firestore, "users", user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          this.showPopup = false;
+          this.registrationStatus = "error";
+          throw new Error("Account already exists.");
+        }
+
+        const userData = {
+          uid: user.uid,
+          email: user.email,
+        };
+
+        await setDoc(userDocRef, userData);
+      } catch (error) {
+        this.showPopup = false;
+        console.error("Error during registration:", error);
+        this.registrationStatus = "error";
+        this.errorMessage = error.message;
+      }
+    },
+
+    // Function to handle popup for additional info after google authentication
+    async handlePopupSubmit(additionalInfo) {
+      const user = this.auth.currentUser;
+      const userDocRef = doc(firestore, "users", user.uid);
+
+      try {
+        const postalCodeValid = await this.isPostalCodeValid(
+          additionalInfo.postalCode
+        );
+        console.log(postalCodeValid);
+
+        if (!postalCodeValid) {
+          this.registrationStatus = "error";
+          console.log("pt1");
+          throw new Error("Postal code invalid. Please try again.");
+        }
+        await setDoc(
+          userDocRef,
+          {
+            uid: user.uid,
+            email: user.email,
+            username: additionalInfo.username,
+            address: additionalInfo.address,
+            postalCode: additionalInfo.postalCode,
+            dateOfBirth: additionalInfo.dateOfBirth,
+            gender: additionalInfo.gender,
+            telegramHandle: additionalInfo.telegramHandle,
+            events: [],
+            groups: [],
+          },
+          { merge: true }
+        );
+
+        this.registrationStatus = "success";
+        console.log("Additional information saved successfully");
+      } catch (error) {
+        console.error("Error saving registration information", error);
+        this.registrationStatus = "error";
+        this.errorMessage = error.message;
+      }
+    },
+  },
 };
-
-// Google registration
-const registerWithGoogle = async (event) => {
-  // Prevent form from submitting
-  event.preventDefault();
-  event.stopPropagation();
-  const provider = new GoogleAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    const userData = {
-      uid: user.uid,
-      email: user.email,
-    };
-    showPopup.value = true;
-    userId.value = user.uid;
-    const userDocRef = doc(firestore, "users", user.uid);
-    const userDocSnap = await getDoc(userDocRef);
-
-    if (userDocSnap.exists()) {
-      showPopup.value = false;
-      registrationStatus.value = "error";
-      throw new Error("Account already exists.");
-    }
-
-    await setDoc(userDocRef, userData);
-  } catch (error) {
-    console.error("Error during registration:", error);
-    registrationStatus.value = "error";
-    errorMessage.value = error.message;
-  }
-};
-
-// Popup to submit additional info for google auth
-const handlePopupSubmit = async (additionalInfo) => {
-  const user = auth.currentUser;
-  const userDocRef = doc(firestore, "users", user.uid);
-
-  try {
-    await setDoc(
-      userDocRef,
-      {
-        uid: user.uid,
-        email: user.email,
-        username: additionalInfo.username,
-        address: additionalInfo.address,
-        postalCode: additionalInfo.postalCode,
-        dateOfBirth: additionalInfo.dateOfBirth,
-        gender: additionalInfo.gender,
-        telegramHandle: additionalInfo.telegramHandle,
-        events: [],
-        groups: [],
-      },
-      { merge: true }
-    );
-
-    registrationStatus.value = "success";
-    console.log("Additional information saved successfully");
-    showPopup.value = false;
-  } catch (error) {
-    console.error("Error saving additional information:", error);
-  }
-};
-
-const isPostalCodeValid = computed(() => {
-  // Regular expression to match exactly 6 digits
-  const regex = /^\d{6}$/;
-  return regex.test(postalCode.value);
-});
 </script>
 
 <style>

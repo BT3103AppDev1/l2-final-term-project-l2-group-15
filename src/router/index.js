@@ -11,6 +11,7 @@ import MyGroups from "@/views/MyGroups.vue";
 import SpecificGroupHome from "@/views/SpecificGroupHome.vue";
 import AllDiscussion from "@/views/AllDiscussion.vue";
 import ViewDiscussion from "@/views/ViewDiscussion.vue";
+import GroupSetting from "@/views/GroupSetting.vue";
 import Test from '@/views/Test.vue';
 import Test2 from '@/views/Test2.vue';
 
@@ -71,6 +72,13 @@ const routes = [
     path: '/specific_group_home/:group/:user',
     name: 'SpecificGroupHome',
     component: SpecificGroupHome,
+    meta: {requiresAuth: true},
+  },
+
+  {
+    path: '/group_setting/:group/:user',
+    name: 'GroupSetting',
+    component: GroupSetting,
     meta: {requiresAuth: true},
   },
 

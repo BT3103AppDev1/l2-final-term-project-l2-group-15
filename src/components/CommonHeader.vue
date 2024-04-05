@@ -1,6 +1,6 @@
 <template>
   <nav class="common-header">
-    <h1>ConnectHub</h1>
+    <h1 class="header">ConnectHub</h1>
     <div>
       <router-link to="/">Home</router-link>
       <router-link to="/login">Login</router-link>
@@ -17,14 +17,18 @@
   padding: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: #a9de86;
+  background-color: #000e90;
   margin: 0;
 }
 
 .common-header a {
   text-decoration: none;
   margin-left: 20px;
-  color: #333;
+  color: white;
+}
+
+.header {
+  color: white;
 }
 
 .common-header a.router-link-exact-active {

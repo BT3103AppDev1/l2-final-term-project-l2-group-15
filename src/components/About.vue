@@ -38,7 +38,7 @@ export default {
       docs.forEach((doc) => {
         const documentData = doc.data();
         // search whole groups collection for right group
-        if (documentData.GroupName == this.group) {
+        if (documentData.GroupId == this.group) {
           this.about_description = documentData.GroupDescription;
           console.log("group description retrieve success!")
         }
@@ -55,6 +55,7 @@ h2 {
   font-size: 24px;
   margin-top: 0px;
   margin-bottom: 5px;
+  text-align: left;
 }
 
 hr {

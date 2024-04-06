@@ -3,26 +3,43 @@
     <h1>Welcome back to ConnectHub!</h1>
     <div class="loginbox">
       <h3>Login</h3>
-      <br>
-      <p>
-        <label for="Email">Email</label>
-        <input type="text" placeholder="Email" v-model="email" />
-      </p>
-      <p>
-        <label for="password">Password</label>
-        <input type="password" placeholder="Password" v-model="password" />
-      </p>
-      <p><button @click="login">Login</button></p>
-      <AuthPopup_login
-        :isVisible = "loginStatus === 'success'"
-        @close="route_user" 
-      >
-        <p class="success-message">Successfully logged in!</p>
-      </AuthPopup_login>
+      <form @submit.prevent="login">
+        <p>
+          <label for="Email">Email</label>
+          <input type="text" placeholder="Email" v-model="email" />
+        </p>
+        <p>
+          <label for="password">Password</label>
+          <input type="password" placeholder="Password" v-model="password" />
+        </p>
+        <p>
+          <button class="login-btn" @click="login">Login with email</button>
+        </p>
 
-      <AuthPopup :isVisible="loginStatus === 'error'" @close="loginStatus = ''">
-        <p class="error-message">Login failed: {{ errorMessage }}</p>
-      </AuthPopup>
+        <p>
+          <button
+            type="button"
+            @click="loginWithGoogle"
+            class="google-login-btn"
+          >
+            Login with Google
+          </button>
+        </p>
+
+        <AuthPopup_login
+          :isVisible="loginStatus === 'success'"
+          @close="route_user"
+        >
+          <p class="success-message">Successfully logged in!</p>
+        </AuthPopup_login>
+
+        <AuthPopup_login
+          :isVisible="loginStatus === 'error'"
+          @close="loginStatus = ''"
+        >
+          <p class="error-message">Login failed: {{ errorMessage }}</p>
+        </AuthPopup_login>
+      </form>
     </div>
   </div>
 </template>
@@ -30,39 +47,61 @@
 <script setup>
 import { ref } from "vue";
 import firebaseApp from "@/firebase";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import AuthPopup from "@/components/AuthPopup.vue";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 import AuthPopup_login from "@/components/AuthPopup_login.vue";
-import { useRouter } from 'vue-router';
+import { useRouter } from "vue-router";
 
 const email = ref("");
 const password = ref("");
 let loginStatus = ref("");
 const errorMessage = ref("");
-let user_id = ref("")
+let user_id = ref("");
 
 const auth = getAuth();
 const router = useRouter();
 
 const route_user = () => {
-  loginStatus = '';
+  loginStatus = "";
   console.log(user_id);
-  router.push({ name: "UserDashboard", params: {userId : user_id}});
-}
+  router.push({ name: "UserDashboard", params: { userId: user_id } });
+};
 
+// Email Login
 const login = () => {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((data) => {
       console.log("Login Success");
       user_id = data.user.uid;
       loginStatus.value = "success";
-      // router.push({ name: "UserDashboard"});
     })
     .catch((error) => {
       console.log(error.code);
       loginStatus.value = "error";
       errorMessage.value = error.message;
     });
+};
+
+// Google Login
+const loginWithGoogle = async (event) => {
+  // Prevent form from submitting
+  event.preventDefault();
+  event.stopPropagation();
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+    user_id.value = user.uid;
+    loginStatus.value = "success";
+  } catch (error) {
+    console.error("Error during registration:", error);
+    loginStatus.value = "error";
+    errorMessage.value = error.message;
+  }
 };
 </script>
 
@@ -72,13 +111,15 @@ const login = () => {
 }
 
 .loginbox {
-  margin-top: 110px;
-  margin-left: 30%;
-  margin-right: 30%;
-  padding: 30px;
+  margin-left: 35%;
+  margin-right: 35%;
   border: 1px solid;
   border-radius: 12px;
-  box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
 .loginbox p {
@@ -98,10 +139,30 @@ const login = () => {
 }
 
 .loginbox button {
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
   margin-top: 10px;
-  padding: 5px;
+  display: block;
+  width: 50%;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.loginbox button:hover {
+  opacity: 0.9;
+}
+
+.login-btn {
+  background-color: rgb(227, 47, 47);
+  color: white;
+  border: 1px solid black;
+}
+
+.google-login-btn {
   background-color: white;
+  color: black;
   border: 1px solid;
-  border-radius: 8px;
 }
 </style>

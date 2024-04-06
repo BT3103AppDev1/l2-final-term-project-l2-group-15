@@ -117,8 +117,19 @@ export default {
                 console.error("Error adding value to array: ", error)
             }
 
-            //Need to add to groups as well
+            //Need to add to groups >> like their collated total events
+            //Need to obtain the groupids to reflect the events joined
+            // Adding eventID to the group's event list
+            let groupRef = doc(db, "group", this.groupId);
 
+            try {
+                await updateDoc(groupRef, {
+                    GroupEvents: arrayUnion(eventID) 
+                });
+                console.log("Event added to group successfully");
+            } catch (error) {
+                console.error("Error adding event to group: ", error);
+            }
         },
 
         async generateEventID() {

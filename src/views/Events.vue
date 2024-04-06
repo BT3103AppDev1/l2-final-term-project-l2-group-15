@@ -1,7 +1,7 @@
 <template>
   <body>
     <Navbar_global />
-        <h1>{{ group }} Dashboard</h1>
+        <h1>{{ groupName }} Dashboard</h1>
     <Navbar_groups :group="group" :user="user" />
     <div class = flexbox>
         <GroupEventsList />
@@ -16,7 +16,7 @@
   import GroupEventsList from "@/components/GroupEventsList.vue";
   import Navbar_groups from '@/components/Navbar_groups.vue'
   import { getFirestore, doc, getDoc } from 'firebase/firestore'
-import { getAuth } from 'firebase/auth';
+  import { getAuth } from 'firebase/auth';
 export default {
   name: "GroupEvents",
   components : {
@@ -28,16 +28,26 @@ export default {
     return {
       user: '',
       group: '',
+      groupName: '',
       user_id: getAuth().currentUser.uid,
     }
   },
 
-  created() {
+  async created() {
     try {
       this.user = this.$route.params.user // string
-      this.group = this.$route.params.group; // firebase object
-      console.log(this.group)
-      console.log("group name retrieved")
+      this.group = this.$route.params.group; // Assuming this is the document ID
+      const db = getFirestore();
+      const groupDocRef = doc(db, "group", this.group);
+      const groupDocSnap = await getDoc(groupDocRef);
+
+      if (groupDocSnap.exists()) {
+        this.groupName = groupDocSnap.data().GroupName; // Assuming the field for the group name is 'name'
+        console.log(this.groupName);
+        console.log("Group name retrieved");
+      } else {
+        console.log("No such document!");
+      }
     } catch (error) {
       console.error('Error:', error);
     }

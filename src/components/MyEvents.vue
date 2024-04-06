@@ -13,10 +13,10 @@
     <div class="events-container">
         <h2>My Events</h2>
         <hr>
-        <div v-for="event in user_events" :key="event.event_id" class="event-card">
-            <h3>{{ event.event_name }}</h3>
-            <p class="event-date">Date: {{ event.time }}</p>
-            <p class="event-location">{{ event.location }}</p>
+        <div v-for="event in user_events" :key="event.EventId" class="event-card">
+            <h3>{{ event.EventName }}</h3>
+            <p class="event-date">Date: {{ event.EventTime }}</p>
+            <p class="event-location">{{ event.EventLocation }}</p>
         </div>
     </div>
 </template>
@@ -26,6 +26,7 @@
     import firebaseApp from '../firebase.js';
     import { getFirestore } from "firebase/firestore"
     import { collection, getDocs, doc, deleteDoc, getDoc } from "firebase/firestore"
+    import { getAuth } from 'firebase/auth';
 
     const db = getFirestore(firebaseApp)
 
@@ -33,6 +34,7 @@
         data() {
             return {
                 user_events: [],
+                user: getAuth().currentUser.uid,
             };
         },
 
@@ -46,41 +48,30 @@
 
         methods: {
             async fetchUserEvents() {
+                const ref = doc(db, "users", this.user);
                 try {
-                    //obtain 
-                    const users = await getDocs(collection(db, "users"));
-                    users.forEach((u) => {
-                        // console.log(u.uid);
+                    const snapshot = await getDoc(ref);
+                    if (snapshot.exists()) {
+                        const eventsArr = snapshot.data().events; 
 
-                        let u_ = u.data()
-                        
-                        if (u_.uid === this.user) {
-                            const user_events = u_.events;
-                           /* const fetchPromises = user_events.map(obj => this.fetchSingleDocument(db, "Events", obj));
-                            
-                            Promise.all(fetchPromises).then(events => {
-                                events.forEach(e => {
-                                    let user_event = {
-                                        event_id: e.EventID,  
-                                        event_name: e.EventName,
-                                        group_id: e.GroupID,
-                                        location: e.Location,
-                                        time: e.Time.toDate().toLocaleString('en-us')
-                                    };
-
-                                    // Assuming this.user_events is an array meant to store fetched event details
-                                    this.user_events.push(user_event);
-                                });
-                            }).catch(error => {
-                                console.error("Error fetching user events:", error);
-                            }); */
+                        for (const eventId of eventsArr) {
+                            const eventRef = doc(db, "Events", eventId);
+                            const eventSnapshot = await getDoc(eventRef);
+                            if (eventSnapshot.exists()) {
+                                this.user_events.push(eventSnapshot.data());
+                            } else {
+                                console.log(`Event with ID ${eventId} does not exist`);
+                            }
                         }
-                    })
-                    /*console.log(this.user_events)  */                      
+                    } else {
+                        console.log("Document does not exist");
+                    }
+
                 } catch (error) {
-                    console.error("Error fetching documents: ", error)
+                    console.error("Error accessing field: ", error);
                 }
-            },
+            }, 
+                    
 
             async fetchSingleDocument(db, collection, document) {
                 try {

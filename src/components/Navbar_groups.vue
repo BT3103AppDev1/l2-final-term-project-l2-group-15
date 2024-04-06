@@ -2,7 +2,7 @@
 <ul class="vertnav">
     <li><router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}"><img id = "football_group" src="@/assets/football_group.jpg" alt="football icon"></router-link></li>
     <li><router-link :to="{name : 'AllDiscussion', params:{group : group.GroupId, user : user}}"><img src="@/assets/discussion.png" alt="Discussions"></router-link></li>
-    <li><router-link to="/Test2"><img src="@/assets/calendar.png" alt="Calender"></router-link></li>
+    <li><router-link :to="{name : 'Events', params: {group : group.GroupName, user : user}}"><img src="@/assets/calendar.png" alt="Calender"></router-link></li>
     <li><router-link to="/Test2"><img src="@/assets/settings.png" alt="Calender"></router-link></li>
 </ul>
 </template>

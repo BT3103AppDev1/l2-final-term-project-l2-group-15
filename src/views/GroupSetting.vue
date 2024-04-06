@@ -2,18 +2,18 @@
     <body>
         <div class="header">
             <Navbar_global />
-            <h1>{{ this.groupName }} Discussion</h1>
+            <h1>{{ this.groupName }} Setting</h1>
             <Navbar_groups :group="group" :user="user" />
         </div>
         <Navbar_groups :group="group" :user="user" />
         <div class="flexbox">
-            <DiscussionList :user="user" :group="group"/>
+            <EditGroupInfo :user="user" :group="group"/>
         </div>
     </body>
 </template>
   
 <script>
-import DiscussionList from '@/components/DiscussionList.vue';
+import EditGroupInfo from '@/components/EditGroupInfo.vue';
 import Navbar_global from '@/components/Navbar_global.vue';
 import Navbar_groups from '@/components/Navbar_groups.vue';
 import firebaseApp from "../firebase.js"
@@ -25,9 +25,9 @@ const db = getFirestore(firebaseApp);
 export default {
     name: 'App',
     components: {
-    DiscussionList,
     Navbar_global,
-    Navbar_groups
+    Navbar_groups,
+    EditGroupInfo
 },
     data() {
         return {

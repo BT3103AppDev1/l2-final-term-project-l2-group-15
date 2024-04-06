@@ -21,7 +21,7 @@
   <script>
 import firebaseApp from '../firebase.js'
 import { getFirestore } from 'firebase/firestore'
-import { collection, query, onSnapshot, orderBy, where, limit} from 'firebase/firestore'
+import { collection, query, getDocs, onSnapshot, orderBy, where, limit} from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp);
 
@@ -51,21 +51,39 @@ export default {
   methods: {
       async getDiscussions(){
         // add limit 5
-          const q = query(collection(db, "Discussions"), where("GroupID", "==", this.group), orderBy("Timestamp", "desc"), limit(5));
-          onSnapshot(q, (querySnapshot) => {
-              this.discussions = querySnapshot.docs.map(doc => {
-                  const data = doc.data();
-                  return {
-                      id: data.DiscussionID,
-                      username: data.CreatedBy,
-                      ts: data.Timestamp,
-                      title: data.DiscussionTitle  
-                  };          
-              });
-              if (this.discussions.length == 0) {
-                  this.noDiscussion = true;
+            const q = await query(collection(db, "Discussions"), where("GroupID", "==", this.group), orderBy("Timestamp", "desc"), limit(5));
+            onSnapshot(q, async (querySnapshot) => {
+                const discussionsPromises = querySnapshot.docs.map(async doc => {
+                    const data = doc.data();
+                    const username = await this.getUsername(data.CreatedBy);
+                    return {
+                        id: data.DiscussionID,
+                        userid: data.CreatedBy,
+                        ts: data.Timestamp,
+                        title: data.DiscussionTitle,
+                        username: username
+                    };          
+                });
+                this.discussions = await Promise.all(discussionsPromises);
+
+                if (this.discussions.length == 0) {
+                    this.noDiscussion = true;
+                }
+            });
+        },
+      async getUsername(userid) {
+          try {
+            const docs = await getDocs(collection(db, "users"));
+            for (const doc of docs.docs) {
+              if (doc.data().uid == userid) {
+                const username = doc.data().username;
+                console.log("Username retrieved successfully:", username);
+                return username; 
               }
-          });
+            }
+          } catch (error) {
+            console.error("Error retrieving username:", error);
+          }
       },
       formatDate(dt) {
           if (dt) {

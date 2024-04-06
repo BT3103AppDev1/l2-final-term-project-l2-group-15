@@ -62,7 +62,7 @@ export default {
                 const discussionID = await generateDiscID();
                 const docRef = await setDoc(doc(db, "Discussions", discussionID), {
                     DiscussionID: discussionID, 
-                    GroupID: this.group, // group name
+                    GroupID: this.group, // group id
                     CreatedBy: this.user, // user id
                     DiscussionTitle: this.title,
                     DiscussionText: this.description,

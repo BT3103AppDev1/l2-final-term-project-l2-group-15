@@ -155,7 +155,7 @@ export default {
             this.updateUserDBJoin(this.user, groupID)
             document.getElementById('myform').reset()
             this.$emit("added")
-            this.$router.push({ name: 'SpecificGroupHome', params: { group: groupName, user: this.user } })
+            this.$router.push({ name: 'SpecificGroupHome', params: { group: groupID, user: this.user } })
         } catch(error) {
             console.log("Error when adding document: ", error)
         }

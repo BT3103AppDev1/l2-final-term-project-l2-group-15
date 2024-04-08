@@ -71,6 +71,7 @@ h1 {
     margin-bottom: 7px;
     margin-left: 10pt;
     font-family: 'Open Sans', Arial, sans-serif;
+    color: black;
 }
 
 .header {

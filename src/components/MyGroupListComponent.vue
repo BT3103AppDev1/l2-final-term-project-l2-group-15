@@ -14,7 +14,10 @@
     </div>
   </div>
 
-  <div v-if="showSuccess" class="modal">
+  <SuccessMessage v-if="showSuccess" :condition="message_passed" />
+  
+  <!-- old success message-->
+  <!-- <div v-if="showSuccess" class="modal"><div>
     <div class="modal-content">
         <span class="close" @click="toggleSuccess">&times;</span>
             <div class="modal-header">
@@ -23,7 +26,7 @@
           <h1>Success</h1>
         </div>
     </div>
-  </div>
+  </div> -->
 </template>
   
 <script> 
@@ -32,8 +35,13 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from "firebase/firestore";
 import { doc, getDoc, updateDoc, deleteDoc} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
 export default {
+  components: {
+    SuccessMessage
+  },
+
   props: {
       group: {
           type: String,
@@ -46,7 +54,8 @@ export default {
           user: getAuth().currentUser.uid,
           showSuccess: false,
           fileURL: null,
-          fileID: this.group.GroupId
+          fileID: this.group.GroupId,
+          message_passed: "leaveGroup",
       }
   },
 
@@ -62,10 +71,10 @@ export default {
           console.log("url is here", fileURL)
     },
 
-    toggleSuccess() {
-          this.showSuccess = false
-          this.$router.push("/all_groups")
-    },
+    // toggleSuccess() {
+    //       this.showSuccess = false
+    //       this.$router.push("/all_groups")
+    // },
 
     async deleteGroupFromUser(userID, groupID) { // search user via userID, delete GroupID from array
       const db = getFirestore(firebaseApp)

@@ -4,7 +4,7 @@
             <span class="close" @click="toggleSuccess">&times;</span>
             <img id="successImg" src="@/assets/check.png" alt="successCheck">
             <p id = 'successMessage'>Success!</p>
-            <p id = "message">{{ displayMessage }}</p>
+            <span id = "message">{{ displayMessage }}</span>
         </div>
     </div>
   </template>
@@ -75,6 +75,7 @@
   
 <style scoped>
 .modal {
+  text-align: center;
   position: fixed;
   z-index: 1000;
   left: 0;
@@ -86,7 +87,7 @@
 }
 
 .model-flexbox {
-  background: white;
+  background: linear-gradient(lightgreen 68%, white 20%);
   margin: 10% auto;
   padding: 20px;
   border-radius: 8px;
@@ -96,17 +97,18 @@
 }
 
 img {
-    margin-top: 10px;
-    margin-left: 20px;
-    width: 160px;
-    height: 160px;
-    padding: 0px;
-    margin-bottom: 0px;
+  margin-top: 10px;
+  margin-left: 20px;
+  width: 160px;
+  height: 160px;
+  padding: 0px;
+  margin-bottom: 0px;
 }
 
 #successMessage {
-    font-size: 30px;
-    color: #12b332;
+  margin-bottom: 10px;
+  font-size: 30px;
+  color: #12b332;
 }
 
 .close {
@@ -117,7 +119,9 @@ img {
 }
 
 #message {
-    font-size: 20px;
+  margin-top: 10px;
+  font-size: 20px;
+  margin-bottom: 0px;
 }
 
 </style>

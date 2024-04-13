@@ -9,12 +9,17 @@ import CreateEventForm from '@/components/CreateEventForm.vue';
         <h1>Events</h1>
         <button class="create-event-btn" @click="isOpen = true">Create Event</button>
       </div>
-      <GroupEventListComponent />
+      <h2>My Events</h2>
+      <hr>
       <div v-if="isOpen" class="modal">
         <div class="modal-content">
           <button class="close-btn" @click="isOpen = false">Close</button>
           <CreateEventForm/>
         </div>
+      </div>
+      <!-- need to include event -->
+      <div v-for="event in this.events" :key="this.events" class="group">
+        <GroupEventListComponent :event="event"/>
       </div>
     </div>
   </template>
@@ -22,21 +27,42 @@ import CreateEventForm from '@/components/CreateEventForm.vue';
 <script>
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
-import { getDocs, onSnapshot, collection} from "firebase/firestore";
+import { doc, getDocs, onSnapshot, collection} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
+
+const db = getFirestore(firebaseApp);
 
 export default {
     components: {
         GroupEventListComponent,
         CreateEventForm,
     },
+    mounted() {
+      this.fetchEvents();
+    },
     data() {
         return {
-            groups: [],
+            events: [],
+            groupId: this.$route.params.group,
             user: getAuth().currentUser.uid,
             isOpen: false,
         };
     },
+    methods: {
+      fetchEvents() {
+        const groupDocument = doc(db, "group", this.groupId);
+        const unsubscribe = onSnapshot(groupDocument, (documentSnapshot) => {
+          if (documentSnapshot.exists()) {
+            this.events = documentSnapshot.data()["GroupEvents"]; 
+            console.log(this.events);
+          } else {
+            console.log("No such document!");
+          }
+        }, (error) => {
+          console.error("Error fetching document:", error);
+        });
+      }
+    }
 
   };
 </script>

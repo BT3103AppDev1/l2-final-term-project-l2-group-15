@@ -60,7 +60,6 @@ export default {
   },
 
   methods: {
-
     async getImage(fileID) {
           console.log(fileID)
           let storage = getStorage()

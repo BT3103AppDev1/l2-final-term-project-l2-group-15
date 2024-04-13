@@ -9,14 +9,13 @@ import CreateEventForm from '@/components/CreateEventForm.vue';
         <h1>Events</h1>
         <button class="create-event-btn" @click="isOpen = true">Create Event</button>
       </div>
-      <br>
+      <GroupEventListComponent />
       <div v-if="isOpen" class="modal">
         <div class="modal-content">
           <button class="close-btn" @click="isOpen = false">Close</button>
           <CreateEventForm/>
         </div>
       </div>
-            <GroupEventListComponent />
     </div>
   </template>
 
@@ -44,10 +43,11 @@ export default {
 
 <style scoped>
 .event-header {
+  width: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
+  padding: 0 10px;
   background-color: #F8F9FA; /* Light grey background for slight contrast */
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1); /* Soft shadow for depth */
 }

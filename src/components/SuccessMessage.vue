@@ -7,6 +7,8 @@
             <span id = "message">{{ displayMessage }}</span>
         </div>
     </div>
+
+    
   </template>
   
   <script>
@@ -58,13 +60,14 @@
       },
 
       toggleSuccess() {
-          this.showSuccess = false
-          if (this.condition === "leaveGroup") {
-            this.$router.push("/all_groups")
+        this.showSuccess = false
+        if (this.condition === "leaveGroup") {
+          this.$router.push("/all_groups")
         } else if (this.condition === "joinGroup") {
             this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group, user: this.user } })
         } else if (this.condition === "joinEvent") {
-
+            // add code if need subsequent action
+            this.$emit('close');
         } else {
 
         }

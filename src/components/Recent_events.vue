@@ -3,7 +3,7 @@
         <h2>Recent Events</h2>
         <hr>
         <div id = 'Events-content'>
-          <div v-for="event in user_events" :key="event.EventId" class="event-card">
+          <div v-for="event in group_events" :key="event.EventId" class="event-card">
             <h3>{{ event.EventName }}</h3>
             <span class="event-date">
               Date: {{ event.EventTime }}</span><br>
@@ -26,28 +26,29 @@
 
       data() {
         return {
-          user_events: [],
-          user: getAuth().currentUser.uid
+          group_events: [],
+          user: getAuth().currentUser.uid,
+          groupId: this.$route.params.group
         }
       },
 
-      created() {
-        this.fetchUserEvents();
+      mounted() {
+        this.fetchGroupEvents();
       },
 
       methods: {
-        async fetchUserEvents() {
-          const ref = doc(db, "users", this.user);
+        async fetchGroupEvents() {
+          const ref = doc(db, "group", this.groupId);
           try {
             const snapshot = await getDoc(ref);
             if (snapshot.exists()) {
-              const eventsArr = snapshot.data().events; 
+              const eventsArr = snapshot.data().GroupEvents; 
 
               for (const eventId of eventsArr) {
                   const eventRef = doc(db, "Events", eventId);
                   const eventSnapshot = await getDoc(eventRef);
                   if (eventSnapshot.exists()) {
-                      this.user_events.push(eventSnapshot.data());
+                      this.group_events.push(eventSnapshot.data());
                   } else {
                       console.log(`Event with ID ${eventId} does not exist`);
                   }

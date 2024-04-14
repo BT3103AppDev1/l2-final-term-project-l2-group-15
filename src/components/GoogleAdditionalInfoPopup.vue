@@ -1,6 +1,6 @@
 <template>
   <div class="popup">
-    <h2>Complete Your Profile</h2>
+    <h3>Complete Your Profile</h3>
     <form @submit.prevent="submit">
       <div class="profile-icon-container">
         <div v-if="!selectedIcon" class="image-placeholder">
@@ -113,8 +113,16 @@ export default {
   z-index: 999;
 }
 .button {
-  background-color: rgb(50, 50, 255);
+  background-color: rgb(33, 33, 238);
   color: white;
+  border: 1px solid;
+  font-size: 11px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 5px;
+  width: 27%;
+  box-sizing: border-box;
+  margin-bottom: 1px;
 }
 .image-placeholder {
   width: 100px;
@@ -132,6 +140,7 @@ export default {
   max-height: 100%;
   object-fit: cover;
 }
+
 .iconbutton {
   width: 50%;
   padding: 10px 20px;

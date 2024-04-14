@@ -1,10 +1,26 @@
 <template>
   <div class="register">
-    <h1>Welcome to ConnectHub!</h1>
     <div class="registerbox">
-      <h3>Register</h3>
+      <h3>Sign Up</h3>
       <form @submit.prevent="register">
         <div class="form">
+          <div class="profile-icon-container">
+            <!-- Image placeholder -->
+            <div v-if="!selectedIcon" class="image-placeholder">
+              <img src="../assets/unknown.png" alt="Profile Icon Placeholder" />
+            </div>
+            <div v-else class="selected-icon">
+              <img :src="selectedIcon" alt="Selected Icon" />
+            </div>
+
+            <button
+              class="iconbutton"
+              type="button"
+              @click="showIconSelection = true"
+            >
+              Choose Profile Icon
+            </button>
+          </div>
           <p>
             <label for="Email">Email</label
             ><input type="text" placeholder="Email" v-model="email" />
@@ -13,6 +29,8 @@
             <label for="password">Password</label>
             <input type="password" placeholder="Password" v-model="password" />
           </p>
+        </div>
+        <div class="form">
           <p>
             <label for="username">Username</label
             ><input type="text" placeholder="Username" v-model="username" />
@@ -49,6 +67,11 @@
         <p>
           <button type="submit" class="register-btn">Sign Up With Email</button>
         </p>
+        <IconSelectionPopup
+          :isVisible="showIconSelection"
+          @iconSelected="iconSelected"
+          @close="showIconSelection = false"
+        ></IconSelectionPopup>
 
         <AuthPopup
           :isVisible="registrationStatus === 'success'"
@@ -96,11 +119,13 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { firestore } from "@/firebase";
 import AuthPopup from "@/components/AuthPopup.vue";
 import GoogleAdditionalInfoPopup from "@/components/GoogleAdditionalInfoPopup.vue";
+import IconSelectionPopup from "@/components/IconSelectionPopup.vue";
 
 export default {
   components: {
     AuthPopup,
     GoogleAdditionalInfoPopup,
+    IconSelectionPopup,
   },
   data() {
     return {
@@ -117,6 +142,8 @@ export default {
       showPopup: false,
       userId: "",
       auth: getAuth(),
+      showIconSelection: false,
+      selectedIcon: "",
     };
   },
   methods: {
@@ -177,6 +204,7 @@ export default {
           dateOfBirth: this.dateOfBirth,
           gender: this.gender,
           telegramHandle: this.telegramHandle,
+          selectedIcon: this.selectedIcon,
           events: [],
           groups: [],
         };
@@ -263,6 +291,7 @@ export default {
             dateOfBirth: additionalInfo.dateOfBirth,
             gender: additionalInfo.gender,
             telegramHandle: additionalInfo.telegramHandle,
+            selectedIcon: additionalInfo.selectedIcon,
             events: [],
             groups: [],
           },
@@ -277,6 +306,11 @@ export default {
         this.errorMessage = error.message;
       }
     },
+
+    iconSelected(iconPath) {
+      this.selectedIcon = iconPath;
+      console.log(this.selectedIcon);
+    },
   },
 };
 </script>
@@ -287,6 +321,7 @@ export default {
 }
 
 .registerbox {
+  margin-top: 1%;
   margin-left: 35%;
   margin-right: 35%;
   border: 1px solid;
@@ -356,5 +391,22 @@ export default {
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
+}
+
+.image-placeholder {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  margin: auto;
+}
+
+.image-placeholder img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
 }
 </style>

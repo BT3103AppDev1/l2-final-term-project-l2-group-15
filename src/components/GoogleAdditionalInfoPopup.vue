@@ -2,6 +2,21 @@
   <div class="popup">
     <h2>Complete Your Profile</h2>
     <form @submit.prevent="submit">
+      <div class="profile-icon-container">
+        <div v-if="!selectedIcon" class="image-placeholder">
+          <img src="../assets/unknown.png" alt="Profile Icon Placeholder" />
+        </div>
+        <div v-else class="selected-icon">
+          <img :src="selectedIcon" alt="Selected Icon" />
+        </div>
+        <button
+          class="iconbutton"
+          type="button"
+          @click="showIconSelection = true"
+        >
+          Choose Profile Icon
+        </button>
+      </div>
       <p>
         <label for="username">Username</label
         ><input type="text" placeholder="Username" v-model="username" />
@@ -32,6 +47,11 @@
           placeholder="Telegram Handle"
           v-model="telegramHandle"
         />
+        <IconSelectionPopup
+          :isVisible="showIconSelection"
+          @iconSelected="iconSelected"
+          @close="showIconSelection = false"
+        ></IconSelectionPopup>
       </p>
       <button class="button" type="submit">Submit</button>
     </form>
@@ -39,7 +59,12 @@
 </template>
 
 <script>
+import IconSelectionPopup from "@/components/IconSelectionPopup.vue";
+
 export default {
+  components: {
+    IconSelectionPopup,
+  },
   data() {
     return {
       username: "",
@@ -48,6 +73,8 @@ export default {
       dateOfBirth: "",
       gender: "",
       telegramHandle: "",
+      showIconSelection: false,
+      selectedIcon: "",
     };
   },
   methods: {
@@ -59,7 +86,12 @@ export default {
         dateOfBirth: this.dateOfBirth,
         gender: this.gender,
         telegramHandle: this.telegramHandle,
+        selectedIcon: this.selectedIcon,
       });
+    },
+    iconSelected(iconPath) {
+      this.selectedIcon = iconPath;
+      console.log(this.selectedIcon);
     },
   },
 };
@@ -83,5 +115,33 @@ export default {
 .button {
   background-color: rgb(50, 50, 255);
   color: white;
+}
+.image-placeholder {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  margin: auto;
+}
+
+.image-placeholder img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+.iconbutton {
+  width: 50%;
+  padding: 10px 20px;
+  margin: 10px auto;
+  display: block;
+  color: darkblue;
+  border: none;
+  background-color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }
 </style>

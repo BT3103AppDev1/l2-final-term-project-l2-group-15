@@ -2,14 +2,14 @@
   <div class="icon-selection-popup" v-if="isVisible">
     <p class="icon-selection-title">Choose your icon</p>
     <div class="icon-container">
-      <div class="icon-option" @click="selectIcon('../assets/icon1.png')">
-        <img src="../assets/icon1.png" alt="Icon 1" />
+      <div class="icon-option" @click="selectIcon('icon1.png')">
+        <img src="@/assets/icon1.png" alt="Icon 1" />
       </div>
-      <div class="icon-option" @click="selectIcon('../assets/icon2.png')">
-        <img src="../assets/icon2.png" alt="Icon 2" />
+      <div class="icon-option" @click="selectIcon('icon2.png')">
+        <img src="@/assets/icon2.png" alt="Icon 2" />
       </div>
-      <div class="icon-option" @click="selectIcon('../assets/icon3.png')">
-        <img src="../assets/icon3.png" alt="Icon 3" />
+      <div class="icon-option" @click="selectIcon('icon3.png')">
+        <img src="@/assets/icon3.png" alt="Icon 3" />
       </div>
     </div>
     <button type="button" @click="submitIconSelection">Confirm</button>
@@ -71,6 +71,7 @@ export default {
   margin: 0 10px;
   cursor: pointer;
 }
+
 .icon-option img {
   display: block;
   width: auto;

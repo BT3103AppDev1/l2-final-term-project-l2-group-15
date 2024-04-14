@@ -3,11 +3,20 @@
     <h3>Complete Your Profile</h3>
     <form @submit.prevent="submit">
       <div class="profile-icon-container">
-        <div v-if="!selectedIcon" class="image-placeholder">
-          <img src="../assets/unknown.png" alt="Profile Icon Placeholder" />
+        <div v-if="selectedIcon === 'icon1.png'" class="selected-icon">
+          <img src="@/assets/icon1.png" alt="Selected Icon" />
         </div>
-        <div v-else class="selected-icon">
-          <img :src="selectedIcon" alt="Selected Icon" />
+
+        <div v-else-if="selectedIcon === 'icon2.png'" class="selected-icon">
+          <img src="@/assets/icon2.png" alt="Selected Icon" />
+        </div>
+
+        <div v-else-if="selectedIcon === 'icon3.png'" class="selected-icon">
+          <img src="@/assets/icon3.png" alt="Selected Icon" />
+        </div>
+
+        <div v-else class="image-placeholder">
+          <img src="../assets/add-icon.png" alt="Profile Icon Placeholder" />
         </div>
         <button
           class="iconbutton"
@@ -152,5 +161,11 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+}
+
+.icon-option img {
+  display: block;
+  width: auto;
+  height: 50px;
 }
 </style>

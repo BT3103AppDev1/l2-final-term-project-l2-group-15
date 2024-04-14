@@ -43,17 +43,30 @@
           </div>
           <div class="formcol">
             <div class="profile-icon-container">
-              <!-- Image placeholder -->
-              <div v-if="!selectedIcon" class="image-placeholder">
+              <div v-if="selectedIcon === 'icon1.png'" class="selected-icon">
+                <img src="@/assets/icon1.png" alt="Selected Icon" />
+              </div>
+
+              <div
+                v-else-if="selectedIcon === 'icon2.png'"
+                class="selected-icon"
+              >
+                <img src="@/assets/icon2.png" alt="Selected Icon" />
+              </div>
+
+              <div
+                v-else-if="selectedIcon === 'icon3.png'"
+                class="selected-icon"
+              >
+                <img src="@/assets/icon3.png" alt="Selected Icon" />
+              </div>
+
+              <div v-else class="image-placeholder">
                 <img
                   src="../assets/add-icon.png"
                   alt="Profile Icon Placeholder"
                 />
               </div>
-              <div v-else class="selected-icon">
-                <img :src="selectedIcon" alt="Selected Icon" />
-              </div>
-
               <button
                 class="iconbutton"
                 type="button"
@@ -158,7 +171,8 @@ export default {
       userId: "",
       auth: getAuth(),
       showIconSelection: false,
-      selectedIcon: "",
+      selectedIcon: null,
+      isLoading: false,
     };
   },
   methods: {
@@ -178,8 +192,7 @@ export default {
             for (const result of data.results) {
               if (result.POSTAL === postalCode) {
                 return true;
-              } else {
-                return false;
+                break;
               }
             }
           } else {
@@ -281,10 +294,14 @@ export default {
 
     // Function to handle popup for additional info after google authentication
     async handlePopupSubmit(additionalInfo) {
+      if (this.isLoading) return;
+      this.isLoading = true;
+
       const user = this.auth.currentUser;
       const userDocRef = doc(firestore, "users", user.uid);
 
       try {
+        // First, validate the postal code
         const postalCodeValid = await this.isPostalCodeValid(
           additionalInfo.postalCode
         );
@@ -292,9 +309,12 @@ export default {
 
         if (!postalCodeValid) {
           this.registrationStatus = "error";
+          this.errorMessage = "Postal code invalid. Please try again.";
           console.log("pt1");
-          throw new Error("Postal code invalid. Please try again.");
+          return;
         }
+
+        // If the postal code is valid, proceed to save the additional information
         await setDoc(
           userDocRef,
           {
@@ -319,12 +339,20 @@ export default {
         console.error("Error saving registration information", error);
         this.registrationStatus = "error";
         this.errorMessage = error.message;
+      } finally {
+        this.isLoading = false;
       }
     },
 
     iconSelected(iconPath) {
       this.selectedIcon = iconPath;
       console.log(this.selectedIcon);
+    },
+  },
+  computed: {
+    imageSrc() {
+      console.log(`@/assets/${this.selectedIcon}`);
+      return new URL(`@/assets/${this.selectedIcon}`, import.meta.url).href;
     },
   },
 };
@@ -455,5 +483,10 @@ export default {
   height: 50%;
   padding-left: 8px;
   object-fit: cover;
+}
+.selected-icon img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
 }
 </style>

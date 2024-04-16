@@ -1,6 +1,6 @@
 <template>
 <ul class="vertnav">
-    <li><router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}"><img id = "football_group" src="@/assets/football_group.jpg" alt="football icon"></router-link></li>
+    <li><router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}"><img id = "group_pfp" :src="fileURL" alt="No Group Logo"></router-link></li>
     <li><router-link :to="{name : 'AllDiscussion', params:{group : group.GroupId, user : user}}"><img src="@/assets/discussion.png" alt="Discussions"></router-link></li>
     <li><router-link :to="{name : 'Events', params: {group : group.GroupName, user : user}}"><img src="@/assets/calendar.png" alt="Calender"></router-link></li>
     <li><router-link :to="{name : 'GroupSetting', params:{group : group.GroupId, user : user}}"><img src="@/assets/settings.png" alt="Setting"></router-link></li>
@@ -8,18 +8,47 @@
 </template>
 
 <script>
+import { getAuth } from 'firebase/auth';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+
 export default {
   name: "Navbar_groups",
+
+  data() {
+    return {
+      user: getAuth().currentUser.uid,
+      fileURL: null,
+      fileID: this.group.GroupId,
+    }
+  },
+  
   props: {
         group: {
             type: String,
             required: true
         },
-        user: {
-            type: String,
-            required: true
-        }
+  },
+
+  methods: {
+    async getImage(fileID) {
+        console.log(fileID.GroupId)
+        console.log(fileID)
+        let storage = getStorage()
+        let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
+        let fileRef = ref(storage, filePath)
+        let fileURL = await getDownloadURL(fileRef)
+        this.fileURL = fileURL
     }
+  },
+
+  created() {
+    try {
+        let groupID = String(this.$route.params.group); // string
+        this.getImage(groupID)
+    } catch {
+        this.fileURL = null
+    }
+  }
 }
 </script>
 
@@ -62,7 +91,7 @@ export default {
         width: 40px;
     }
 
-    #football_group {
+    #group_pfp{
         border-radius: 45px;
         height: 50px;
         width: 50px;

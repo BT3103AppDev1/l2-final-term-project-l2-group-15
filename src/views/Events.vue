@@ -6,8 +6,6 @@
     <div class = flexbox>
         <GroupEventsList />
     </div>
-
-    
   </body>
 </template>
 
@@ -72,83 +70,18 @@ export default {
     padding: none;
   }
 
-  .about {
-    text-align: left;
-    border: 2px solid #ccc; /* Border style */
-    padding: 20px; /* Add padding to create space between content and border */
-    width: 48%; 
-    height: auto;
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    float: right; /* Align the container to the right */
-    background-color: white;
-    margin: 10px;
-    height: 60%;
-    overflow: scroll;
-    overflow-x: hidden;
-}
-
-.events {
-  text-align: left;
-    border: 2px solid #ccc; /* Border style */
-    padding: 20px; /* Add padding to create space between content and border */
-    width: 48%; 
-    height: auto;
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    float: right; /* Align the container to the right */
-    background-color: white;
-    margin: 10px;
-    height: 60%;
-    overflow: scroll;
-    overflow-x: hidden;
-}
-
-.discussions {
-  text-align: left;
-    border: 2px solid #ccc; /* Border style */
-    padding: 20px; /* Add padding to create space between content and border */
-    width: 48%; 
-    height: auto;
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    float: right; /* Align the container to the right */
-    background-color: white;
-    margin: 10px;
-    height: 60%;
-    overflow: scroll;
-    overflow-x: hidden;
-}
-
-.membership {
-  text-align: left;
-    border: 2px solid #ccc; /* Border style */
-    padding: 20px; /* Add padding to create space between content and border */
-    width: 48%; 
-    height: auto;
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    float: right; /* Align the container to the right */
-    background-color: white;
-    margin: 10px;
-    height: 60%;
-    overflow: scroll;
-    overflow-x: hidden;
-}
-
   .flexbox {
+    border-bottom: 2px solid lightgrey;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: left;
     margin-left: 85px;
     margin-top: 2px;
     margin-right: 5px;
-    width: 100%;
-    height: 75%;
+    width: 94.5%;
+    height: 85%;
     position: fixed;
     overflow: scroll;
     overflow-x: hidden;
   }
-
-/* .about-content { */
-  /* text-align: left; Align content to the right within the container */
-  /* width: 100%; Set the content width to 100% */
-  /* height: 50%; */
-/* } */
 </style>

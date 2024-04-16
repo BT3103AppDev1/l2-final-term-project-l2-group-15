@@ -1,22 +1,34 @@
 <template>
-    <div class="events-container">
-        <h2>My Events</h2>
-        <hr>
-        <div v-for="event in group_events" :key="event.EventId" class="event-card">
+    <div class="event-list-item">
+      <div class="event-card">
+          <h3>{{ eventobj.EventName }}</h3>
+          <p class="event-date">Date: {{ eventobj.EventTime }}</p>
+          <p class="event-location">{{ eventobj.EventLocation }}</p>
+          <div v-if="!isMember">
+            <button class="join-btn-default" @click="joinEvent(eventobj.EventId)">Join Event</button>
+          </div>
+          <div v-else>
+            <button class="view-btn-default" disabled> Joined</button>
+          </div>
+      </div>
+    </div>
+
+        <!-- <div v-for="event in group_events" :key="event.EventId" class="event-card">
             <h3>{{ event.EventName }}</h3>
             <p class="event-date">Date: {{ event.EventTime }}</p>
             <p class="event-location">{{ event.EventLocation }}</p>
             <button class="join-btn-default" @click="joinEvent(event.EventId)">Join Event</button>
-        </div>
-    </div>
+        </div> -->
+    <SuccessMessage v-if="showSuccess" :condition="message_passed" @close="closeSuccessMessage"/>
 </template>
 
 
 <script>
     import firebaseApp from '../firebase.js';
     import { getFirestore } from "firebase/firestore"
-    import { collection, getDocs, doc, deleteDoc, getDoc, updateDoc, arrayUnion } from "firebase/firestore"
+    import { collection, getDocs, doc, deleteDoc, getDoc, updateDoc, arrayUnion, onSnapshot } from "firebase/firestore"
     import { getAuth } from 'firebase/auth';
+    import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
     const db = getFirestore(firebaseApp)
 
@@ -26,47 +38,62 @@
                 group_events: [],
                 user: getAuth().currentUser.uid,
                 groupId: this.$route.params.group,
+                message_passed: "joinEvent",
+                showSuccess: false,
+                eventobj: {},
+                isMember: false,
             };
         },
 
-        props: {
-            user: String,
+        components: {
+            SuccessMessage
         },
 
-        created() {
-            this.fetchGroupEvents();
+        props: {
+            event: String,
+        },
+
+        mounted() {
+            this.fetchEvent(this.event);
+            this.checkMember(this.event);
         },
 
         methods: {
-            async fetchGroupEvents() {
-                // Correct collection name if necessary
-                const ref = doc(db, "group", this.groupId);
-                try {
-                    const snapshot = await getDoc(ref);
-                    if (snapshot.exists()) {
-                        const eventsArr = snapshot.data().GroupEvents; 
-                        const eventsPromises = eventsArr.map(eventId => {
-                            const eventRef = doc(db, "Events", eventId);
-                            return getDoc(eventRef); 
-                        });
-                        const eventsSnapshots = await Promise.all(eventsPromises); 
-                        this.group_events = eventsSnapshots
-                            .filter(doc => doc.exists())
-                            .map(doc => doc.data()); 
-                    } else {
-                        console.log("Document does not exist");
-                    }
+            checkMember(eventID) {
+                let db = getFirestore(firebaseApp);
+                let userID = this.user;
+                let userRef = doc(db, 'users', userID);
 
+                const unsubscribe = onSnapshot(userRef, (doc) => {
+                    if (doc.exists()) {
+                        let userData = doc.data();
+                        this.isMember = userData.events && userData.events.includes(eventID);
+                    }
+                }, (error) => {
+                    console.error("Error fetching user data:", error);
+                });
+            },
+            async fetchEvent(event) {
+                const eventRef = doc(db, "Events", event);
+                try {
+                    const docSnap = await getDoc(eventRef);
+                    if (docSnap.exists()) {
+                        console.log("Event data:", docSnap.data());
+                        this.eventobj = docSnap.data();
+                        console.log(this.eventobj)
+                    } else {
+                        console.log("No such event!");
+                    }
                 } catch (error) {
-                    console.error("Error accessing Firestore: ", error);
+                    console.error("Error fetching event:", error);
                 }
-            }, 
+            },
 
             joinEvent(event_id) {
                 let user_id = this.user
                 this.updateUserDBJoin(user_id, event_id)
                 this.updateEventDBJoin(event_id, user_id)
-                alert("Successfully Joined Event")
+                this.showSuccess = true
             },
 
             async updateUserDBJoin(documentId, newEventId) {
@@ -104,22 +131,24 @@
                     console.error('Error updating document: ', error)
                 }
             },
+
+            closeSuccessMessage() {
+              this.showSuccess = false;
+            },
         }
     }
 
 </script>
 
-<style>
+<style scoped>
 .events-container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
+    width: auto;
 }
 
 h2 {
+    margin-top: 30px;
     color: #334155; /* Dark slate color for better contrast */
     text-align: center;
-    margin-bottom: 40px; /* Increased spacing for a cleaner look */
     font-size: 2rem; /* Larger for emphasis */
 }
 
@@ -136,8 +165,9 @@ hr {
     border-radius: 12px; /* Rounded corners for a modern feel */
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
     padding: 25px; /* Increased padding for better content breathing room */
-    margin-bottom: 30px; /* Increased spacing between cards */
+    margin-bottom: 25px; /* Increased spacing between cards */
     transition: all 0.3s ease; /* Smooth transition for hover effects */
+    height: 110px;
 }
 
 .event-card:hover {

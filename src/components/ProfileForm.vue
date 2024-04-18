@@ -7,6 +7,7 @@
   <div class="profileImageContainer">
     <!-- still trying to figure out to adjust image -->
     <!-- still need to include location validation for postal code -->
+    <!-- still need to add part on editting profile picture -->
     <img src="@/assets/icon1.png" alt="no image"> 
   </div>
 

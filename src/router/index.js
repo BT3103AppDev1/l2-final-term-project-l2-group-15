@@ -14,7 +14,11 @@ import ViewDiscussion from "@/views/ViewDiscussion.vue";
 import GroupSetting from "@/views/GroupSetting.vue";
 import Test from '@/views/Test.vue';
 import Events from '@/views/Events.vue';
-
+import MarketplaceLanding from '@/views/MarketplaceLanding.vue'
+import MarketplaceDealReq from '@/views/MarketDealReq.vue'
+import MarketplaceMyList from '@/views/MarketMyList.vue'
+import MarketplaceSentReq from '@/views/MarketSentReq.vue'
+import MarketplaceViewItems from '@/views/MarketViewItems.vue'
 
 
 const routes = [
@@ -74,6 +78,46 @@ const routes = [
     component: SpecificGroupHome,
     meta: {requiresAuth: true},
   },
+
+  {
+    path: '/marketplaceLanding',
+    name: 'MarketplaceLanding',
+    component: MarketplaceLanding,
+    meta: {requiresAuth: true},
+  },
+
+  {
+    path: '/marketdealreq',
+    name: 'MarketplaceDealReq',
+    component: MarketplaceDealReq,
+    meta: {requiresAuth: true},
+  },
+
+
+  {
+    path: '/marketmylist',
+    name: 'MarketplaceMyList',
+    component: MarketplaceMyList,
+    meta: {requiresAuth: true},
+  },
+
+
+  {
+    path: '/marketsentreq',
+    name: 'MarketplaceSentReq',
+    component: MarketplaceSentReq,
+    meta: {requiresAuth: true},
+  },
+
+
+  {
+    path: '/marketviewitems',
+    name: 'MarketplaceViewItems',
+    component: MarketplaceViewItems,
+    meta: {requiresAuth: true},
+  },
+
+
 
   {
     path: '/group_setting/:group/:user',

@@ -1,7 +1,7 @@
 <template>
   <div class="topnav">
     <router-link to="/user_dashboard/:userId">Home</router-link>
-    <router-link to="/marketplace">MarketPlace</router-link>
+    <router-link to="/marketplacelanding">MarketPlace</router-link>
     <div class="dropdown">
       <button class="dropbtn">Groups
         <i class="fa fa-caret-down"></i>

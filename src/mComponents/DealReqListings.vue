@@ -1,5 +1,5 @@
 <script setup>
-import SentListingComponent from '@/mComponents/SentListingComponent.vue';
+import DealReqListingComponent from '@/mComponents/DealReqListingComponent.vue';
 </script>
 
 <template>
@@ -7,7 +7,7 @@ import SentListingComponent from '@/mComponents/SentListingComponent.vue';
     <br/>
       <div class = "groupFlexbox">
         <div v-for="item in item_list" :key="item.id" class="group">
-          <SentListingComponent :item="item" />
+          <DealReqListingComponent :item="item" />
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@ import { getAuth } from 'firebase/auth';
 
 export default {
     components: {
-        SentListingComponent,
+        DealReqListingComponent,
     },
     data() {
         return {
@@ -37,7 +37,7 @@ export default {
             const db = getFirestore(firebaseApp)
             const userDocRef = doc(db, 'users', this.user); 
             const docSnap = await getDoc(userDocRef);
-            let item_listid = docSnap.data().sentRequestforItem
+            let item_listid = docSnap.data().receivedRequestforItem
             this.fetchItemObject(item_listid)
             },
 
@@ -53,7 +53,7 @@ export default {
         }
     },
 
-    mounted() {
+    created() {
         this.fetchItems();
     },
 

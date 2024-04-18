@@ -1,9 +1,6 @@
 <template> 
 <div class="headingContainer">
-  <div class="headingTextContainer">
-    <h1>Profile Information</h1>
-  </div>
-  <button class="editProfileButton" @click="editProfile">Edit Profile</button>
+  <h1>My Profile</h1>
 </div>
 
 <div class="displayProfile">
@@ -17,65 +14,59 @@
   
   <div class="userInfoContainer">
     <table class="userInfoTable">
-        <tr>
-          <td><strong>Address:</strong></td>
-          <td>{{ userData.address }}</td>
-        </tr>
-        <tr>
-          <td><strong>Postal Code:</strong></td>
-          <td>{{ userData.postalCode }}</td>
-        </tr>
-        <tr>
-          <td><strong>Date of Birth:</strong></td>
-          <td>{{ userData.dateOfBirth }}</td>
-        </tr>
-        <tr>
-          <td><strong>Gender:</strong></td>
-          <td>{{ userData.gender }}</td>
-        </tr>
-        <tr>
-          <td><strong>Telegram Handle:</strong></td>
-          <td>{{ userData.telegramHandle }}</td>
-        </tr>
-      </table>
-    
+      <tr>
+        <td><strong>Address:</strong></td>
+        <td>{{ userData.address }}</td>
+      </tr>
+      <tr>
+        <td><strong>Postal Code:</strong></td>
+        <td>{{ userData.postalCode }}</td>
+      </tr>
+      <tr>
+        <td><strong>Date of Birth:</strong></td>
+        <td>{{ userData.dateOfBirth }}</td>
+      </tr>
+      <tr>
+        <td><strong>Gender:</strong></td>
+        <td>{{ userData.gender }}</td>
+      </tr>
+      <tr>
+        <td><strong>Telegram Handle:</strong></td>
+        <td>{{ userData.telegramHandle }}</td>
+      </tr>
+    </table>
   </div>
+  <button class="editProfileButton" @click="editProfile">Edit Profile</button>
 </div>
 
-    <div class="registerbox">
-      <h3>Update Profile Page</h3>
-      <p>
-        <label for="username">Username</label>
-        <input type="text" placeholder="Username" v-model="formData.username" />
-      </p>
-      <p>
-        <label for="address">Address</label>
-        <input type="text" placeholder="Address" v-model="formData.address" />
-      </p>
-      <p>
-        <label for="postalCode">Postal Code</label>
-        <input type="text" placeholder="Postal Code" v-model="formData.postalCode" />
-      </p>
-      <p>
-        <label for="dateOfBirth">Date of Birth</label>
-        <input type="date" v-model="formData.dateOfBirth" />
-      </p>
-      <p>
-        <label for="gender">Gender</label>
-        <select placeholder="Gender" v-model="formData.gender">
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-      </p>
-      <p>
-        <label for="telegramHandle">Telegram Handle</label>
-        <input type="text" placeholder="Telegram Handle" v-model="formData.telegramHandle"/>
-      </p>
-      <button @click="submitForm">Submit</button>
+<div v-if="isOpen" class="modal">
+  <div class="registerbox">
+    <button class="close-btn" @click="isOpen = false">Close</button>
+    <h2>Update Profile Page</h2>
+    <div class="registerbox-content">
+      <label for="username">Username</label>
+      <input type="text" placeholder="Username" v-model="formData.username" /><br>
+      <label for="address">Address</label>
+      <input type="text" placeholder="Address" v-model="formData.address" /><br>
+      <label for="postalCode">Postal Code</label>
+      <input type="text" placeholder="Postal Code" v-model="formData.postalCode" /><br>
+      <label for="dateOfBirth">Date of Birth</label>
+      <input type="date" v-model="formData.dateOfBirth" /><br>
+      <label for="gender">Gender</label>
+      <select placeholder="Gender" v-model="formData.gender"><br>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select><br>
+      <label for="telegramHandle">Telegram Handle</label>
+      <input type="text" placeholder="Telegram Handle" v-model="formData.telegramHandle"/><br>
     </div>
+  <button class="registerButton" @click="submitForm">Submit</button>
+  </div>
+</div>
 </template>
 
 <script>
+import { ref } from "vue";
 import firebaseApp from "@/firebase";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
@@ -88,7 +79,7 @@ export default {
       user: getAuth().currentUser.uid,
       imgURL: "",
 
-      editOn : true,
+      isOpen : false,
       
       formData: {
         username: "",
@@ -117,18 +108,31 @@ export default {
 
   methods: {
     async submitForm() {
-      let userRef = doc(db, "users", this.user);
-      try {
-        await updateDoc(userRef, this.formData);
-        alert("Successfully updated profile");
-        Object.keys(this.formData).forEach((key) => {
-          this.formData[key] = "";
-        });
-      } catch (error) {
-        alert("Error updating profile: " + error.message);
+  let userRef = doc(db, "users", this.user);
+  try {
+    const userData = await getDoc(userRef);
+    const existingData = userData.data();
+
+    // Loop through formData and update only if the field is not empty and has changed
+    Object.keys(this.formData).forEach(async (key) => {
+      if (this.formData[key] && this.formData[key] !== existingData[key]) {
+        try {
+          await updateDoc(userRef, { [key]: this.formData[key] });
+          console.log(`Updated ${key} successfully`);
+        } catch (error) {
+          console.error(`Error updating ${key}: ${error.message}`);
+        }
       }
-      this.getUserData();
-    },
+    });
+    alert("Profile updated successfully");
+    // Fetch updated user data after submission
+    await this.getUserData();
+    this.isOpen = false;
+  } catch (error) {
+    alert("Error updating profile: " + error.message);
+  }
+},
+
 
     async getUserImage() {
       let userRef = doc(db, "users", this.user);
@@ -166,41 +170,26 @@ export default {
         }).catch((error) => {
           console.log("Error getting document:", error);
         });
-        // // Call getUserData again after a specific interval for polling
-        // setTimeout(() => this.getUserData(), 5000); // Adjust interval as needed
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     },
 
     editProfile(){
-      this.editOn = true;
+      this.isOpen = true;
     }
   },
 };
 </script>
 
 <style scoped>
-.headingContainer{
-  display: flex;
-  justify-content: space-between; /* Distribute elements horizontally */
-  align-items: center;
-} 
-  
-.headingTextContainer {
-  text-align: center;
-  width: 100%;
-  align-items: center;
-}
-
 h1 {
-  /* border: 2px black solid; */
-  text-align: center;
-  margin: 0px;
-  margin-top: 15px;
+  background-color: white;
+  margin-left: 30px;
+  margin-bottom: 0px;
 }
 
-.editProfileButton {
+.editProfileButton, .close-btn {
   cursor: pointer;
   padding: 15px 25px;
   border: none;
@@ -208,6 +197,7 @@ h1 {
   color: white;
   font-weight: bold;
   background-color: #007bff; /* Bootstrap primary */
+  margin-left: auto;
 }
 
 img {
@@ -216,7 +206,10 @@ img {
 }
 
 .displayProfile {
-  /* border: black 2px solid; */
+  margin-top: 8px;
+  /* border: grey 2px solid; */
+  border-radius: 15px;
+  padding: 10px;
   text-align: center;
   display: block;
   width: 50%;
@@ -260,45 +253,77 @@ img {
   width: 0%;
 }
 
-.registerbox {
-  margin-top: 20px;
-  padding: 25px;
-  border: 1px solid;
-  border-radius: 12px;
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  display: flex; /* Make modal a flex container */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
 }
 
-.registerbox p {
-  font-size: 11px;
+.registerbox {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 12px;
+  background-color: white;
+  width: 100%; /* Set width to 100% of modal */
+  align-items: center;
+}
+
+.registerbox h2 {
+  align-self: center;
   font-weight: bold;
 }
 
-.registerbox label {
+.registerbox-content{
+  /* border: 2px solid black; */
+  width: 80%;
+  margin-left: 1%;
+
+}
+
+.registerbox-content label {
   display: block;
+  font-weight: bold;
   margin-bottom: 5px;
 }
 
-.registerbox input {
-  width: 150px;
-  padding: 3px;
-  border: 1px solid #ccc;
-}
-
-.registerbox select {
-  width: 160px;
-  padding: 3px;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-}
-
-.registerbox button {
-  margin-top: 10px;
+.registerbox-content input {
+  width: 100%;
   padding: 5px;
-  background-color: white;
-  border: 1px solid;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
 }
-.registerbox button:hover {
-  background-color: #b9b9b9; 
+
+.registerbox-content select {
+  width: 101.5%;
+  padding: 3px;
+  border: 1px solid #ccc;
+  margin-bottom: 30px;
+}
+
+.registerButton {
+  cursor: pointer;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  background-color: #007bff; /* Bootstrap primary */
+  justify-self: flex-end;
+  margin-bottom: 10px;
+}
+
+.close-btn {
+  background-color: #dc3545; /* Bootstrap danger */
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 </style>

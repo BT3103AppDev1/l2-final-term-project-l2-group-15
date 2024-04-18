@@ -66,6 +66,9 @@
   <button class="registerButton" @click="submitForm">Submit</button>
   </div>
 </div>
+
+<SuccessMessage v-if="showSuccess" :condition="message_passed" @close="closeSuccessMessage"/>
+
 </template>
 
 <script>
@@ -73,14 +76,21 @@ import { ref } from "vue";
 import firebaseApp from "@/firebase";
 import { getAuth } from "firebase/auth";
 import { getFirestore, doc, updateDoc, getDoc } from "firebase/firestore";
+import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
 const db = getFirestore(firebaseApp);
 
 export default {
+  components: {
+    SuccessMessage
+  },
+
   data() {
     return {
       user: getAuth().currentUser.uid,
       imgURL: "",
+      message_passed: "updateProfile",
+      showSuccess: false,
 
       isOpen : false,
       
@@ -127,11 +137,11 @@ export default {
             }
           }
         });
-        alert("Profile updated successfully");
 
         // Fetch updated user data after submission
         await this.getUserData();
         this.isOpen = false;
+        this.showSuccess = true;
       } catch (error) {
         alert("Error updating profile: " + error.message);
       }
@@ -188,6 +198,10 @@ export default {
         telegramHandle: "",
       };
       this.isOpen = true;
+    },
+
+    closeSuccessMessage() {
+      this.showSuccess = false;
     }
   },
 };

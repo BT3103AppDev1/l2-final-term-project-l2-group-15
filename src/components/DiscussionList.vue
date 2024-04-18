@@ -17,7 +17,8 @@
                         <div>{{ formatDate(discussion.ts) }}</div>
                     </div>
                 </div>
-                <button @click="navigate(discussion.id, this.user, this.group)">View Discussion</button>
+                <button class="view-discussion-button" @click="navigate(discussion.id, this.user, this.group)">View Discussion</button>
+                <button v-if="isAdmin" class="delete-discussion-button" @click="deleteDiscussion(discussion.id)">Delete Discussion</button>
             </div>
         </div>
     </div>
@@ -25,8 +26,8 @@
 
 <script>
 import firebaseApp from '../firebase.js'
-import { getFirestore } from 'firebase/firestore'
-import { collection, getDocs, query, onSnapshot, orderBy, where } from 'firebase/firestore'
+import { deleteDoc, getFirestore } from 'firebase/firestore'
+import { doc, collection, getDocs, query, onSnapshot, orderBy, where } from 'firebase/firestore'
 import AddDiscussionButton from './AddDiscussionButton.vue'
 import AddDiscussion from './AddDiscussion.vue'
 
@@ -51,12 +52,15 @@ export default {
         return {
             discussions: [],
             isPopupVisible: false,
-            noDiscussion: false        
+            noDiscussion: false,
+            isAdmin: false,
+            groupAdmin: '',    
         };
     },
     created() {
         this.getDiscussions();
         this.getUsername();
+        this.getGroupAdmin();
     },
     methods: {
         async getDiscussions(){
@@ -111,6 +115,36 @@ export default {
             } else {
                 console.error("Missing DiscussionID")
             }
+        },
+        async getGroupAdmin() {
+            try {
+                const docs = await getDocs(collection(db, "group"));
+                docs.forEach((doc) => {
+                if (doc.data().GroupId == this.group) {
+                    this.groupAdmin = doc.data().GroupAdmin[0];
+                    console.log("Group admin retrieved successfully:", this.groupAdmin);
+                }
+                })
+                if (this.groupAdmin == this.user) {
+                    this.isAdmin = true;
+                }
+            } catch (error) {
+                console.error("Error retrieving group admin:", error);
+            }
+        },
+        async deleteRepliesInDiscussion(discussionID) {
+          const docs = await getDocs(collection(db, "Replies"));
+          for (const doc of docs.docs) { 
+            if (doc.data().DiscussionId === discussionID) { 
+              await deleteDoc(doc.ref); 
+              console.log("Reply deleted successfully");
+            }
+          }
+        },
+        async deleteDiscussion(discussionID) {
+          const discussionDocRef = doc(db, 'Discussions', discussionID);
+          this.deleteRepliesInDiscussion(discussionID);
+          await deleteDoc(discussionDocRef);
         }
     }
 };
@@ -120,12 +154,12 @@ export default {
 .discussions-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-end; /* Aligns children to the right */
+  align-items: flex-end; 
 }
 
 .discussionList {
   width: 100%;
-  max-width: 1300px; /* Adjust the max-width as needed */
+  max-width: 1300px; 
   margin: 0 auto;
 }
 
@@ -134,19 +168,19 @@ export default {
 }
 
 .discussion-item {
-  background-color: #f8f8f8; /* Light grey background */
-  border-radius: 8px; /* Rounded corners */
+  background-color: #f8f8f8; 
+  border-radius: 8px; 
   display: flex;
   align-items: center;
   padding: 10px;
-  margin-bottom: 10px; /* Space between panels */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .discussion-item img {
   width: 60px; 
   height: 60px;
-  border-radius: 50%; /* Circular avatar */
+  border-radius: 50%; 
   margin-right: 10px;
 }
 
@@ -166,6 +200,18 @@ export default {
 
 .discussion-info > div {
   margin-bottom: 3px; 
+}
+
+.view-discussion-button {
+  margin-right: 5px;
+}
+
+.view-discussion-button:hover {
+  background-color: #83e97c; /* Background color on hover */
+}
+
+.discussion-item .delete-discussion-button:hover {
+  background-color: #f44336; /* Background color on hover for delete button */
 }
 
 </style>

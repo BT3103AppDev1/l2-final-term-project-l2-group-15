@@ -10,7 +10,7 @@
       <!-- <p id="groupLocation">{{ group.GroupLocation }}</p> -->
       <p id="groupDescription">{{ group.GroupDescription }}</p>
       <button class="leave-group-btn" @click="leaveGroup">Leave Group</button>
-      <button class="delete-group-btn" @click="deleteGroup">Delete Group</button>
+      <button v-if="isAdmin" class="delete-group-btn" @click="deleteGroup">Delete Group</button>
     </div>
   </div>
 
@@ -30,7 +30,7 @@
 import firebaseApp from '../firebase.js'; 
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from "firebase/firestore";
-import { doc, getDoc, updateDoc, deleteDoc} from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc, getDocs, collection } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 
 export default {
@@ -46,7 +46,9 @@ export default {
           user: getAuth().currentUser.uid,
           showSuccess: false,
           fileURL: null,
-          fileID: this.group.GroupId
+          fileID: this.group.GroupId,
+          groupAdmin: '',
+          isAdmin: false,
       }
   },
 
@@ -128,7 +130,25 @@ export default {
       this.deleteMembersfromGroup(groupID)
       this.deleteGroupFromFirestore(groupID)
       this.showSuccess = true
-    }
+    },
+
+    async getGroupAdmin() {
+            const db = getFirestore(firebaseApp)
+            try {
+                const docs = await getDocs(collection(db, "group"));
+                docs.forEach((doc) => {
+                if (doc.data().GroupId == this.group.GroupId) {
+                    this.groupAdmin = doc.data().GroupAdmin[0];
+                    console.log("Group admin retrieved successfully:", this.groupAdmin);
+                }
+                })
+                if (this.groupAdmin == this.user) {
+                    this.isAdmin = true;
+                }
+            } catch (error) {
+                console.error("Error retrieving group admin:", error);
+            }
+        }
   },
 
   mounted() {
@@ -137,6 +157,7 @@ export default {
     } catch {
         this.fileURL = null
     }
+    this.getGroupAdmin();
   }
 }
 </script>

@@ -8,7 +8,7 @@
             <p>Postal Code: {{ item.Location }}</p>
             <div v-if="isPending" class="busy-div">
                 <h2>Pending</h2>
-              <button>Delete Request</button>
+              <button @click="deleteDealRequest()">Delete Request</button>
             </div>
             <div v-else class="free-div">
                 <h2>Approved</h2>
@@ -22,7 +22,7 @@
   import { getAuth } from 'firebase/auth';
   import firebaseApp from '../firebase.js';
   import { getFirestore } from "firebase/firestore";  
-  import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
+  import { doc, updateDoc, arrayRemove} from "firebase/firestore";
   import { getStorage, ref, getDownloadURL } from 'firebase/storage';
   
   export default {
@@ -65,14 +65,29 @@
             console.log("No Image Found")
           }
         },
+        
+        async deleteFromItem(itemID) {
+            const db = getFirestore(firebaseApp)
+            const docRef = doc(db, 'Items', itemID)
+            await updateDoc(docRef, {
+                hasBuyRequest: false,
+                buyerID: "",
+            })
+        },
 
-        // check if Item has been approved by Seller
-        async checkItemStatus(itemID){
-          const db = getFirestore(firebaseApp)
-          const userDocRef = doc(db, 'Items', itemID)
-          const userDocSnap = await getDoc(userDocRef)
-          const userData = userDocSnap.data();
-          this.isPending = !userData.sold
+        async deletefromUser(itemID, userID) {
+            const db = getFirestore(firebaseApp)
+            const docRef = doc(db, 'users', userID)
+            await updateDoc(docRef, {
+                sentRequestforItem: arrayRemove(itemID)
+            })
+        },
+
+        // Delete Request 
+        // Update Item Status, Update Current User SentRequestforItem
+        async deleteDealRequest(){
+            this.deleteFromItem(this.fileID)
+            this.deletefromUser(this.fileID, this.user)
         }
       },
   

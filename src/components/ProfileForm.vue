@@ -5,7 +5,9 @@
 
 <div class="displayProfile">
   <div class="profileImageContainer">
-    <img src="@/assets/icon1.png" alt="no image">
+    <!-- still trying to figure out to adjust image -->
+    <!-- still need to include location validation for postal code -->
+    <img src="@/assets/icon1.png" alt="no image"> 
   </div>
 
   <div class="usernameContainer">
@@ -102,48 +104,48 @@ export default {
   },
 
   created() {
-    this.getUserImage();
+    // this.getUserImage();
     this.getUserData();
   },
 
   methods: {
     async submitForm() {
-  let userRef = doc(db, "users", this.user);
-  try {
-    const userData = await getDoc(userRef);
-    const existingData = userData.data();
-
-    // Loop through formData and update only if the field is not empty and has changed
-    Object.keys(this.formData).forEach(async (key) => {
-      if (this.formData[key] && this.formData[key] !== existingData[key]) {
-        try {
-          await updateDoc(userRef, { [key]: this.formData[key] });
-          console.log(`Updated ${key} successfully`);
-        } catch (error) {
-          console.error(`Error updating ${key}: ${error.message}`);
-        }
-      }
-    });
-    alert("Profile updated successfully");
-    // Fetch updated user data after submission
-    await this.getUserData();
-    this.isOpen = false;
-  } catch (error) {
-    alert("Error updating profile: " + error.message);
-  }
-},
-
-
-    async getUserImage() {
       let userRef = doc(db, "users", this.user);
       try {
-        let userData = await getDoc(userRef);
-        console.log(userData.data().selectedIcon);
-        this.imgURL = userData.data().selectedIcon;
+        const userData = await getDoc(userRef);
+        const existingData = userData.data();
+
+        // Loop through formData and update only if the field is not empty and has changed
+        Object.keys(this.formData).forEach(async (key) => {
+          if (this.formData[key] && this.formData[key] !== existingData[key]) {
+            try {
+              await updateDoc(userRef, { [key]: this.formData[key] });
+              console.log(`Updated ${key} successfully`);
+            } catch (error) {
+              console.error(`Error updating ${key}: ${error.message}`);
+            }
+          }
+        });
+        alert("Profile updated successfully");
+
+        // Fetch updated user data after submission
+        await this.getUserData();
+        this.isOpen = false;
       } catch (error) {
-        console.error("Potentially, attribute does not exist for this user account");
+        alert("Error updating profile: " + error.message);
       }
     },
+
+    // async getUserImage() {
+    //   let userRef = doc(db, "users", this.user);
+    //   try {
+    //     let userData = await getDoc(userRef);
+    //     console.log(userData.data().selectedIcon);
+    //     this.imgURL = userData.data().selectedIcon;
+    //   } catch (error) {
+    //     console.error("Potentially, attribute does not exist for this user account");
+    //   }
+    // },
 
     getPic(url) {
       console.log("@/assets/" + url)
@@ -176,6 +178,14 @@ export default {
     },
 
     editProfile(){
+      this.formData = {
+        username: "",
+        address: "",
+        postalCode: "",
+        dateOfBirth: "",
+        gender: "",
+        telegramHandle: "",
+      };
       this.isOpen = true;
     }
   },

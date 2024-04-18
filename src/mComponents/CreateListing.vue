@@ -39,9 +39,8 @@
                     <textarea class="textHolder" id="ItemPrice" required placeholder="Enter Item Price"></textarea>
                 </div>
                 
-                <!-- Create Group Button -->
                 <div class="save">
-                    <button id="savebutton" type="button" @click="createItem">Create Item</button>
+                    <button id="savebutton" type="button" @click="createItem">Create</button>
                 </div>
             </div>
         </form>
@@ -147,11 +146,11 @@ export default {
                 id: ItemID,
                 sold: false,
                 buyerID: "",
+                hasBuyRequest: false,
             }
         try {
             this.addPic(this.imageFile, ItemID)
             await setDoc(doc(db, "Items", ItemID), ItemData)
-            console.log("Document written with ID:", ItemID)
             this.updateUserDBItem(this.user, ItemID)
             document.getElementById('myform').reset()
             this.$emit("added")

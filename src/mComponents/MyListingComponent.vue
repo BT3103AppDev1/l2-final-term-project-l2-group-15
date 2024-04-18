@@ -6,6 +6,13 @@
         <div class="group-details">
             <h3>{{ item.Name }}</h3>
             <p>Postal Code: {{ item.Location }}</p>
+            <div v-if="hasBuyRequest" class="busy-div">
+              <button>Pending Buy Request</button>
+            </div>
+            <div v-else class="free-div">
+              <button>Edit Listing </button>
+              <button>Remove Listing</button>
+            </div>
         </div>
     </div> 
   </template>
@@ -32,7 +39,8 @@
             showSuccess: false,
             fileURL: null,
             fileID: this.item.id,
-            isMember: false
+            isMember: false,
+            hasBuyRequest: false,
         }
     },
   
@@ -75,24 +83,20 @@
             console.log("No Image Found")
           }
         },
-  
-        async checkMember(groupID) {
-          let db = getFirestore(firebaseApp);
-          let userID = this.user
-          let userRef = doc(db, 'users', userID)
-          let userDoc = await getDoc(userRef)
-          let userData = userDoc.data()
-          if (userData.groups.includes(groupID)) {
-            this.isMember = true
-          } else {
-            this.isMember = false
-          }
+
+        async checkBuyRequest(itemID){
+          const db = getFirestore(firebaseApp)
+          const userDocRef = doc(db, 'Items', itemID)
+          const userDocSnap = await getDoc(userDocRef)
+          const userData = userDocSnap.data();
+          this.hasBuyRequest = userData.hasBuyRequest
         }
       },
   
     created() {
       try {
         this.getImage(this.fileID)
+        this.checkBuyRequest(this.fileID)
       } catch (e) {
         this.fileURL = null
       }

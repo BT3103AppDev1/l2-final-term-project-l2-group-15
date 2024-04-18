@@ -6,14 +6,13 @@
         <div class="group-details">
             <h3>{{ item.Name }}</h3>
             <p>Postal Code: {{ item.Location }}</p>
-            <div v-if="this.userSentRequest" class="deal-request-btn">
-              <button @click="sendDealRequest()">Send Deal Request</button>
+            <div v-if="isPending" class="busy-div">
+                <h2>Pending</h2>
+              <button>Delete Request</button>
             </div>
-            <div v-else-if="isMyItem(this.item.id, this.user)" class = 'my-item-btn'>
-              <button>My Item</button>    
-            </div>
-            <div v-else class="sent-request-btn">
-              <button>Deal Request Sent</button>
+            <div v-else class="free-div">
+                <h2>Approved</h2>
+                <button>View Buyer Status</button>
             </div>
         </div>
     </div> 
@@ -41,9 +40,7 @@
             showSuccess: false,
             fileURL: null,
             fileID: this.item.id,
-            isMember: false,
-            userSentRequest: true,
-            isUserItem: false,
+            isPending: true,
         }
     },
   
@@ -56,7 +53,7 @@
           this.showSuccess = false
           this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
         },
-  
+          
         async getImage(fileID) {
           try {
             let storage = getStorage()
@@ -68,61 +65,23 @@
             console.log("No Image Found")
           }
         },
-        
-        // Check whether current user has sent a request to this Item
-        async getItemStatus(fileID, user) {
+
+        // check if Item has been approved by Seller
+        async checkItemStatus(itemID){
           const db = getFirestore(firebaseApp)
-          const userDocRef = doc(db, 'users', user)
+          const userDocRef = doc(db, 'Items', itemID)
           const userDocSnap = await getDoc(userDocRef)
           const userData = userDocSnap.data();
-          this.userSentRequest = !userData.sentRequestforItem.includes(fileID)
-          return
-        },
-        
-        // Check whether this is the current user listing
-        async isMyItem(fileID, user) {
-          const db = getFirestore(firebaseApp)
-          const userDocRef = doc(db, 'Items', fileID)
-          const userDocSnap = await getDoc(userDocRef)
-          const userData = userDocSnap.data();
-          this.isUserItem = (userData.sellerID == user)
-          return 
-        },
-
-        async updateItemDB(itemID, userID) {
-          const db = getFirestore(firebaseApp)
-          const docRef = doc(db, 'Items', itemID)
-          await updateDoc(docRef, {
-            hasBuyRequest: true,
-            buyerID: userID,
-          })
-        },
-
-        async updateUserDB(itemID, userID) {
-          const db = getFirestore(firebaseApp)
-          const docRef = doc(db, 'users', userID)
-          await updateDoc(docRef, {
-            sentRequestforItem: arrayUnion(itemID)
-          })
-        },
-
-        async sendDealRequest() {
-          const itemID = this.fileID
-          const userID = this.user
-          this.updateItemDB(itemID, userID)
-          this.updateUserDB(itemID, userID)
-          this.$router.push({ name: 'MarketplaceSentReq'})
-        },
+          this.isPending = !userData.sold
+        }
       },
   
-    mounted() {
+    created() {
       try {
         this.getImage(this.fileID)
-        this.getItemStatus(this.fileID, this.user)
-        this.isMyItem(this.fileID, this.user)
+        this.checkItemStatus(this.fileID)
       } catch (e) {
         this.fileURL = null
-        console.log(e)
       }
     }
     }

@@ -12,13 +12,11 @@
         <div class="nav">
           <NavBar_market />
         </div>
-        <br/>
-        <br/>
         <div class="list">
           <div class="list-header">
             <div class="create-btn-container">
               <h1>My Listings</h1>
-              <button class="create-group-btn" @click="isOpen = true">Create Group</button>
+              <button class="create-group-btn" @click="isOpen = true">Create Item</button>
               <div v-if="isOpen" class="modal">
                 <div class="modal-content">
                   <button class="close-btn" @click="isOpen = false">Close</button>
@@ -54,16 +52,20 @@ export default {
 .container {
   padding:0px;
   margin: 0px;
-  display:flex;
+  display: grid;
+  grid-template-columns: 3fr 35fr;
 }
+
 
 .list {
   width: 100%;
+  margin:auto;
 }
 
 .list-header {
-  display: flex;
+  margin-left: 1.5vh;
 }
+
 .create-btn-container {
   display: flex;
   align-items: center;
@@ -71,16 +73,7 @@ export default {
 
 .nav{
   margin-right: 0.5vh;
-  width:8%;
-}
-
-.create-group-btn, .close-btn, .filter-distance-btn {
-  cursor: pointer;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  font-weight: bold;
+  width:50%;
 }
 
 .create-group-btn {
@@ -88,7 +81,14 @@ export default {
   justify-content: flex-end;
   height: 50px;
   align-content: end;
-  margin-left: 140vh;
+  cursor: pointer;
+  padding: 10px 20px;
+  border: none;
+  color:white;
+  border-radius: 5px;
+  position: absolute;
+  top: 6vh;
+  right: 2vh;
 }
 
 .btn-container {

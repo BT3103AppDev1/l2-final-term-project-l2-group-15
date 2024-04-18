@@ -48,7 +48,8 @@ export default {
     methods: {
       fetchItems() { // retrieve all groups
       const unsubscribe = onSnapshot(collection(db, "Items"), (querySnapshot) => {
-        this.Items = querySnapshot.docs.map(doc => ({
+        this.Items = querySnapshot.docs
+        .map(doc => ({
           id: doc.id,
           ...doc.data()
         }));

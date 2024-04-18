@@ -10,7 +10,7 @@
               <button>Pending Buy Request</button>
             </div>
             <div v-else class="free-div">
-              <button>Edit Listing </button>
+              <button @click="$emit('openPopup')">Edit Listing </button>
               <button>Remove Listing</button>
             </div>
         </div>
@@ -41,6 +41,7 @@
             fileID: this.item.id,
             isMember: false,
             hasBuyRequest: false,
+            isOpen: false,
         }
     },
   
@@ -90,7 +91,12 @@
           const userDocSnap = await getDoc(userDocRef)
           const userData = userDocSnap.data();
           this.hasBuyRequest = userData.hasBuyRequest
-        }
+        },
+
+        async editListing() {
+          const itemID = this.fileID
+
+        },
       },
   
     created() {

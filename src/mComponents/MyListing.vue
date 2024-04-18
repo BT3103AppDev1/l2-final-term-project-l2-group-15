@@ -1,16 +1,21 @@
 <script setup>
 import MyListingComponent from '@/mComponents/MyListingComponent.vue';
+import EditListing from '@/mComponents/EditListing.vue'
 </script>
 
 <template>
   <div>
     <br/>
-      <div class = "groupFlexbox">
-        <div v-for="item in item_list" :key="item.id" class="group">
-          <MyListingComponent :item="item" />
-        </div>
+    <div class="groupFlexbox">
+      <div v-for="item in item_list" :key="item.id" class="group">
+        <MyListingComponent :item="item" @openPopup="togglePopup" />
       </div>
     </div>
+
+    <div v-if="showPopup" class="overlay">
+      <EditListing @closePopup="togglePopup"/>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -22,6 +27,7 @@ import { getAuth } from 'firebase/auth';
 export default {
     components: {
         MyListingComponent,
+        EditListing,
     },
     data() {
         return {
@@ -29,6 +35,7 @@ export default {
             user: getAuth().currentUser.uid,
             isOpen: false,
             item_list: [],
+            showPopup: false,
         };
     },
 
@@ -50,6 +57,10 @@ export default {
                 this.item_list.push(docSnap.data());
                 }
             }
+        },
+
+        togglePopup() {
+          this.showPopup = !this.showPopup
         }
     },
 
@@ -59,6 +70,7 @@ export default {
 
   };
 </script>
+
 
 <style scoped>
 h1 {
@@ -77,4 +89,15 @@ h1 {
   text-align: center;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

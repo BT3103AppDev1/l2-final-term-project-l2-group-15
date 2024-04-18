@@ -286,13 +286,13 @@ img {
   /* border: 2px solid black; */
   width: 80%;
   margin-left: 1%;
-
 }
 
 .registerbox-content label {
   display: block;
   font-weight: bold;
   margin-bottom: 5px;
+  font-size: large;
 }
 
 .registerbox-content input {
@@ -300,10 +300,12 @@ img {
   padding: 5px;
   border: 1px solid #ccc;
   margin-bottom: 20px;
+  height: 20px;
 }
 
 .registerbox-content select {
   width: 101.5%;
+  height: 35px;
   padding: 3px;
   border: 1px solid #ccc;
   margin-bottom: 30px;

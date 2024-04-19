@@ -93,8 +93,31 @@
         </div>
 
         <p>
-          <button type="submit" class="register-btn">Sign Up With Email</button>
+          <button type="submit" class="register-btn">
+            <img
+              src="@/assets/maillogo.png"
+              alt="Email Icon"
+              class="email-icon"
+            />
+            Sign Up With Email
+          </button>
         </p>
+
+        <p>
+          <button
+            type="button"
+            @click="registerWithGoogle"
+            class="google-login-btn"
+          >
+            <img
+              src="@/assets/googlelogo.png"
+              alt="Google Icon"
+              class="google-icon"
+            />
+            Sign Up With Google
+          </button>
+        </p>
+
         <IconSelectionPopup
           :isVisible="showIconSelection"
           @iconSelected="iconSelected"
@@ -117,16 +140,6 @@
         >
           <p class="error-message">Registration failed: {{ errorMessage }}</p>
         </AuthPopup>
-
-        <p>
-          <button
-            type="button"
-            @click="registerWithGoogle"
-            class="google-login-btn"
-          >
-            Sign Up With Google
-          </button>
-        </p>
       </form>
 
       <div v-if="showPopup" class="backdrop"></div>
@@ -216,6 +229,7 @@ export default {
         );
         userCreated = true;
 
+        // Check postal code validity
         const postalCodeValid = await this.isPostalCodeValid(this.postalCode);
 
         if (!postalCodeValid) {
@@ -223,6 +237,7 @@ export default {
           throw new Error("Postal code invalid. Please try again.");
         }
 
+        // User information
         const userData = {
           uid: user.uid,
           username: this.username,
@@ -237,6 +252,7 @@ export default {
           groups: [],
         };
 
+        // Setting user information on firebase
         this.userId = user.uid;
         const userDocRef = doc(firestore, "users", user.uid);
         await setDoc(userDocRef, userData);
@@ -265,6 +281,7 @@ export default {
       event.stopPropagation();
       const provider = new GoogleAuthProvider();
       try {
+        // Google Popup
         const result = await signInWithPopup(this.auth, provider);
         const user = result.user;
         this.showPopup = true;
@@ -278,11 +295,13 @@ export default {
           throw new Error("Account already exists.");
         }
 
+        // User information
         const userData = {
           uid: user.uid,
           email: user.email,
         };
 
+        // Set user info into firebase
         await setDoc(userDocRef, userData);
       } catch (error) {
         this.showPopup = false;
@@ -294,6 +313,7 @@ export default {
 
     // Function to handle popup for additional info after google authentication
     async handlePopupSubmit(additionalInfo) {
+      // For icon popup selection
       if (this.isLoading) return;
       this.isLoading = true;
 
@@ -301,7 +321,7 @@ export default {
       const userDocRef = doc(firestore, "users", user.uid);
 
       try {
-        // First, validate the postal code
+        // Postal Code Validation
         const postalCodeValid = await this.isPostalCodeValid(
           additionalInfo.postalCode
         );
@@ -344,12 +364,14 @@ export default {
       }
     },
 
+    // Handle Selected Icon
     iconSelected(iconPath) {
       this.selectedIcon = iconPath;
       console.log(this.selectedIcon);
     },
   },
   computed: {
+    // Create path to Selected Icon
     imageSrc() {
       console.log(`@/assets/${this.selectedIcon}`);
       return new URL(`@/assets/${this.selectedIcon}`, import.meta.url).href;
@@ -420,6 +442,20 @@ export default {
   margin-top: 40px;
 }
 
+.email-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.google-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
 .register-btn {
   background-color: rgb(227, 47, 47);
   color: white;
@@ -484,6 +520,7 @@ export default {
   padding-left: 8px;
   object-fit: cover;
 }
+
 .selected-icon img {
   width: 100px;
   height: 100px;

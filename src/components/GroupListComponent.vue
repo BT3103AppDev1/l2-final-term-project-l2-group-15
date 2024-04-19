@@ -47,7 +47,10 @@
           </div>
       </div>
 
-      <div v-if="showSuccess" class="modal">
+      <SuccessMessage v-if="showSuccess" :condition="message_passed" :group="this.fileID" :user="this.user"/>
+      
+      <!-- old success message-->
+      <!-- <div v-if="showSuccess" class="modal">
             <div class="modal-content">
                 <span class="close" @click="toggleSuccess">&times;</span>
                     <div class="modal-header">
@@ -56,7 +59,7 @@
                   <h1>Success</h1>
                 </div>
             </div>
-        </div>
+        </div> -->
 </template>
 
 <script> 
@@ -65,8 +68,14 @@ import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";  
 import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import SuccessMessage from "@/components/SuccessMessage.vue"; 
+
 
 export default {
+  components: {
+    SuccessMessage
+  },
+
   props: {
       group: {
         type: Object,
@@ -86,7 +95,8 @@ export default {
           showSuccess: false,
           fileURL: null,
           fileID: this.group.GroupId,
-          isMember: false
+          isMember: false,
+          message_passed: "joinGroup",
       }
   },
 
@@ -99,10 +109,10 @@ export default {
         this.showPopup = !this.showPopup
       },
 
-      toggleSuccess() {
-        this.showSuccess = false
-        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
-      },
+      // toggleSuccess() {
+      //   this.showSuccess = false
+      //   this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
+      // },
 
       joinGroup() {
         let group_id = this.group.id

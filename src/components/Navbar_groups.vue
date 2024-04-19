@@ -1,6 +1,6 @@
 <template>
 <ul class="vertnav">
-    <li><router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}"><img id = "football_group" src="@/assets/football_group.jpg" alt="football icon"></router-link></li>
+    <li><router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}"><img id = "group_pfp" :src="fileURL" alt="No Group Logo"></router-link></li>
     <li><router-link :to="{name : 'AllDiscussion', params:{group : group.GroupId, user : user}}"><img src="@/assets/discussion.png" alt="Discussions"></router-link></li>
     <li><router-link :to="{name : 'Events', params: {group : group.GroupName, user : user}}"><img src="@/assets/calendar.png" alt="Calender"></router-link></li>
     <li v-if="isAdmin"><router-link :to="{name : 'GroupSetting', params:{group : group.GroupId, user : user}}"><img src="@/assets/settings.png" alt="Setting"></router-link></li>
@@ -8,6 +8,9 @@
 </template>
 
 <script>
+import { getAuth } from 'firebase/auth';
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+
 import firebaseApp from "../firebase.js"
 import { getFirestore } from "firebase/firestore"
 import { collection, getDocs } from "firebase/firestore";
@@ -15,28 +18,33 @@ import { collection, getDocs } from "firebase/firestore";
 const db = getFirestore(firebaseApp);
 
 export default {
-    name: "Navbar_groups",
-    props: {
-        group: {
-            type: String,
-            required: true
-        },
-        user: {
-            type: String,
-            required: true
-        }
+  name: "Navbar_groups",
+  data() {
+    return {
+      user: getAuth().currentUser.uid,
+      fileURL: null,
+      fileID: this.group.GroupId,
+      groupAdmin: '',
+      isAdmin: false
+    }
+  },
+  props: {
+    group: {
+        type: String,
+        required: true
     },
-    created() {
-        this.getGroupAdmin();
+  },
+  methods: {
+    async getImage(fileID) {
+        console.log(fileID.GroupId)
+        console.log(fileID)
+        let storage = getStorage()
+        let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
+        let fileRef = ref(storage, filePath)
+        let fileURL = await getDownloadURL(fileRef)
+        this.fileURL = fileURL
     },
-    data() {
-        return {
-            groupAdmin: '',
-            isAdmin: false
-        }
-    },
-    methods: {
-        async getGroupAdmin() {
+    async getGroupAdmin() {
             try {
                 const docs = await getDocs(collection(db, "group"));
                 docs.forEach((doc) => {
@@ -52,8 +60,16 @@ export default {
                 console.error("Error retrieving group admin:", error);
             }
         }
+  },
+  created() {
+    try {
+        let groupID = String(this.$route.params.group); // string
+        this.getImage(groupID)
+    } catch {
+        this.fileURL = null
     }
- 
+    this.getGroupAdmin();
+    }
 }
 </script>
 
@@ -96,7 +112,7 @@ export default {
         width: 40px;
     }
 
-    #football_group {
+    #group_pfp{
         border-radius: 45px;
         height: 50px;
         width: 50px;

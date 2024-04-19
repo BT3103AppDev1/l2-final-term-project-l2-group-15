@@ -29,6 +29,8 @@
             </div>
         </form>
     </div>
+
+    <SuccessMessage v-if="showSuccess" :condition="message_passed" @close="closeSuccessMessage"/>
 </template>
 
 
@@ -39,18 +41,26 @@ import { getFirestore } from "firebase/firestore";
 import { setDoc, doc, addDoc, collection, updateDoc, arrayUnion} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 import { firestore} from "@/firebase";
+import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
 export default {
+    components: {
+        SuccessMessage
+    },
 
     data() {
-    return {
-    //   imageUrl: '',
-        formData: {}, 
-    //   imageFile: null,
-        user: getAuth().currentUser.uid,
+        return {
+        //   imageUrl: '',
+            formData: {}, 
+        //   imageFile: null,
+            user: getAuth().currentUser.uid,
 
-        //may need to switch up the passing of groupid
-        groupId: this.$route.params.group
+            //may need to switch up the passing of groupid
+            groupId: this.$route.params.group,
+
+            showSuccess: false,
+            message_passed: "createEvent",
+
         };
     },
     
@@ -127,6 +137,7 @@ export default {
                     GroupEvents: arrayUnion(eventID) 
                 });
                 console.log("Event added to group successfully");
+                this.showSuccess = true;  
             } catch (error) {
                 console.error("Error adding event to group: ", error);
             }
@@ -140,6 +151,10 @@ export default {
                 randomString += charset[randomIndex];
             }
             return "EV" + randomString;
+        },
+
+        closeSuccessMessage() {
+            this.showSuccess = false;
         },
     }
 }

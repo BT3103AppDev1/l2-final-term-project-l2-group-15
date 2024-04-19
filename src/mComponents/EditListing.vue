@@ -21,26 +21,26 @@
             <div class="fields-section">
                 <div class="form-group">
                     <label for="ItemName">Item Name:</label>
-                    <textarea class="textHolder" id="ItemName" required placeholder="Enter Item Name"></textarea>
+                    <textarea class="textHolder" id="ItemName" required placeholder="Enter Item Name">{{ this.itemName }}</textarea>
                 </div>
                 
                 <div class="form-group">
                     <label for="ItemLocation">Item Location:</label>
-                    <textarea class="textHolder" id="ItemLocation" required placeholder="Enter Item Location"></textarea>
+                    <textarea class="textHolder" id="ItemLocation" required placeholder="Enter Item Location">{{ this.itemLocation}}</textarea>
                 </div>
                 
                 <div class="form-group">
                     <label for="ItemDescription">Item Description:</label>
-                    <textarea class="textHolder" id="ItemDescription" required placeholder="Enter Item Description"></textarea>
+                    <textarea class="textHolder" id="ItemDescription" required placeholder="Enter Item Description">{{  this.itemDescription }}</textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="ItemPrice">Item Price:</label>
-                    <textarea class="textHolder" id="ItemPrice" required placeholder="Enter Item Price"></textarea>
+                    <textarea class="textHolder" id="ItemPrice" required placeholder="Enter Item Price">{{  this.itemPrice}}</textarea>
                 </div>
                 
                 <div class="save">
-                    <button id="savebutton" type="button" @click="createItem">Edit</button>
+                    <button id="savebutton" type="button" @click="editItem">Edit</button>
                 </div>
             </div>
         </form>
@@ -55,9 +55,12 @@ import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
 import { doc, getDoc, updateDoc, setDoc, arrayUnion} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
 
 export default {
+    props: {
+        itemID: String
+    },
 
     data() {
     return {
@@ -65,6 +68,11 @@ export default {
       formData: {}, 
       imageFile: null,
       user: getAuth().currentUser.uid,
+      itemData: null,
+      itemName: null,
+      itemDescription: null,
+      itemPrice: null,
+      itemLocation: null,
         };
     },
     
@@ -119,20 +127,33 @@ export default {
             }
         },
 
-        async addPic(file, picID) {
+        async replacePic(file, picID) {
             let storage = getStorage()
-            let storageRef = ref(storage, picID);
-            await uploadBytes(storageRef, file);
+            let storageRef = ref(storage, picID)
+            await deleteObject(storageRef)
+            await uploadBytes(storageRef, file)
         },
 
-        async createItem() {
+        async fetchItemData() {
+            const db = getFirestore(firebaseApp);
+            const itemRef = doc(db, 'Items', this.itemID);
+            const itemSnap = await getDoc(itemRef);
+            this.itemData = itemSnap.data()
+            this.itemName = itemSnap.data().Name
+            this.itemPrice = itemSnap.data().Price
+            this.itemDescription = itemSnap.data().Description
+            this.itemLocation = itemSnap.data().Location
+            console.log(itemSnap.data().Location)
+        },
+
+        async editItem() {
             const db = getFirestore(firebaseApp)
             let ItemName = document.getElementById("ItemName").value
             let ItemLocation = document.getElementById("ItemLocation").value
             let ItemDescription = document.getElementById("ItemDescription").value
             let ItemPrice = document.getElementById("ItemPrice").value
-            let ItemID = this.generateItemID()
-            if (!this.imageFile || !ItemName || !ItemLocation || !ItemDescription) {
+            let ItemID = this.itemID
+            if (!ItemName || !ItemLocation || !ItemDescription) {
                 alert('Please ensure all forms are filled');
                 return;
             }
@@ -143,15 +164,12 @@ export default {
                 Location: ItemLocation,
                 Name: ItemName,
                 Price: ItemPrice,
-                id: ItemID,
-                sold: false,
-                buyerID: "",
-                hasBuyRequest: false,
             }
         try {
-            this.addPic(this.imageFile, ItemID)
-            await setDoc(doc(db, "Items", ItemID), ItemData)
-            this.updateUserDBItem(this.user, ItemID)
+            if (this.imageFile) {
+                this.replacePic(this.imageFile, ItemID)    
+            }
+            await updateDoc(doc(db, "Items", ItemID), ItemData)
             document.getElementById('myform').reset()
             this.$emit("added")
             this.$router.push({ name: 'MarketplaceViewItems'})
@@ -159,7 +177,10 @@ export default {
             console.log("Error when adding document: ", error)
         }
     }
-}
+},
+    mounted() {
+        this.fetchItemData()
+    }
 }
 </script>
 
@@ -184,10 +205,11 @@ export default {
 
 .container {
     position: relative; /* Set the container as the positioning context */
-    display: flex;
     justify-content: center;
     align-items: center;
     padding: 4vh;
+    max-height: 50vh;
+    overflow: auto;
     background-color: white;
 }
 
@@ -224,12 +246,12 @@ export default {
     align-items: center;
     cursor: pointer;
     margin-bottom: 2vh;
+    margin-top:9vh;
 }
 
 .image-preview {
     width: 90%; 
     max-width: 450px;
-    height: 200px; 
     position: relative; /* This makes it the positioning context for the delete button */
     display: flex;
     align-items: center;

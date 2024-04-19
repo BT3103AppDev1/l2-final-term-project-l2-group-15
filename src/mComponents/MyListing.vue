@@ -7,13 +7,16 @@ import EditListing from '@/mComponents/EditListing.vue'
   <div>
     <br/>
     <div class="groupFlexbox">
+      <div v-if="item_list.length === 0" class="no-item-msg">
+            <h1> You have no listed anything yet </h1>
+      </div>
       <div v-for="item in item_list" :key="item.id" class="group">
         <MyListingComponent :item="item" @openPopup="togglePopup" />
       </div>
     </div>
 
     <div v-if="showPopup" class="overlay">
-      <EditListing @closePopup="togglePopup"/>
+      <EditListing @closePopup="closePopup" :itemID="currentItem"/>
     </div>
   </div>
 </template>
@@ -36,6 +39,7 @@ export default {
             isOpen: false,
             item_list: [],
             showPopup: false,
+            currentItem: null,
         };
     },
 
@@ -59,12 +63,17 @@ export default {
             }
         },
 
-        togglePopup() {
-          this.showPopup = !this.showPopup
+        togglePopup(itemID) {
+          this.showPopup = true
+          this.currentItem = itemID
+        },
+
+        closePopup() {
+          this.showPopup = false
         }
     },
 
-    created() {
+    mounted() {
         this.fetchItems();
     },
 

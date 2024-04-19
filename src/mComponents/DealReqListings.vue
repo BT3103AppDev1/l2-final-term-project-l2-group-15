@@ -6,6 +6,9 @@ import DealReqListingComponent from '@/mComponents/DealReqListingComponent.vue';
   <div>
     <br/>
       <div class = "groupFlexbox">
+        <div v-if="item_list.length === 0" class="no-item-msg">
+            <h1> No Deal Req </h1>
+        </div>
         <div v-for="item in item_list" :key="item.id" class="group">
           <DealReqListingComponent :item="item" />
         </div>

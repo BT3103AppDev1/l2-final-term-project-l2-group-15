@@ -10,7 +10,7 @@
               <button>Pending Buy Request</button>
             </div>
             <div v-else class="free-div">
-              <button @click="$emit('openPopup')">Edit Listing </button>
+              <button @click="$emit('openPopup', this.fileID)">Edit Listing </button>
               <button>Remove Listing</button>
             </div>
         </div>

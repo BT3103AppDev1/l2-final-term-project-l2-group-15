@@ -88,6 +88,7 @@
         async deleteDealRequest(){
             this.deleteFromItem(this.fileID)
             this.deletefromUser(this.fileID, this.user)
+            this.$router.push({ name: 'MarketplaceViewItems'})
         }
       },
   

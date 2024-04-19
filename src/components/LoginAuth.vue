@@ -166,4 +166,11 @@ const loginWithGoogle = async (event) => {
   color: black;
   border: 1px solid;
 }
+
+@media (max-width: 768px) {
+  .loginbox {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+}
 </style>

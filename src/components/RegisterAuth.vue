@@ -489,4 +489,38 @@ export default {
   height: 100px;
   object-fit: contain;
 }
+
+@media (max-width: 768px) {
+  .registerbox {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+
+  .registerbox input,
+  .registerbox select {
+    width: 100%;
+  }
+
+  .form {
+    flex-direction: column;
+  }
+
+  .formcol {
+    padding: 0;
+  }
+
+  .emailpwgroup {
+    margin-top: 5px;
+  }
+
+  .register-btn,
+  .google-login-btn,
+  .iconbutton {
+    width: 70%;
+  }
+
+  .profile-icon-container {
+    margin-top: 10px;
+  }
+}
 </style>

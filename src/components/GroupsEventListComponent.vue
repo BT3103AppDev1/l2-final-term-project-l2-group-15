@@ -1,146 +1,224 @@
-<template>
-    <div class="event-list-item">
-      <div class="event-card">
-          <h3>{{ eventobj.EventName }}</h3>
-          <p class="event-date">Date: {{ eventobj.EventTime }}</p>
-          <p class="event-location">{{ eventobj.EventLocation }}</p>
-          <div v-if="!isMember">
-            <button class="join-btn-default" @click="joinEvent(eventobj.EventId)">Join Event</button>
-          </div>
-          <div v-else>
-            <button class="view-btn-default" disabled> Joined</button>
-          </div>
-      </div>
-    </div>
+    <template>
+        <div class="event-list-item">
+        <div class="event-card">
+            <h3>{{ eventobj.EventName }}</h3>
+            <p class="event-date">Date: {{ eventobj.EventTime }}</p>
+            <p class="event-location">{{ eventobj.EventLocation }}</p>
+            <div v-if="!isMember">
+                <button class="join-btn-default" @click="joinEvent(eventobj.EventId)">Join Event</button>
+            </div>
+            <div v-else>
+                <button class="view-btn-default" disabled> Joined</button>
+                <button class="leave-event-btn" @click="leaveEvent">Leave Event</button>
+            </div>
+            <button class="delete-event-btn" @click="deleteEvent">Delete Event</button>
+        </div>
+        </div>
 
-        <!-- <div v-for="event in group_events" :key="event.EventId" class="event-card">
-            <h3>{{ event.EventName }}</h3>
-            <p class="event-date">Date: {{ event.EventTime }}</p>
-            <p class="event-location">{{ event.EventLocation }}</p>
-            <button class="join-btn-default" @click="joinEvent(event.EventId)">Join Event</button>
-        </div> -->
-    <SuccessMessage v-if="showSuccess" :condition="message_passed" @close="closeSuccessMessage"/>
-</template>
+            <!-- <div v-for="event in group_events" :key="event.EventId" class="event-card">
+                <h3>{{ event.EventName }}</h3>
+                <p class="event-date">Date: {{ event.EventTime }}</p>
+                <p class="event-location">{{ event.EventLocation }}</p>
+                <button class="join-btn-default" @click="joinEvent(event.EventId)">Join Event</button>
+            </div> -->
+        <SuccessMessage v-if="showSuccess" :condition="message_passed" @close="closeSuccessMessage"/>
+    </template>
 
 
-<script>
-    import firebaseApp from '../firebase.js';
-    import { getFirestore } from "firebase/firestore"
-    import { collection, getDocs, doc, deleteDoc, getDoc, updateDoc, arrayUnion, onSnapshot } from "firebase/firestore"
-    import { getAuth } from 'firebase/auth';
-    import SuccessMessage from "@/components/SuccessMessage.vue"; 
+    <script>
+        import firebaseApp from '../firebase.js';
+        import { getFirestore } from "firebase/firestore"
+        import { collection, getDocs, doc, deleteDoc, getDoc, updateDoc, arrayUnion, onSnapshot } from "firebase/firestore"
+        import { getAuth } from 'firebase/auth';
+        import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
-    const db = getFirestore(firebaseApp)
+        const db = getFirestore(firebaseApp)
 
-    export default {
-        data() {
-            return {
-                group_events: [],
-                user: getAuth().currentUser.uid,
-                groupId: this.$route.params.group,
-                message_passed: "joinEvent",
-                showSuccess: false,
-                eventobj: {},
-                isMember: false,
-            };
-        },
+        export default {
+            data() {
+                return {
+                    group_events: [],
+                    user: getAuth().currentUser.uid,
+                    groupId: this.$route.params.group,
+                    message_passed: "joinEvent",
+                    showSuccess: false,
+                    eventobj: {},
+                    isMember: false,
+                };
+            },
 
-        components: {
-            SuccessMessage
-        },
+            components: {
+                SuccessMessage
+            },
 
-        props: {
-            event: String,
-        },
+            props: {
+                event: String,
+            },
 
-        mounted() {
-            this.fetchEvent(this.event);
-            this.checkMember(this.event);
-        },
+            mounted() {
+                this.fetchEvent(this.event);
+                this.checkMember(this.event);
+            },
 
-        methods: {
-            checkMember(eventID) {
-                let db = getFirestore(firebaseApp);
-                let userID = this.user;
-                let userRef = doc(db, 'users', userID);
+            methods: {
+                checkMember(eventID) {
+                    let db = getFirestore(firebaseApp);
+                    let userID = this.user;
+                    let userRef = doc(db, 'users', userID);
 
-                const unsubscribe = onSnapshot(userRef, (doc) => {
-                    if (doc.exists()) {
-                        let userData = doc.data();
-                        this.isMember = userData.events && userData.events.includes(eventID);
+                    const unsubscribe = onSnapshot(userRef, (doc) => {
+                        if (doc.exists()) {
+                            let userData = doc.data();
+                            this.isMember = userData.events && userData.events.includes(eventID);
+                        }
+                    }, (error) => {
+                        console.error("Error fetching user data:", error);
+                    });
+                },
+                async fetchEvent(event) {
+                    const eventRef = doc(db, "Events", event);
+                    try {
+                        const docSnap = await getDoc(eventRef);
+                        if (docSnap.exists()) {
+                            console.log("Event data:", docSnap.data());
+                            this.eventobj = docSnap.data();
+                            console.log(this.eventobj)
+                        } else {
+                            console.log("No such event!");
+                        }
+                    } catch (error) {
+                        console.error("Error fetching event:", error);
                     }
-                }, (error) => {
-                    console.error("Error fetching user data:", error);
-                });
-            },
-            async fetchEvent(event) {
-                const eventRef = doc(db, "Events", event);
-                try {
-                    const docSnap = await getDoc(eventRef);
-                    if (docSnap.exists()) {
-                        console.log("Event data:", docSnap.data());
-                        this.eventobj = docSnap.data();
-                        console.log(this.eventobj)
-                    } else {
-                        console.log("No such event!");
+                },
+
+                joinEvent(event_id) {
+                    let user_id = this.user
+                    this.updateUserDBJoin(user_id, event_id)
+                    this.updateEventDBJoin(event_id, user_id)
+                    this.showSuccess = true
+                },
+
+                async updateUserDBJoin(documentId, newEventId) {
+                    const db = getFirestore(firebaseApp)
+                    try { // there no catch error
+                    const documentRef = doc(db, 'users', documentId)
+                    const documentSnapshot = await getDoc(documentRef)
+
+                    if (documentSnapshot.exists()) {
+                        await updateDoc(documentRef, {
+                            events: arrayUnion(newEventId)
+                            });
+                        } else {
+                        console.log('Document does not exist.')
+                        }
+                    } catch (error) {
+                        console.error('Error updating document: ', error)
                     }
-                } catch (error) {
-                    console.error("Error fetching event:", error);
-                }
-            },
+                },
 
-            joinEvent(event_id) {
-                let user_id = this.user
-                this.updateUserDBJoin(user_id, event_id)
-                this.updateEventDBJoin(event_id, user_id)
-                this.showSuccess = true
-            },
+                async updateEventDBJoin(documentId, newUserId) {
+                    const db = getFirestore(firebaseApp)
+                    try {
+                    const documentRef = doc(db, 'Events', documentId)
+                    const documentSnapshot = await getDoc(documentRef)
+                
+                    if (documentSnapshot.exists()) {
+                        await updateDoc(documentRef, {
+                            EventParticipants: arrayUnion(newUserId),
+                            });
+                        } else {
+                        console.log('Document does not exist.')
+                        }
+                    } catch (error) {
+                        console.error('Error updating document: ', error)
+                    }
+                },
 
-            async updateUserDBJoin(documentId, newEventId) {
-                const db = getFirestore(firebaseApp)
-                try { // there no catch error
-                const documentRef = doc(db, 'users', documentId)
-                const documentSnapshot = await getDoc(documentRef)
+                closeSuccessMessage() {
+                this.showSuccess = false;
+                },
+                
+                leaveEvent() {
+                    this.deleteEventFromUser(this.user, this.eventobj.EventId)
+                    this.deleteUserFromEvent(this.user, this.eventobj.EventId)
+                },
 
-                if (documentSnapshot.exists()) {
-                    await updateDoc(documentRef, {
-                        events: arrayUnion(newEventId)
+                async deleteEventFromUser(user, event) {
+                    let userDocRef = doc(db, 'users', user);
+                    let userDocSnap = await getDoc(userDocRef);
+                    console.log(event);
+                    if (userDocSnap.exists()) {
+                        let userData = userDocSnap.data();
+                        if (userData.events) { 
+                            let updatedEvents = userData.events.filter(e => e !== event);
+                            await updateDoc(userDocRef, {
+                                events: updatedEvents
+                            });
+                        } else {
+                            console.log('No events to update for this user.');
+                        }
+                    }
+                },
+
+
+                async deleteUserFromEvent(user, event) {
+                    let eventDocRef = doc(db, "Events", event)
+                    let eventDocSnap = await getDoc(eventDocRef)
+                    if (eventDocSnap.exists()) {
+                        let eventData = eventDocSnap.data();
+                        let updatedUsers = eventData.EventParticipants.filter(userId => userId !== user)
+                        await updateDoc(eventDocRef, {
+                            EventParticipants: updatedUsers
                         });
-                    } else {
-                    console.log('Document does not exist.')
                     }
-                } catch (error) {
-                    console.error('Error updating document: ', error)
-                }
-            },
+                },
 
-            async updateEventDBJoin(documentId, newUserId) {
-                const db = getFirestore(firebaseApp)
-                try {
-                const documentRef = doc(db, 'Events', documentId)
-                const documentSnapshot = await getDoc(documentRef)
-            
-                if (documentSnapshot.exists()) {
-                    await updateDoc(documentRef, {
-                        EventParticipants: arrayUnion(newUserId),
+                async deleteEvent() {
+                    // deleting an event means 3 aspects
+                    // delete event from all the users
+                    // delete event from the group
+                    // wipe events from firebase
+
+                    //delete event from all users
+                    //users of the event
+                    let eventusers = this.eventobj.EventParticipants
+                    for (let user of eventusers) {
+                        await this.deleteEventFromUser(user, this.eventobj.EventId)
+                    }
+
+                    // delete event from the groupa
+                    let groupDocRef = doc(db, "group", this.groupId)
+                    let groupDocSnap = await getDoc(groupDocRef)
+                    if (groupDocSnap.exists()) {
+                        let groupData = groupDocSnap.data()
+                        let updatedEvents = groupData.GroupEvents.filter(event => this.eventobj.EventId !== event)
+                        await updateDoc(groupDocRef, {
+                            GroupEvents: updatedEvents
                         });
-                    } else {
-                    console.log('Document does not exist.')
                     }
-                } catch (error) {
-                    console.error('Error updating document: ', error)
-                }
-            },
 
-            closeSuccessMessage() {
-              this.showSuccess = false;
-            },
+                    //wipe event from firebase
+                    let eventDocRef = doc(db, "Events", this.eventobj.EventId)
+                    await deleteDoc(eventDocRef)
+
+                }
+            }
         }
-    }
 
-</script>
+    </script>
 
 <style scoped>
+.leave-event-btn,
+.delete-event-btn {
+  margin-right: 10px;
+  padding: 5px 10px;
+  background-color: #ff0000; /* Example background color */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
 .events-container {
     width: auto;
 }

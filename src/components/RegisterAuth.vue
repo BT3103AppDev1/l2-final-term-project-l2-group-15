@@ -250,6 +250,9 @@ export default {
           selectedIcon: this.selectedIcon,
           events: [],
           groups: [],
+          receivedRequestforItem: [],
+          sentRequestforItem: [],
+          listedItem: [],
         };
 
         // Setting user information on firebase
@@ -349,6 +352,9 @@ export default {
             selectedIcon: additionalInfo.selectedIcon,
             events: [],
             groups: [],
+            receivedRequestforItem: [],
+            sentRequestforItem: [],
+            listedItem: [],
           },
           { merge: true }
         );

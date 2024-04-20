@@ -71,27 +71,28 @@ h1 {
     margin-bottom: 7px;
     margin-left: 10pt;
     font-family: 'Open Sans', Arial, sans-serif;
+    color: black;
 }
 
 .header {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 100; /* Ensures navbars stay on top of other content */
+    z-index: 100; 
 }
 
 .flexbox {
     flex-wrap: wrap;
     align-items: left;
     margin-left: 85px;
-    margin-top: 110px/* Height of the header + any additional space */;
+    margin-top: 110px;
     margin-right: 5px;
     max-height: calc(100vh - 120px/* Height of the header + any additional space */);
     width: 100%;
     max-width: 1350px;
-    overflow-y: auto; /* Enables vertical scrolling */
-    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
-    position: relative; /* If needed for positioning context */
-    z-index: 1; /* Lower z-index than fixed elements */
+    overflow-y: auto; 
+    box-sizing: border-box;
+    position: relative; 
+    z-index: 1; 
 }
 </style>

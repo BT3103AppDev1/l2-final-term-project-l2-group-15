@@ -27,9 +27,12 @@ export default {
   methods: {
     goMarketPlace() {
       console.log("goMarketplace");
+      this.$router.push('/marketplace');
+
     },
     goGroups() {
       console.log("goGroups");
+      this.$router.push('/all_groups');
     },
   },
 };

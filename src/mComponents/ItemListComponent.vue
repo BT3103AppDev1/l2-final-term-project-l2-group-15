@@ -89,6 +89,7 @@
           return 
         },
 
+        // update Item status and update seller status
         async updateItemDB(itemID, userID) {
           const db = getFirestore(firebaseApp)
           const docRef = doc(db, 'Items', itemID)
@@ -96,14 +97,25 @@
             hasBuyRequest: true,
             buyerID: userID,
           })
+
+          const itemDocSnap = await getDoc(docRef)
+          const sellerID = itemDocSnap.data().sellerID
+
+          const userDocRef = doc(db, 'users', sellerID)
+          await updateDoc(userDocRef, {
+            receivedRequestforItem: arrayUnion(itemID)
+          })
+
         },
 
+        // update that current user sent a request
         async updateUserDB(itemID, userID) {
           const db = getFirestore(firebaseApp)
           const docRef = doc(db, 'users', userID)
           await updateDoc(docRef, {
             sentRequestforItem: arrayUnion(itemID)
           })
+
         },
 
         async sendDealRequest() {

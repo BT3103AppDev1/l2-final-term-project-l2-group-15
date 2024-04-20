@@ -5,7 +5,7 @@
         <p class="event-date">
             Date: <span v-html="formatDate(eventobj.EventTime).replace(/\n/g, '<br>')"></span>
         </p>
-        <p class="event-location">{{ eventobj.EventLocation }}</p>
+        <p class="event-location">Location: {{ eventobj.EventLocation }}</p>
         <div v-if="!isMember">
             <button class="join-btn-default" @click="joinEvent(eventobj.EventId)">Join Event</button>
             <button class="delete-event-btn" @click="deleteEvent">Delete Event</button>

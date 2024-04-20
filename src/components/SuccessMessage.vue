@@ -7,8 +7,6 @@
             <span id = "message">{{ displayMessage }}</span>
         </div>
     </div>
-
-    
   </template>
   
   <script>
@@ -33,6 +31,10 @@
 
       user: {
         type: String,
+      },
+
+      user_id: {
+        type: String,
       }
     },
   
@@ -50,15 +52,23 @@
       getMessage() {
         if (this.condition === "leaveGroup") {
           this.displayMessage = "You have successfully left your group!";
-        } else if (this.condition === "joinGroup") {
+        } 
+        else if (this.condition === "joinGroup") {
           this.displayMessage = "You have successfully joined the group!";
-        } else if (this.condition === "joinEvent") {
+        }
+        else if (this.condition === "joinEvent") {
           this.displayMessage = "You have successfully joined the event!";
-        } else if (this.condition === "createEvent") {
+        } 
+        else if (this.condition === "createEvent") {
           this.displayMessage = "You have successfully created the event!";
-        } else if (this.condition === "updateProfile") {
+        } 
+        else if (this.condition === "updateProfile") {
           this.displayMessage = "You have successfully updated your profile!";
-        } else {
+        } 
+        else if (this.condition === "loginSuccess") {
+          this.displayMessage = "You have successfully logged in!";
+        } 
+        else {
           this.displayMessage = "Blah blah blah";
         }
       },
@@ -67,18 +77,26 @@
         this.showSuccess = false
         if (this.condition === "leaveGroup") {
           this.$router.push("/all_groups")
-        } else if (this.condition === "joinGroup") {
+        }
+        else if (this.condition === "joinGroup") {
           this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group, user: this.user } })
-        } else if (this.condition === "joinEvent") {
+        } 
+        else if (this.condition === "joinEvent") {
           // add code if need subsequent action
           this.$emit('close');
-        } else if (this.condition === "createEvent") {
+        } 
+        else if (this.condition === "createEvent") {
           // add code if need subsequent action
           this.$emit('close');
-        } else if (this.condition === "updateProfile") {
+        } 
+        else if (this.condition === "updateProfile") {
           // add code if need subsequent action
           this.$emit('close');
-        } else {
+        }
+        else if (this.condition === "loginSuccess") {
+          this.$router.push({ name: "UserDashboard", params: { user_id: this.user_id } });
+        }
+        else {
 
         }
       }

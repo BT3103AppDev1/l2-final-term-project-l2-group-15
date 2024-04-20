@@ -20,7 +20,7 @@
   <!-- code for pop up when sign out -->
     <div v-if="showPopup" class="modal">
         <div class="modal-content">
-            <span class="close" @click="toggle">&times;</span>
+            <span class="close" @click="toggle">&times;</span><br>
             <div class="modal-header">
                 <div class="modal-title">
                     <h3>Are you sure you want to log out?</h3>
@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
@@ -154,23 +154,28 @@ li {
   background-color: #fff;
   margin: 10% auto;
   padding: 20px;
+  padding-top: 5px;
+  padding-bottom: 30px;
   border-radius: 8px;
   width: 90%;
+  height: 20%;
   max-width: 500px;
 }
 
 /* Close button styles */
 .close {
   float: right;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 /* Header styles */
 .modal-header {
   display: flex;
   align-items: center;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
@@ -181,11 +186,27 @@ li {
 
 .modal-title h3 {
   margin: 0;
+  margin-top: 10px;
   color: #333;
-  font-size: 1.25rem;
+  font-size: 30px;
+  text-align: center;
 }
+
 .sign-out-button{
-    text-align: center;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  background-color: #007bff;
+  float: right;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Adding transition effect */
+}
+
+.sign-out-button:hover{
+  background-color: #0056b3; /* Change color on hover */
 }
 
 .dropdown {
@@ -233,5 +254,4 @@ li {
 .dropdown:hover .dropdown-content {
   display: block;
 }
-
 </style>

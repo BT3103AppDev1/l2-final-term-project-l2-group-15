@@ -8,7 +8,7 @@
             <p>Postal Code: {{ item.Location }}</p>
             <div v-if="isDealDone" class="done-deal">
               <h3>Deal Done</h3>
-              <button>View Deal Details</button>
+              <button>View Contact Details</button>
             </div>
             <div v-else class="buy-request">
               <button @click="goDealReq()">View Buy Request</button>      

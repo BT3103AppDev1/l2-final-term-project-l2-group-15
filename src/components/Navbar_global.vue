@@ -13,7 +13,7 @@
         </div>
       </li>
       <li @click="goUpdateProfile"><div class="profile-container">Profile<img id="user_logo" src="@/assets/user.png" alt="user logo"></div></li>
-      <li><div class="logout-text" @click="toggle">Log Out</div></li>
+      <li class="logout-text" @click="toggle"><span>Log Out</span></li>
     </ul>
   </div>
 

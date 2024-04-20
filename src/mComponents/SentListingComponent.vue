@@ -6,13 +6,17 @@
         <div class="group-details">
             <h3>{{ item.Name }}</h3>
             <p>Postal Code: {{ item.Location }}</p>
-            <div v-if="isPending" class="busy-div">
-                <h2>Pending</h2>
+            <div v-if="isSoldtoYou" class="busy-div">
+                <h2>Approved</h2>
+                <button> View Contact Status</button>
+            </div>
+            <div v-else-if="isSold" class="busy-div">
+                <h2> Sold to another User</h2>
               <button @click="deleteDealRequest()">Delete Request</button>
             </div>
             <div v-else class="free-div">
-                <h2>Approved</h2>
-                <button>View Buyer Status</button>
+                <h2>Pending Approval</h2>
+                <button @click="deleteDealRequest()">Delete Request</button>
             </div>
         </div>
     </div> 
@@ -40,7 +44,8 @@
             showSuccess: false,
             fileURL: null,
             fileID: this.item.id,
-            isPending: true,
+            isSoldtoYou: false,
+            isSold: false,
         }
     },
   
@@ -103,15 +108,29 @@
             this.deleteFromItem(this.fileID)
             this.deletefromUser(this.fileID, this.user)
             this.$router.push({ name: 'MarketplaceViewItems'})
-        }
+        },
+
+        async checkSold() {
+          const db = getFirestore(firebaseApp)
+          const itemDocRef = doc(db, 'Items', this.fileID)
+          const itemDocSnap = await getDoc(itemDocRef)
+          const itemData = itemDocSnap.data();
+          this.isSold = itemData.sold
+          if (itemData.soldTo == this.user) {
+            this.isSoldtoYou = true
+          }
+        },
+
+
       },
   
-    created() {
+    mounted() {
       try {
         this.getImage(this.fileID)
-        this.checkItemStatus(this.fileID)
+        this.checkSold()
       } catch (e) {
         this.fileURL = null
+        console.log(e)
       }
     }
     }

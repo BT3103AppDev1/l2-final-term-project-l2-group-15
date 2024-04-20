@@ -1,12 +1,10 @@
 <template>
     <div class="group-list-item">
-        <div class="group-image">
-            <img :src='fileURL' alt="No Group Logo"/>
-        </div>
         <div class="group-details">
-            <h3>{{ item.Name }}</h3>
-            <p>Postal Code: {{ item.Location }}</p>
-            <button @click="goDealReq()">View Buy Request</button>
+            <h3>{{ user.username }}</h3>
+            <p>Postal Code: {{ user.Location }}</p>
+            <button @click="approveReq()"> Approve </button>
+            <button @click="rejectReq()" > Reject </button>
         </div>
     </div> 
   </template>
@@ -15,12 +13,12 @@
   import { getAuth } from 'firebase/auth';
   import firebaseApp from '../firebase.js';
   import { getFirestore } from "firebase/firestore";  
-  import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
+  import { doc, getDoc,updateDoc, arrayRemove} from "firebase/firestore";
   import { getStorage, ref, getDownloadURL } from 'firebase/storage';
   
   export default {
     props: {
-        item: {
+        user: {
           type: Object,
           required: true
         },
@@ -29,17 +27,50 @@
     data() {
         return {
             showPopup: false,
-            user: getAuth().currentUser.uid,
+            currentUser: getAuth().currentUser.uid,
             showSuccess: false,
             fileURL: null,
-            fileID: this.item.id,
+            fileID: this.user,
+            isPending: true,
         }
     },
   
     methods: {
 
-        async goDealReq() {
-            this.$router.push({ name: 'MarketApprove', params: { itemID: this.fileID } })
+        // update Item status, update Buyer and Seller status
+        // update Item by setting sold status to true. Will not be on list anymore
+        // update Buyer by adding to dealFinishItem
+        // update Seller by remove from listedItem and adding to dealFinishItem
+        // update Other Buyers deal is off (through seeing Item status)
+        // add filter for the all items page so it wont show up
+        updateBuyer() {
+            const db = getFirestore(firebaseApp)
+            const documentRef = doc(db, 'users', this.user)
+            const documentSnapshot = getDoc(documentRef)
+            updateDoc(documentRef, {
+                dealFinishItem: arrayUnion(newGroupId)
+            })          
+        },
+
+        updateSeller() {
+
+        },
+
+        updateItem() {
+
+        },
+
+        approveReq() {
+            
+        },
+
+        toggle() {
+          this.showPopup = !this.showPopup
+        },
+  
+        toggleSuccess() {
+          this.showSuccess = false
+          this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
         },
           
         async getImage(fileID) {
@@ -54,23 +85,11 @@
           }
         },
 
-        // check if Item has been approved by Seller
-        async checkItemStatus(itemID){
-          const db = getFirestore(firebaseApp)
-          const userDocRef = doc(db, 'Items', itemID)
-          const userDocSnap = await getDoc(userDocRef)
-          const userData = userDocSnap.data();
-          this.isPending = !userData.sold
-        }
+
       },
   
     created() {
-      try {
-        this.getImage(this.fileID)
-        this.checkItemStatus(this.fileID)
-      } catch (e) {
-        this.fileURL = null
-      }
+
     }
     }
   </script>

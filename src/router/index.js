@@ -19,6 +19,7 @@ import MarketplaceDealReq from '@/views/MarketDealReq.vue'
 import MarketplaceMyList from '@/views/MarketMyList.vue'
 import MarketplaceSentReq from '@/views/MarketSentReq.vue'
 import MarketplaceViewItems from '@/views/MarketViewItems.vue'
+import MarketApprove from "@/views/MarketApprove.vue";
 
 
 const routes = [
@@ -130,6 +131,13 @@ const routes = [
     path: '/all_discussion/:group/:user',
     name: 'AllDiscussion',
     component: AllDiscussion,
+    meta: {requiresAuth: true},
+  },
+
+  {
+    path: '/marketapprove/:itemID',
+    name: 'MarketApprove',
+    component: MarketApprove,
     meta: {requiresAuth: true},
   },
 

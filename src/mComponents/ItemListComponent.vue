@@ -95,7 +95,7 @@
           const docRef = doc(db, 'Items', itemID)
           await updateDoc(docRef, {
             hasBuyRequest: true,
-            buyerID: userID,
+            buyerID: arrayUnion(userID),
           })
 
           const itemDocSnap = await getDoc(docRef)

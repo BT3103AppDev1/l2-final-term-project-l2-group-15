@@ -145,8 +145,9 @@ export default {
                 Price: ItemPrice,
                 id: ItemID,
                 sold: false,
-                buyerID: "",
+                buyerID: [],
                 hasBuyRequest: false,
+                soldTo: "",
             }
         try {
             this.addPic(this.imageFile, ItemID)

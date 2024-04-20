@@ -26,7 +26,7 @@
           </button>
         </p>
 
-        <SuccessMessage v-if="loginStatus === 'success'" :condition="message_passed" :userId="user_id"/>
+        <SuccessMessage v-if="loginStatus === 'success'" :condition="message_passed" :user_id="user_id"/>
 
         <AuthPopup_login
           :isVisible="loginStatus === 'error'"

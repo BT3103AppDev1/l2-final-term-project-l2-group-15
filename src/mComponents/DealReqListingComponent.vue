@@ -6,7 +6,13 @@
         <div class="group-details">
             <h3>{{ item.Name }}</h3>
             <p>Postal Code: {{ item.Location }}</p>
-            <button @click="goDealReq()">View Buy Request</button>
+            <div v-if="isDealDone" class="done-deal">
+              <h3>Deal Done</h3>
+              <button>View Deal Details</button>
+            </div>
+            <div v-else class="buy-request">
+              <button @click="goDealReq()">View Buy Request</button>      
+            </div>
         </div>
     </div> 
   </template>
@@ -33,6 +39,7 @@
             showSuccess: false,
             fileURL: null,
             fileID: this.item.id,
+            isDealDone: false,
         }
     },
   
@@ -61,10 +68,18 @@
           const userDocSnap = await getDoc(userDocRef)
           const userData = userDocSnap.data();
           this.isPending = !userData.sold
+        },
+
+        async checkIsDealDone() {
+          const db = getFirestore(firebaseApp)
+          const userDocRef = doc(db, 'users', user)
+          const userDocSnap = await getDoc(userDocRef)
+          const userData = userDocSnap.data();
+          this.isDealDone = userData.dealFinishItem.includes(this.fileID)
         }
       },
   
-    created() {
+    mounted() {
       try {
         this.getImage(this.fileID)
         this.checkItemStatus(this.fileID)

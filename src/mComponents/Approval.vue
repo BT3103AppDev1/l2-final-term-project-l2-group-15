@@ -4,7 +4,7 @@
             <h3>{{ user.username }}</h3>
             <p>Postal Code: {{ user.Location }}</p>
             <button @click="approveReq()"> Approve </button>
-            <button @click="rejectReq()" > Reject </button>
+            <!--<button @click="rejectReq()" > Reject </button>-->
         </div>
     </div> 
   </template>
@@ -13,15 +13,20 @@
   import { getAuth } from 'firebase/auth';
   import firebaseApp from '../firebase.js';
   import { getFirestore } from "firebase/firestore";  
-  import { doc, getDoc,updateDoc, arrayRemove} from "firebase/firestore";
+  import { doc, getDoc,updateDoc, arrayUnion, arrayRemove} from "firebase/firestore";
   import { getStorage, ref, getDownloadURL } from 'firebase/storage';
   
   export default {
     props: {
         user: {
-          type: Object,
-          required: true
+            type: Object,
+            required: true
         },
+
+        itemID: {
+            type: String,
+            required: true
+        }
     },
   
     data() {
@@ -30,49 +35,62 @@
             currentUser: getAuth().currentUser.uid,
             showSuccess: false,
             fileURL: null,
-            fileID: this.user,
+            fileID: this.user.uid,
             isPending: true,
         }
     },
   
     methods: {
 
-        // update Item status, update Buyer and Seller status
         // update Item by setting sold status to true. Will not be on list anymore
         // update Buyer by adding to dealFinishItem
         // update Seller by remove from listedItem and adding to dealFinishItem
         // update Other Buyers deal is off (through seeing Item status)
         // add filter for the all items page so it wont show up
-        updateBuyer() {
+        async updateBuyer() {
             const db = getFirestore(firebaseApp)
-            const documentRef = doc(db, 'users', this.user)
-            const documentSnapshot = getDoc(documentRef)
+            console.log(this.itemID)
+            const documentRef = doc(db, 'users', this.user.uid)
+            const documentSnapshot = await getDoc(documentRef)
+            const userData = documentSnapshot.data()
             updateDoc(documentRef, {
-                dealFinishItem: arrayUnion(newGroupId)
+                dealFinishItem: arrayUnion(this.itemID)
             })          
         },
 
-        updateSeller() {
-
+        async updateSeller() {
+            const db = getFirestore(firebaseApp)
+            const documentRef = doc(db, 'users', this.currentUser)
+            const documentSnapshot = await getDoc(documentRef)
+            const userData = documentSnapshot.data()
+            const newListedItems = userData.listedItem.filter(itemID => itemID !== this.itemID)
+            const newReceivedRequestforItem = userData.receivedRequestforItem.filter(itemID => itemID !== this.itemID)           
+            updateDoc(documentRef, {
+                dealFinishItem: arrayUnion(this.itemID),
+                listedItem: newListedItems,
+                receivedRequestforItem: newReceivedRequestforItem
+            })     
         },
 
-        updateItem() {
-
-        },
-
-        approveReq() {
+        async updateItem() {
+            const db = getFirestore(firebaseApp)
+            const documentRef = doc(db, 'Items', this.itemID)
+            const documentSnapshot = await getDoc(documentRef)
+            const itemData = documentSnapshot.data()
+            updateDoc(documentRef, {
+                soldTo: this.user.uid,
+                sold: true
+            })
             
         },
 
-        toggle() {
-          this.showPopup = !this.showPopup
+        approveReq() {
+            this.updateBuyer()
+            this.updateItem()
+            this.updateSeller()
+            alert('approved')
         },
-  
-        toggleSuccess() {
-          this.showSuccess = false
-          this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
-        },
-          
+
         async getImage(fileID) {
           try {
             let storage = getStorage()

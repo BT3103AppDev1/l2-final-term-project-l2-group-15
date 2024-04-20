@@ -22,7 +22,7 @@
           </div>
           <div>
             <div v-for="users in buyerList" :key="users.id" class="user_list">
-                <Approval :user="users" />
+                <Approval :user="users" :itemID="itemID"/>
             </div>
           </div>
         </div>

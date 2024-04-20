@@ -22,7 +22,7 @@
   import { getAuth } from 'firebase/auth';
   import firebaseApp from '../firebase.js';
   import { getFirestore } from "firebase/firestore";  
-  import { doc, updateDoc, arrayRemove} from "firebase/firestore";
+  import { doc, getDoc,updateDoc, arrayRemove} from "firebase/firestore";
   import { getStorage, ref, getDownloadURL } from 'firebase/storage';
   
   export default {
@@ -65,7 +65,7 @@
             console.log("No Image Found")
           }
         },
-        
+        // update Item status and delete from sellers db
         async deleteFromItem(itemID) {
             const db = getFirestore(firebaseApp)
             const docRef = doc(db, 'Items', itemID)
@@ -73,6 +73,20 @@
                 hasBuyRequest: false,
                 buyerID: "",
             })
+            const itemSnapshot = await getDoc(docRef)
+            const itemdata = itemSnapshot.data()
+            const sellerID = itemdata.sellerID
+
+            const sellerDocRef = doc(db, 'users', sellerID)
+            const sellerDocSnap = await getDoc(sellerDocRef)
+            const sellerData = sellerDocSnap.data()
+            const updatedSentRequest = sellerData.receivedRequestforItem.filter(id => id !== itemID)
+            console.log(updatedSentRequest)
+            await updateDoc(sellerDocRef, {
+              receivedRequestforItem: updatedSentRequest,
+            })
+            console.log("new", updatedSentRequest)
+
         },
 
         async deletefromUser(itemID, userID) {

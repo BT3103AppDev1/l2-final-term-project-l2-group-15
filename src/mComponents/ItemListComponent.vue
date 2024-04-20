@@ -6,11 +6,11 @@
         <div class="group-details">
             <h3>{{ item.Name }}</h3>
             <p>Postal Code: {{ item.Location }}</p>
-            <div v-if="this.userSentRequest" class="deal-request-btn">
-              <button @click="sendDealRequest()">Send Deal Request</button>
+            <div v-if="this.isUserItem" class="deal-request-btn">
+              <button>My Item</button>
             </div>
-            <div v-else-if="isMyItem(this.item.id, this.user)" class = 'my-item-btn'>
-              <button>My Item</button>    
+            <div v-else-if="this.userSentRequest" class = 'my-item-btn'>
+              <button @click="sendDealRequest()" >Send Deal Request</button>    
             </div>
             <div v-else class="sent-request-btn">
               <button>Deal Request Sent</button>

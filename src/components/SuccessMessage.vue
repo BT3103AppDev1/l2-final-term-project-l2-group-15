@@ -56,6 +56,8 @@
           this.displayMessage = "You have successfully joined the event!";
         } else if (this.condition === "createEvent") {
           this.displayMessage = "You have successfully created the event!";
+        } else if (this.condition === "updateProfile") {
+          this.displayMessage = "You have successfully updated your profile!";
         } else {
           this.displayMessage = "Blah blah blah";
         }
@@ -71,6 +73,9 @@
           // add code if need subsequent action
           this.$emit('close');
         } else if (this.condition === "createEvent") {
+          // add code if need subsequent action
+          this.$emit('close');
+        } else if (this.condition === "updateProfile") {
           // add code if need subsequent action
           this.$emit('close');
         } else {

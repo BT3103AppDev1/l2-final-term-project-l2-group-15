@@ -206,12 +206,12 @@ export default {
   border-radius: 10px;
   margin-bottom: 1rem;
   padding: 10px;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .group-list-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .group-image {

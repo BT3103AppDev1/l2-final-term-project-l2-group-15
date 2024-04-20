@@ -18,11 +18,12 @@
                     <div class="reply-text">{{ reply.replyText }}</div>
                     <div class="reply-dt">{{ formatDate(reply.ts) }}</div>
                 </div>
+                <button v-if="isAdmin" class="delete-reply-button" @click="deleteReply(reply.id)">Delete Reply</button>
             </div>
         </div>
         <div id="replyForm">
             <textarea id="replyBox" v-model="newReply" placeholder="Write your reply..."></textarea>
-            <button @click="submitReply">Post Reply</button>
+            <button class="post-reply-button" @click="submitReply">Post Reply</button>
         </div>
     </div>
 </template>
@@ -30,7 +31,7 @@
 <script>
 import firebaseApp from '../firebase.js'
 import { getFirestore } from 'firebase/firestore'
-import { collection, doc, getDoc, getDocs, setDoc, serverTimestamp, query, onSnapshot, where, orderBy } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, setDoc, serverTimestamp, query, onSnapshot, where, orderBy, deleteDoc } from 'firebase/firestore'
 
 const db = getFirestore(firebaseApp);
 
@@ -54,12 +55,15 @@ export default {
             newReply: '',
             replies: [],
             discussion: {},
-            createdByUsername: '' // username of user who created the discussion
+            createdByUsername: '', // username of user who created the discussion
+            groupAdmin: '',
+            isAdmin: false,
         }
     },
     created() {
         this.fetchDiscussionData();
         this.getReplies();
+        this.getGroupAdmin();
     },
     methods: {
         async fetchDiscussionData() {
@@ -142,6 +146,26 @@ export default {
                 const formattedTime = dt.toDate().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                 return `${formattedDate} ${formattedTime}`;
             };
+        },
+        async getGroupAdmin() {
+            try {
+                const docs = await getDocs(collection(db, "group"));
+                docs.forEach((doc) => {
+                if (doc.data().GroupId == this.group) {
+                    this.groupAdmin = doc.data().GroupAdmin[0];
+                    console.log("Group admin retrieved successfully:", this.groupAdmin);
+                }
+                })
+                if (this.groupAdmin == this.user) {
+                    this.isAdmin = true;
+                }
+            } catch (error) {
+                console.error("Error retrieving group admin:", error);
+            }
+        },
+        async deleteReply(replyID) {
+          const replyDocRef = doc(db, 'Replies', replyID);
+          await deleteDoc(replyDocRef);
         }
     }
 }
@@ -231,7 +255,7 @@ export default {
   border-radius: 4px; /* Slightly rounded corners for the textarea */
 }
 
-button {
+.post-reply-button {
   padding: 10px 20px;
   background-color: #007bff; /* Example button color */
   color: white;
@@ -240,7 +264,11 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.post-reply-button:hover {
   background-color: #0056b3; /* Darker button color on hover */
+}
+
+.delete-reply-button:hover {
+  background-color: red;
 }
 </style>

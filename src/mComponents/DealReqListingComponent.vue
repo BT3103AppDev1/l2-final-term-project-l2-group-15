@@ -72,7 +72,7 @@
 
         async checkIsDealDone() {
           const db = getFirestore(firebaseApp)
-          const userDocRef = doc(db, 'users', user)
+          const userDocRef = doc(db, 'users', this.user)
           const userDocSnap = await getDoc(userDocRef)
           const userData = userDocSnap.data();
           this.isDealDone = userData.dealFinishItem.includes(this.fileID)
@@ -83,6 +83,7 @@
       try {
         this.getImage(this.fileID)
         this.checkItemStatus(this.fileID)
+        this.checkIsDealDone()
       } catch (e) {
         this.fileURL = null
       }

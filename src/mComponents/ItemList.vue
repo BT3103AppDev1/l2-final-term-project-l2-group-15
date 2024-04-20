@@ -15,8 +15,8 @@ import ItemListComponent from '@/mComponents/ItemListComponent.vue';
 
 <script>
 import firebaseApp from '../firebase.js';
-import { getFirestore } from "firebase/firestore";
-import { getDoc, doc, onSnapshot, collection} from "firebase/firestore";
+import { getFirestore, query, where} from "firebase/firestore";
+import { getDoc, doc, getDocs, collection} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 
 const db = getFirestore(firebaseApp)
@@ -29,6 +29,7 @@ export default {
     data() {
         return {
             Items: [],
+            filteredItems: [],
             user: getAuth().currentUser.uid,
             isOpen: false,
             filteredGroups: [],
@@ -39,22 +40,22 @@ export default {
     },
 
     created() {
-      this.fetchItems(); // fetch all Items
+      this.fetchItems() // fetch all Items
       //this.getGroup(); // 
       //this.getUserPostalCode(); // get the user's postal code
       //this.filterDistance(999999); // default show all groups (max range)
     },
 
     methods: {
-      fetchItems() { // retrieve all groups
-      const unsubscribe = onSnapshot(collection(db, "Items"), (querySnapshot) => {
-        this.Items = querySnapshot.docs
-        .map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+      async fetchItems() { 
+        const db = getFirestore();
+        const q = query(collection(db, 'Items'), where('sold', '==', false));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          this.Items.push({ id: doc.id, ...doc.data() });
         });
       },
+
 
       async getGroup() { // get the group document
         const userDocRef = doc(db, "users", this.user);

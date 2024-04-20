@@ -68,7 +68,7 @@
             updateDoc(documentRef, {
                 dealFinishItem: arrayUnion(this.itemID),
                 listedItem: newListedItems,
-                receivedRequestforItem: newReceivedRequestforItem
+                //receivedRequestforItem: newReceivedRequestforItem
             })     
         },
 

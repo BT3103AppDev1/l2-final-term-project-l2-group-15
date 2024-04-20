@@ -2,25 +2,21 @@
         <div class="event-list-item">
         <div class="event-card">
             <h3>{{ eventobj.EventName }}</h3>
-            <p class="event-date">Date: {{ eventobj.EventTime }}</p>
+            <p class="event-date">
+                Date: <span v-html="formatDate(eventobj.EventTime).replace(/\n/g, '<br>')"></span>
+            </p>
             <p class="event-location">{{ eventobj.EventLocation }}</p>
             <div v-if="!isMember">
                 <button class="join-btn-default" @click="joinEvent(eventobj.EventId)">Join Event</button>
+                <button class="delete-event-btn" @click="deleteEvent">Delete Event</button>
             </div>
             <div v-else>
                 <button class="view-btn-default" disabled> Joined</button>
                 <button class="leave-event-btn" @click="leaveEvent">Leave Event</button>
+                <button class="delete-event-btn" @click="deleteEvent">Delete Event</button>
             </div>
-            <button class="delete-event-btn" @click="deleteEvent">Delete Event</button>
         </div>
         </div>
-
-            <!-- <div v-for="event in group_events" :key="event.EventId" class="event-card">
-                <h3>{{ event.EventName }}</h3>
-                <p class="event-date">Date: {{ event.EventTime }}</p>
-                <p class="event-location">{{ event.EventLocation }}</p>
-                <button class="join-btn-default" @click="joinEvent(event.EventId)">Join Event</button>
-            </div> -->
         <SuccessMessage v-if="showSuccess" :condition="message_passed" @close="closeSuccessMessage"/>
     </template>
 
@@ -61,6 +57,14 @@
             },
 
             methods: {
+                formatDate(dateString) {
+                    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+                    const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: true };
+                    const date = new Date(dateString);
+                    const formattedDate = date.toLocaleDateString(undefined, optionsDate);
+                    const formattedTime = date.toLocaleTimeString(undefined, optionsTime);
+                    return `${formattedDate}\nTime: ${formattedTime}`;
+                },
                 checkMember(eventID) {
                     let db = getFirestore(firebaseApp);
                     let userID = this.user;
@@ -210,7 +214,7 @@
 <style scoped>
 .leave-event-btn,
 .delete-event-btn {
-  margin-right: 10px;
+  margin-right: 0px;
   padding: 5px 10px;
   background-color: #ff0000; /* Example background color */
   color: #fff;
@@ -245,7 +249,7 @@ hr {
     padding: 25px; /* Increased padding for better content breathing room */
     margin-bottom: 25px; /* Increased spacing between cards */
     transition: all 0.3s ease; /* Smooth transition for hover effects */
-    height: 110px;
+    height: 100%;
 }
 
 .event-card:hover {

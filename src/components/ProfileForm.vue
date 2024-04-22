@@ -298,7 +298,7 @@ img {
   border: 1px solid;
   border-radius: 12px;
   background-color: white;
-  width: 100%; /* Set width to 100% of modal */
+  width: 80%;
   align-items: center;
 }
 
@@ -355,5 +355,6 @@ img {
   margin-bottom: 0px;
   padding-top: 10px;
   padding-bottom: 10px;
+  float: right;
 }
 </style>

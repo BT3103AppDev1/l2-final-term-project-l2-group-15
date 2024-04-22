@@ -74,8 +74,6 @@ const login = () => {
       user_id = data.user.uid;
       loginStatus.value = "success";
       message_passed = "loginSuccess";
-      email.value = "";
-      password.value = "";
     })
     .catch((errorMessage) => {
       console.log(errorMessage.code);
@@ -100,8 +98,6 @@ const loginWithGoogle = async (event) => {
     user_id.value = user.uid;
     loginStatus.value = "success";
     message_passed = "loginSuccess";
-    email.value = "";
-    password.value = "";
   } catch (error) {
     console.error("Error during registration:", error);
     loginStatus.value = "error";

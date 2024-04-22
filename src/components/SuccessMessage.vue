@@ -72,64 +72,37 @@ export default {
         this.displayMessage = "Blah blah blah";
       }
     },
-  
-    methods: {
-      getMessage() {
-        if (this.condition === "leaveGroup") {
-          this.displayMessage = "You have successfully left your group!";
-        } 
-        else if (this.condition === "joinGroup") {
-          this.displayMessage = "You have successfully joined the group!";
-        }
-        else if (this.condition === "joinEvent") {
-          this.displayMessage = "You have successfully joined the event!";
-        } 
-        else if (this.condition === "createEvent") {
-          this.displayMessage = "You have successfully created the event!";
-        } 
-        else if (this.condition === "updateProfile") {
-          this.displayMessage = "You have successfully updated your profile!";
-        } 
-        else if (this.condition === "loginSuccess") {
-          this.displayMessage = "You have successfully logged in!";
-        } 
-        else if (this.condition === "registrationSuccess") {
-          this.displayMessage = "You have successfully registered!";
-        } 
-        else {
-          this.displayMessage = "Blah blah blah";
-        }
-      },
 
-      toggleSuccess() {
-        this.showSuccess = false
-        if (this.condition === "leaveGroup") {
-          this.$router.push("/all_groups")
-        }
-        else if (this.condition === "joinGroup") {
-          this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group, user: this.user } })
-        } 
-        else if (this.condition === "joinEvent") {
-          // add code if need subsequent action
-          this.$emit('close');
-        } 
-        else if (this.condition === "createEvent") {
-          // add code if need subsequent action
-          this.$emit('close');
-        } 
-        else if (this.condition === "updateProfile") {
-          // add code if need subsequent action
-          this.$emit('close');
-        }
-        else if (this.condition === "loginSuccess") {
-          this.$router.push({ name: "UserDashboard", params: { user_id: this.user_id } });
-        }
-        else if (this.condition === "registrationSuccess") {
-          this.$router.push("/login")
-        } 
-        else {
-          
-        }
+
+    toggleSuccess() {
+      this.showSuccess = false
+      if (this.condition === "leaveGroup") {
+        this.$router.push("/all_groups")
+      }
+      else if (this.condition === "joinGroup") {
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group, user: this.user } })
+      } 
+      else if (this.condition === "joinEvent") {
+        // add code if need subsequent action
+        this.$emit('close');
+      } 
+      else if (this.condition === "createEvent") {
+        // add code if need subsequent action
+        this.$emit('close');
+      } 
+      else if (this.condition === "updateProfile") {
+        // add code if need subsequent action
+        this.$emit('close');
+      }
+      else if (this.condition === "loginSuccess") {
+        console.log("testtttttttt")
+        this.$router.push({ name: "UserDashboard", params: { user_id: this.user_id } });
+      }
+      else if (this.condition === "registrationSuccess") {
+        this.$router.push("/login")
+      } 
+      else {
+        
       }
     }
   }

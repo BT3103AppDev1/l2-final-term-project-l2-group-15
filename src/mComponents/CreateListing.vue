@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container-inner">
         <form id="myform" class="form-layout">
 
             <!-- Image Upload or Preview Section -->
@@ -165,12 +165,13 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.container-inner {
+    height: 100vh; /* Set height to full viewport height */
     padding: 2vh;
+    padding-left: 0px;
+    padding-right: 0px;
 }
+
 
 .form-layout {
     display: flex;
@@ -279,4 +280,3 @@ export default {
 }
 
 </style>
-

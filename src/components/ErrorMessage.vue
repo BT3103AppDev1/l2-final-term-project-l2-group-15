@@ -50,7 +50,7 @@
           this.displayMessage = "You entered an invalid email! Please try again";
         } 
         else if (this.condition === "errorLogin" && this.error == "auth/invalid-credential") {
-          this.displayMessage = "Your email/password is invalid! Please try again";
+          this.displayMessage = "Incorrect password or email! Please try again";
         }
         else {
           this.displayMessage = "Blah blah blah";

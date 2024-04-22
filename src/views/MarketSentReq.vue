@@ -6,7 +6,9 @@
 
 <template>
   <body>
-      <Navbar_global />
+      <div class="global-nav">
+        <Navbar_global />
+      </div>
       <div class="container">
         <div class="nav">
           <NavBar_market />
@@ -36,6 +38,7 @@ export default {
 
 
 <style scoped>
+
 
 .container {
   padding:0px;

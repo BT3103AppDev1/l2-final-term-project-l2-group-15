@@ -8,7 +8,9 @@
 <template>
   <div>
     <!-- Global Navbar -->
-    <Navbar_global />
+    <div class="navbar-global">
+      <Navbar_global />
+    </div>
     <!-- Market Navbar -->
     <div class="navbar-market">
       <NavBar_market />
@@ -53,7 +55,7 @@ export default {
 <style scoped>
 /* Global Navbar */
 .navbar-global {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -63,18 +65,17 @@ export default {
 /* Market Navbar */
 .navbar-market {
   position: fixed;
-  top: 65px; /* Adjust based on the height of global navbar */
+  top: 65px; 
   left: 0;
-  width: 10px; /* Adjust width as needed */
+  width: 10px; 
   height: 100%;
-  overflow-y: auto; /* Allow scrolling if needed */
-  z-index: 1000; /* Ensure it's above other content */
+  z-index: 1; 
 }
 
 .container {
-  padding-top: 0px; /* Adjust based on the height of global navbar */
-  padding-left: 100px; /* Adjust based on the width of market navbar */
-  padding-right: 20px; /* Adjust based on your preference */
+  padding-top: 0px; 
+  padding-left: 100px; 
+  padding-right: 20px; 
   margin: 0;
   display: grid;
   grid-template-columns: 1fr;

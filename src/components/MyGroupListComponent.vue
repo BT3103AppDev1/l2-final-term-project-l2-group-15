@@ -10,11 +10,14 @@
       <!-- <p id="groupLocation">{{ group.GroupLocation }}</p> -->
       <p id="groupDescription">{{ group.GroupDescription }}</p>
       <button class="leave-group-btn" @click="leaveGroup">Leave Group</button>
-      <button class="delete-group-btn" @click="deleteGroup">Delete Group</button>
+      <button v-if="isAdmin" class="delete-group-btn" @click="deleteGroup">Delete Group</button>
     </div>
   </div>
 
-  <div v-if="showSuccess" class="modal">
+  <SuccessMessage v-if="showSuccess" :condition="message_passed" />
+  
+  <!-- old success message-->
+  <!-- <div v-if="showSuccess" class="modal"><div>
     <div class="modal-content">
         <span class="close" @click="toggleSuccess">&times;</span>
             <div class="modal-header">
@@ -23,17 +26,22 @@
           <h1>Success</h1>
         </div>
     </div>
-  </div>
+  </div> -->
 </template>
   
 <script> 
 import firebaseApp from '../firebase.js'; 
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from "firebase/firestore";
-import { doc, getDoc, updateDoc, deleteDoc} from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc, getDocs, collection } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
 export default {
+  components: {
+    SuccessMessage
+  },
+
   props: {
       group: {
           type: String,
@@ -46,12 +54,14 @@ export default {
           user: getAuth().currentUser.uid,
           showSuccess: false,
           fileURL: null,
-          fileID: this.group.GroupId
+          fileID: this.group.GroupId,
+          message_passed: "leaveGroup",
+          groupAdmin: '',
+          isAdmin: false,
       }
   },
 
   methods: {
-
     async getImage(fileID) {
           console.log(fileID)
           let storage = getStorage()
@@ -62,10 +72,10 @@ export default {
           console.log("url is here", fileURL)
     },
 
-    toggleSuccess() {
-          this.showSuccess = false
-          this.$router.push("/all_groups")
-    },
+    // toggleSuccess() {
+    //       this.showSuccess = false
+    //       this.$router.push("/all_groups")
+    // },
 
     async deleteGroupFromUser(userID, groupID) { // search user via userID, delete GroupID from array
       const db = getFirestore(firebaseApp)
@@ -128,7 +138,25 @@ export default {
       this.deleteMembersfromGroup(groupID)
       this.deleteGroupFromFirestore(groupID)
       this.showSuccess = true
-    }
+    },
+
+    async getGroupAdmin() {
+            const db = getFirestore(firebaseApp)
+            try {
+                const docs = await getDocs(collection(db, "group"));
+                docs.forEach((doc) => {
+                if (doc.data().GroupId == this.group.GroupId) {
+                    this.groupAdmin = doc.data().GroupAdmin[0];
+                    console.log("Group admin retrieved successfully:", this.groupAdmin);
+                }
+                })
+                if (this.groupAdmin == this.user) {
+                    this.isAdmin = true;
+                }
+            } catch (error) {
+                console.error("Error retrieving group admin:", error);
+            }
+        }
   },
 
   mounted() {
@@ -137,6 +165,7 @@ export default {
     } catch {
         this.fileURL = null
     }
+    this.getGroupAdmin();
   }
 }
 </script>

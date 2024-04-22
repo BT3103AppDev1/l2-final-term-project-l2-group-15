@@ -11,7 +11,7 @@
   <body>
       <Navbar_global />
         <h1>{{ groupName }} Dashboard</h1>
-      <Navbar_groups :group="group" :user="user" />
+      <Navbar_groups :group="group"/>
     <div class = flexbox>
       <div class = "events"><Recent_events :group="group"/></div>
       <div class = "about"><About :group="group"/></div>
@@ -153,8 +153,8 @@ hr {
     margin-left: 85px;
     margin-top: 2px;
     margin-right: 5px;
-    width: auto;
-    height: 75%;
+    width: 94%;
+    height: 80%;
     position: fixed;
     overflow: scroll;
     overflow-x: hidden;

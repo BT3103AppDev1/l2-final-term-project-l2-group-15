@@ -1,26 +1,26 @@
 <template>
   <div class="topnav">
-    <router-link to="/user_dashboard/:userId">Home</router-link>
-    <router-link to="/marketviewitems">MarketPlace</router-link>
-    <div class="dropdown">
-      <button class="dropbtn">Groups
-        <i class="fa fa-caret-down"></i>
-      </button>
-      <div class="dropdown-content">
-        <router-link to="/all_groups">All Groups</router-link>
-        <router-link to="/my_groups">My Groups</router-link>
-      </div>
-    </div>
-    <router-link :to="{ name : 'UpdateProfile' }">
-        <div class="profile-container">Profile<img id="user_logo" src="@/assets/user.png" alt="user logo">
-        </div></router-link>
-    <div class="logout-text" @click="toggle">Log Out</div> <!-- Log Out text -->
+    <ul>
+      <li @click="goUserDashboard"><span>Home</span></li>
+      <li @click="goMarketplace"><span>Marketplace</span></li>
+      <li class="dropdown" @mouseover="toggleDropdown" @mouseleave="hideDropdown">
+        <span>Groups</span>
+        <div v-if="showDropdown" class="dropdown-content">
+          <ul>
+            <li @click="goAllGroups">All Groups</li>
+            <li @click="goMyGroups">My Groups</li>
+          </ul>
+        </div>
+      </li>
+      <li @click="goUpdateProfile"><div class="profile-container">Profile<img id="user_logo" src="@/assets/user.png" alt="user logo"></div></li>
+      <li class="logout-text" @click="toggle"><span>Log Out</span></li>
+    </ul>
   </div>
 
   <!-- code for pop up when sign out -->
     <div v-if="showPopup" class="modal">
         <div class="modal-content">
-            <span class="close" @click="toggle">&times;</span>
+            <span class="close" @click="toggle">&times;</span><br>
             <div class="modal-header">
                 <div class="modal-title">
                     <h3>Are you sure you want to log out?</h3>
@@ -32,110 +32,156 @@
 </template>
 
 <script>
-
 import { getAuth, signOut } from "firebase/auth";
 
 export default {
   name: "Navbar_global",
+
   data() {
     return {
-        showPopup: false,
-        user: String,
+      showPopup: false,
+      user: String,
+      showDropdown: false
     }
   },
 
   methods: {
     toggle() {
-        this.showPopup = !this.showPopup
+      this.showPopup = !this.showPopup;
     },
-    
     signOut() {
-        const auth = getAuth();
-        signOut(auth)
-            .then(() => {
-            // Clear any user-related data or perform any other cleanup
-            console.log("User signed out successfully");
-            // Redirect the user to the login page or another appropriate page
-            this.$router.push("/");
-            })
-            .catch((error) => {
-            console.error("Error signing out:", error);
-            });
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          // Clear any user-related data or perform any other cleanup
+          console.log("User signed out successfully");
+          // Redirect the user to the login page or another appropriate page
+          this.$router.push("/");
+        })
+        .catch((error) => {
+          console.error("Error signing out:", error);
+        });
     },
+    goUserDashboard() {
+      // Navigate to user dashboard
+      this.$router.push(`/user_dashboard/${this.user}`);
+    },
+    goMarketplace() {
+      // Navigate to the marketplace
+      this.$router.push("/marketplace");
+    },
+    goAllGroups() {
+      // Navigate to all groups
+      this.$router.push("/all_groups");
+    },
+    goMyGroups() {
+      // Navigate to my groups
+      this.$router.push("/my_groups");
+    },
+    goUpdateProfile() {
+      // Navigate to update profile
+      this.$router.push({ name: "UpdateProfile" });
+    },
+    toggleDropdown() {
+      this.showDropdown = true;
+    },
+    hideDropdown() {
+      this.showDropdown = false;
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-li {
-    display: inline;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .topnav {
-    background-color: #000E90; /* Blue background color */
-    display: flex; /* Arrange items horizontally */
-    justify-content: flex-end; /* Align items to the right */
-    align-items: center; /* Align items vertically in the center */
-    padding: 10px 0px; /* Add some padding for spacing */
-    height: 40px;
+  background-color: #000e90;
+  height: 65px;
+  margin: 0px;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.topnav a {
-    color: rgb(255, 255, 255); /* White text color */
-    text-align: center; /* Center text within links (optional, can be removed) */
-    width: 15%px;
-    padding: 14px 30px; /* Padding for spacing */
-    text-decoration: none; /* Remove underlines */
-    font-size: 17px; /* Font size */
-    cursor: pointer; /* Indicate clickable behavior */
-}
-
-.topnav a:hover, .dropdown:hover .dropbtn {  /* Combine selectors */
-  background-color: #93CBFF; /* Optional hover background color, adjust as needed */
-  color: black;
-  padding-top: 20px;
-  padding-bottom: 20.5px;
-  height: auto;
-}
-
-/* Your existing styles */
-.logout-text {
-  cursor: pointer;
+.topnav ul {
+  display: inline-flex;
+  list-style: none;
   color: white;
-  padding: 14px 30px; /* Match padding of other links */
-  text-decoration: none; /* Remove underlines */
+  margin-right: 0px;
+  text-align: center;
+  font-size: 17px;
+  display: flex;
+  justify-content: center;
+  margin-top: 0px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.logout-text:hover {
-    background-color: #93CBFF; /* Optional hover background color, adjust as needed */
-    color: black;
-    padding-top: 20px;
-    padding-bottom: 21px;
+.topnav ul li {
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100px;
+  height: 65px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Adding transition effect */
+  display: flex; /* Use flexbox */
+  align-items: center;
+  justify-content: center;
+}
+
+.topnav ul li:hover {
+  color: white; /* Change text color on hover */
+  background-color: #0066ff; /* Change background color on hover */
+}
+
+.dropdown:hover .dropdown-content {
+  display: flex;
+  color: black;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 100px; /* Adjust width to match "Groups" menu item */
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  margin-top: 195px; /* Adjust vertical position */
+}
+
+.dropdown-content ul {
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+  color: black;
+  display: inline-block;
+}
+
+.dropdown-content ul li {
+  color: black;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.dropdown-content ul li:hover {
+  background-color: #0066ff;
+  color: white;
 }
 
 #user_logo{
-    height: 30px;
-    width: 30px;
-    padding-left: 5px;
+  height: 30px;
+  width: 30px;
+  padding-left: 5px;
+  margin: 0px;
 }
 
 .profile-container {
-    display: flex; /* Make elements behave as flex items */
-    align-items: center; /* Align items vertically */
-    padding: 0px;
-    margin: 0px;
-    border: none;
+  display: flex; /* Make elements behave as flex items */
+  justify-content: center;
+  align-items: center; /* Align items vertically */
 }
 
 .modal {
@@ -144,7 +190,7 @@ li {
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
+  height: 105%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
 }
@@ -154,23 +200,28 @@ li {
   background-color: #fff;
   margin: 10% auto;
   padding: 20px;
+  padding-top: 5px;
+  padding-bottom: 30px;
   border-radius: 8px;
   width: 90%;
+  height: 20%;
   max-width: 500px;
 }
 
 /* Close button styles */
 .close {
   float: right;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 /* Header styles */
 .modal-header {
   display: flex;
   align-items: center;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
@@ -181,57 +232,26 @@ li {
 
 .modal-title h3 {
   margin: 0;
+  margin-top: 10px;
   color: #333;
-  font-size: 1.25rem;
+  font-size: 30px;
+  text-align: center;
 }
+
 .sign-out-button{
-    text-align: center;
-}
-
-.dropdown {
-  float: left;
-  overflow: hidden;
-}
-
-.dropdown .dropbtn {
-  font-size: 16px;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-top: 20px;
   border: none;
-  outline: none;
+  border-radius: 5px;
   color: white;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
-  margin: 0;
+  font-weight: bold;
+  background-color: #007bff;
+  float: right;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Adding transition effect */
 }
 
-.dropdown:hover .dropbtn {
-  background-color: #93CBFF; /* Match the color palette */
+.sign-out-button:hover{
+  background-color: #0056b3; /* Change color on hover */
 }
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #fff; /* Match the color palette */
-  width: 120px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  float: none;
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-}
-
-.dropdown-content a:hover {
-  background-color: #ddd;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
 </style>

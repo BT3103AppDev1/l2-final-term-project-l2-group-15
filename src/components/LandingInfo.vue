@@ -22,6 +22,7 @@
           the neighborhood's economic ecosystem.
         </p>
       </div>
+      
       <div class="feature">
         <h3>Community Groups & Events</h3>
         <img

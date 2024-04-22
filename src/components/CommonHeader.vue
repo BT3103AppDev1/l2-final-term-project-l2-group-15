@@ -1,37 +1,89 @@
 <template>
-  <nav class="common-header">
+  <div class="common-header-container">
     <h1 class="header">ConnectHub</h1>
-    <div>
-      <router-link to="/">Home</router-link>
-      <router-link to="/login">Login</router-link>
-      <router-link to="/register">Register</router-link>
+    <div class="common-header">
+      <ul>
+        <li @click="goHome"><span>Home</span></li>
+        <li @click="goLogin"><span>Login</span></li>
+        <li @click="goRegister"><span>Sign Up</span></li>
+      </ul>
     </div>
-  </nav>
+  </div>
 </template>
 
-<style>
-.common-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 30px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+<script>
+export default {
+  name: "CommonHeader",
+
+  methods: {
+    goHome() {
+      this.$router.push("/")
+    },
+
+    goLogin() {
+      this.$router.push("/login")
+    },
+
+    goRegister() {
+      this.$router.push("/register")
+    }
+  }
+}
+</script>
+
+<style scoped>
+.common-header-container {
   background-color: #000e90;
   margin: 0;
-}
-
-.common-header a {
-  text-decoration: none;
-  margin-left: 20px;
-  color: white;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 .header {
   color: white;
+  margin: 0px;
+  margin-left: 30px;
+  justify-self: center;
+  padding-top: 11px;
+  padding-bottom: 11px;
 }
 
-.common-header a.router-link-exact-active {
-  font-weight: bold;
+.common-header {
+  background-color: #000e90;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.common-header ul {
+  display: inline-flex;
+  list-style: none;
+  color: white;
+  text-align: center;
+  font-size: 17px;
+  display: flex;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.common-header ul li {
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100px;
+  height: auto;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Adding transition effect */
+  display: flex; /* Use flexbox */
+  align-items: center;
+  justify-content: center;
+}
+
+.common-header ul li:hover {
+  color: white; /* Change text color on hover */
+  background-color: #0066ff; /* Change background color on hover */
 }
 </style>

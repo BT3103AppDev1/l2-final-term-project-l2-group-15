@@ -1,7 +1,20 @@
 <template>
     <div class="edit-group">
-      <h2>Edit Group</h2>
+      <div class="header">
+        <h2>Edit Group</h2>
+        <div class="delete-group">
+          <button class="deleteGroupButton" @click="deleteGroup">Delete Group</button>
+        </div>
+      </div>
       <form @submit.prevent="updateGroup" class="group-form">
+        <div class="change-image">
+          <span><strong>Group Image:</strong></span>
+          <!-- Display the current image -->
+          <div class="image-container">
+            <img @click="openFileInput" :src="imageUrl" alt="Current Image" />
+          </div>
+          <input type="file" accept="image/*" ref="fileInput" @change="handleImageChange" class="file-input" />
+        </div>
         <div class="form-group">
           <label for="groupName">Group Name:</label>
           <input type="text" id="groupName" v-model="groupName" placeholder="Enter a new group name."/>
@@ -35,9 +48,11 @@
 <script>
 import firebaseApp from '../firebase.js'
 import { getFirestore, updateDoc } from 'firebase/firestore'
-import { doc, getDoc, getDocs, arrayRemove, collection, onSnapshot } from 'firebase/firestore'
+import { doc, getDoc, getDocs, arrayRemove, deleteDoc, collection, onSnapshot } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
 const db = getFirestore(firebaseApp);
+const storage = getStorage();
 
 export default {
     props: {
@@ -57,7 +72,9 @@ export default {
             groupName: '',
             groupDescription: '',
             showMessage: false,
-            message: ''
+            message: '',
+            imageUrl: '',
+            selectedFile: null
         }
     },
     methods: {
@@ -68,6 +85,10 @@ export default {
               this.groupDoc = docSnap.data();
               this.groupName = this.groupDoc.GroupName;
               this.groupDescription = this.groupDoc.GroupDescription;
+              // get imageURL
+              this.getImage(this.group).then(url => {
+                this.imageUrl = url;
+              });
 
               // Clear the previous group members
               this.groupMemberNames = [];
@@ -95,6 +116,7 @@ export default {
                   GroupName: this.groupName,
                   GroupDescription: this.groupDescription
                 });
+                await this.updateImage();
                 console.log("Group info updated:", this.group);
                 this.message = "Group updated successfully!";
                 this.showMessage = true;
@@ -149,6 +171,74 @@ export default {
           this.showMessage = false;
           //navigate user to the group dashboard page upon closing message
           this.$router.push({name:'SpecificGroupHome', params: {user: this.user, group: this.group}});
+        },
+        async getImage(fileID) {
+          console.log(fileID)
+          let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
+          let fileRef = ref(storage, filePath)
+          let fileURL = await getDownloadURL(fileRef)
+          console.log("url is here", fileURL)
+          return fileURL;
+        },
+        openFileInput() {
+            this.$refs.fileInput.click()
+        },
+        handleImageChange(event) {
+            this.selectedFile = event.target.files[0]
+            if (this.selectedFile) {
+                this.imageUrl = URL.createObjectURL(this.selectedFile)
+                console.log("Selected file",this.selectedFile)
+            }
+        },
+        async updateImage() {
+          if (!this.selectedFile) {
+            alert("Please select a file first.");
+            return;
+          }
+
+          const imageName = this.group; // The name of the image to replace
+
+          try {
+      
+            // Delete the existing image
+            const existingImageRef = ref(storage, `gs://connecthub-88e58.appspot.com/${imageName}`);
+            if (existingImageRef) {
+              await deleteObject(existingImageRef);
+            };
+            
+            // Upload the new image
+            const newImageRef = ref(storage, imageName);
+            const uploadResult = await uploadBytes(newImageRef, this.selectedFile);
+            const newImageUrl = await getDownloadURL(uploadResult.ref);
+
+            // Update the current image URL in the component's state
+            this.imageUrl = newImageUrl;
+
+            console.log("Image updated successfully:", newImageUrl);
+          } catch (error) {
+            console.error("Failed to update image:", error);
+          }
+        },
+        async deleteGroupFromFirestore(groupID) {
+          const groupDocRef = doc(db, 'group', groupID);
+          await deleteDoc(groupDocRef);
+        },
+        async deleteMembersfromGroup(groupID) {
+          // get GroupMembers array from Group
+          const groupDocRef = doc(db, 'group', groupID)
+          const groupDocSnapshot = await getDoc(groupDocRef)
+          const groupData = groupDocSnapshot.data()
+          const groupMembers = groupData.GroupMembers || []
+
+          // find each member and delete the group
+          for (const groupMemberID of groupMembers) {
+            await this.removeGroupFromUser(groupMemberID);
+          }
+        },
+        async deleteGroup() { // all users group array must no longer contain current group 
+          await this.deleteMembersfromGroup(this.group);
+          await this.deleteGroupFromFirestore(this.group)
+          this.$router.push({name:'MyGroups'});
         }
     },
     created() {
@@ -162,6 +252,40 @@ export default {
   max-width: 1000px;
   margin: 20px auto;
   padding: 20px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.deleteGroupButton {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: #ff4136; /* Red color for striking appearance */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.deleteGroupButton:hover {
+  background-color: #e82c20; /* Darker shade of red for hover effect */
+}
+
+.change-image {
+  margin-bottom: 20px;
+}
+.image-container {
+  position: relative;
+  display: inline-block; /* Makes the container as wide as its content */
+  margin-top: 10px;
+}
+
+.image-container img {
+  width: 40%; /* Adjust based on your needs */
+  height: auto; /* Maintain aspect ratio */
 }
 
 .group-form {

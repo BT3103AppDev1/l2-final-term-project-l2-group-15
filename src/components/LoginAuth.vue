@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <h1>Welcome back to ConnectHub!</h1>
+    <h2>Welcome Back To ConnectHub!</h2>
     <div class="loginbox">
       <h3>Login</h3>
       <form @submit.prevent="login">
@@ -111,6 +111,7 @@ const loginWithGoogle = async (event) => {
 }
 
 .loginbox {
+  margin-top: 5%;
   margin-left: 35%;
   margin-right: 35%;
   border: 1px solid;

@@ -122,8 +122,9 @@
           </button>
         </p>
       </form>
+    </div>
 
-      <div v-if="showPopup" class="backdrop"></div>
+    <div v-if="showPopup" class="backdrop">
       <GoogleAdditionalInfoPopup v-if="showPopup" @submit="handlePopupSubmit" />
     </div>
   </div>

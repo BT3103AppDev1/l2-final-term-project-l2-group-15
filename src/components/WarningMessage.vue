@@ -58,7 +58,12 @@ export default {
           "Deleting Discussion will delete all message threads";
       } else if (this.condition === "deleteReply") {
         this.displayMessage =
-          "Warning! Members will no longer be able to view deleted reply";
+          "Members will no longer be able to view deleted reply";
+      } else if (this.condition === "deleteEvent") {
+        this.displayMessage =
+          "Deleting Event will remove all joined members from Event";
+      } else if (this.condition === "leaveEvent") {
+        this.displayMessage = "Leaving Event ";
       }
     },
 
@@ -72,6 +77,8 @@ export default {
         this.$emit("confirm", this.discussionid);
       } else if (this.condition === "deleteReply") {
         this.displayMessage = this.$emit("confirm", this.replyid);
+      } else if (this.condition === "deleteEvent") {
+        this.displayMessage = this.$emit("confirm");
       }
     },
 

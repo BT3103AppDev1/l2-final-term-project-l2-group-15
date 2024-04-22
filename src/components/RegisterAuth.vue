@@ -101,14 +101,7 @@
           @close="showIconSelection = false"
         ></IconSelectionPopup>
 
-        <AuthPopup
-          :isVisible="registrationStatus === 'success'"
-          :userId="userId"
-          @close="registrationStatus = ''"
-          :registrationStatus="registrationStatus"
-        >
-          <p class="success-message">Successfully registered!</p>
-        </AuthPopup>
+        <SuccessMessage v-if="registrationStatus === 'success'" :condition="message_passed" :user_id="user_id"/>
 
         <AuthPopup
           :isVisible="registrationStatus === 'error'"
@@ -148,12 +141,14 @@ import { firestore } from "@/firebase";
 import AuthPopup from "@/components/AuthPopup.vue";
 import GoogleAdditionalInfoPopup from "@/components/GoogleAdditionalInfoPopup.vue";
 import IconSelectionPopup from "@/components/IconSelectionPopup.vue";
+import SuccessMessage from "./SuccessMessage.vue";
 
 export default {
   components: {
     AuthPopup,
     GoogleAdditionalInfoPopup,
     IconSelectionPopup,
+    SuccessMessage,
   },
   data() {
     return {
@@ -168,11 +163,12 @@ export default {
       registrationStatus: "",
       errorMessage: "",
       showPopup: false,
-      userId: "",
+      user_id: "",
       auth: getAuth(),
       showIconSelection: false,
       selectedIcon: null,
       isLoading: false,
+      message_passed: "",
     };
   },
   methods: {
@@ -237,16 +233,16 @@ export default {
           groups: [],
         };
 
-        this.userId = user.uid;
+        this.user_Id = user.uid;
         const userDocRef = doc(firestore, "users", user.uid);
         await setDoc(userDocRef, userData);
         console.log("Registration Success");
         this.registrationStatus = "success";
+        this.message_passed = "registrationSuccess"
       } catch (error) {
         console.error("Error during registration:", error);
         this.registrationStatus = "error";
         this.errorMessage = error.message;
-
         if (userCreated) {
           const user = this.auth.currentUser;
           if (user) {
@@ -268,7 +264,7 @@ export default {
         const result = await signInWithPopup(this.auth, provider);
         const user = result.user;
         this.showPopup = true;
-        this.userId = user.uid;
+        this.user_Id = user.uid;
         const userDocRef = doc(firestore, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
 
@@ -334,6 +330,7 @@ export default {
         );
 
         this.registrationStatus = "success";
+        this.message_passed = "registrationSuccess"
         console.log("Additional information saved successfully");
       } catch (error) {
         console.error("Error saving registration information", error);
@@ -348,6 +345,11 @@ export default {
       this.selectedIcon = iconPath;
       console.log(this.selectedIcon);
     },
+
+    closeGooglePopUp(){
+      this.showPopup = false;
+      console.log("working")
+    }
   },
   computed: {
     imageSrc() {
@@ -364,7 +366,7 @@ export default {
 }
 
 .registerbox {
-  margin-top: 5%;
+  margin-top: 3%;
   margin-left: 25%;
   margin-right: 25%;
   border: 1px solid;
@@ -372,7 +374,6 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -484,9 +485,21 @@ export default {
   padding-left: 8px;
   object-fit: cover;
 }
+
 .selected-icon img {
   width: 100px;
   height: 100px;
   object-fit: contain;
+}
+
+.iconbutton {
+  width: 100%;
+  padding: 5px 5px;
+  display: block;
+  color: darkblue;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  font-size: 13px;
 }
 </style>

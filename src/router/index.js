@@ -15,8 +15,6 @@ import GroupSetting from "@/views/GroupSetting.vue";
 import Test from '@/views/Test.vue';
 import Events from '@/views/Events.vue';
 
-
-
 const routes = [
   {
     path: "/",

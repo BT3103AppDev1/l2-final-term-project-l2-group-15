@@ -68,6 +68,9 @@
         else if (this.condition === "loginSuccess") {
           this.displayMessage = "You have successfully logged in!";
         } 
+        else if (this.condition === "registrationSuccess") {
+          this.displayMessage = "You have successfully registered!";
+        } 
         else {
           this.displayMessage = "Blah blah blah";
         }
@@ -96,6 +99,9 @@
         else if (this.condition === "loginSuccess") {
           this.$router.push({ name: "UserDashboard", params: { user_id: this.user_id } });
         }
+        else if (this.condition === "registrationSuccess") {
+          this.$router.push("/login")
+        } 
         else {
 
         }

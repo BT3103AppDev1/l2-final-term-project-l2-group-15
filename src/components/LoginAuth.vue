@@ -99,7 +99,6 @@ const loginWithGoogle = async (event) => {
     loginStatus.value = "success";
     message_passed = "loginSuccess";
   } catch (error) {
-    console.error("Error during registration:", error);
     loginStatus.value = "error";
     message_passed = "errorLogin";
     email.value = "";

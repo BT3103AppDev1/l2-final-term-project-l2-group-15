@@ -53,7 +53,7 @@
           this.displayMessage = "Incorrect password or email! Please try again";
         }
         else {
-          this.displayMessage = "Blah blah blah";
+          this.displayMessage = "Something went wrong! Please try again";
         }
       },
 

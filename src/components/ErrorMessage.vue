@@ -46,12 +46,14 @@
   
     methods: {
       getMessage() {
+        // login errors
         if (this.condition === "errorLogin" && this.error == "auth/invalid-email") {
           this.displayMessage = "You entered an invalid email! Please try again";
         } 
         else if (this.condition === "errorLogin" && this.error == "auth/invalid-credential") {
           this.displayMessage = "Incorrect password or email! Please try again";
         }
+        // registration errors
         else if (this.condition === "errorRegistration" && this.error == "Firebase: Error (auth/email-already-in-use).") {
           this.displayMessage = "The email you entered is already in use";
         }

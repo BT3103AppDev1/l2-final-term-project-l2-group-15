@@ -27,13 +27,8 @@
         </p>
 
         <SuccessMessage v-if="loginStatus === 'success'" :condition="message_passed" :user_id="user_id"/>
+        <ErrorMessage v-if="showError" :condition="message_passed" :user_id="user_id" :error="error" @close="closeErrorMessage"/>
 
-        <AuthPopup_login
-          :isVisible="loginStatus === 'error'"
-          @close="loginStatus = ''"
-        >
-          <p class="error-message">Login failed: {{ errorMessage }}</p>
-        </AuthPopup_login>
       </form>
     </div>
   </div>
@@ -48,20 +43,22 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import AuthPopup_login from "@/components/AuthPopup_login.vue";
 import { useRouter } from "vue-router";
 import SuccessMessage from "@/components/SuccessMessage.vue"; 
+import ErrorMessage from "@/components/ErrorMessage.vue"; 
+
 
 const email = ref("");
 const password = ref("");
 let loginStatus = ref("");
-const errorMessage = ref("");
 let user_id = ref("");
 
 const auth = getAuth();
 const router = useRouter();
 
 let message_passed = ref("")
+let error = ref("")
+let showError = ref("")
 
 const route_user = () => {
   loginStatus = "";
@@ -76,12 +73,18 @@ const login = () => {
       console.log("Login Success");
       user_id = data.user.uid;
       loginStatus.value = "success";
-      message_passed = "loginSuccess"
+      message_passed = "loginSuccess";
+      email.value = "";
+      password.value = "";
     })
-    .catch((error) => {
-      console.log(error.code);
+    .catch((errorMessage) => {
+      console.log(errorMessage.code);
       loginStatus.value = "error";
-      errorMessage.value = error.message;
+      message_passed = "errorLogin";
+      email.value = "";
+      password.value = "";
+      error.value = errorMessage.code
+      showError.value = true;
     });
 };
 
@@ -96,11 +99,22 @@ const loginWithGoogle = async (event) => {
     const user = result.user;
     user_id.value = user.uid;
     loginStatus.value = "success";
+    message_passed = "loginSuccess";
+    email.value = "";
+    password.value = "";
   } catch (error) {
     console.error("Error during registration:", error);
     loginStatus.value = "error";
-    errorMessage.value = error.message;
+    message_passed = "errorLogin";
+    email.value = "";
+    password.value = "";
+    error.value = error.code
+    showError.value = true;
   }
+}
+
+const closeErrorMessage = () => {
+  showError.value = false;
 }
 </script>
 

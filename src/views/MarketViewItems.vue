@@ -6,15 +6,23 @@
 
 <template>
   <body>
+    <!-- Global Navbar -->
+    <div class="nav-global">
       <Navbar_global />
-      <div class="container">
-        <div class="nav">
-          <NavBar_market />
-        </div>
-        <div class="list">
-          <ItemList/>
-        </div>
+    </div>
+    
+    <!-- Market Navbar -->
+    <div class="nav">
+      <NavBar_market />
+    </div>
+
+    <!-- Container for main content -->
+    <div class="container">
+      <!-- List of items -->
+      <div class="list">
+        <ItemList/>
       </div>
+    </div>
   </body>
 </template>
 
@@ -27,29 +35,44 @@ import { getAuth } from 'firebase/auth';
 const db = getFirestore(firebaseApp)
 
 export default {
-    components: {
-        Navbar_global,
-        NavBar_market,
-        ItemList,
-    },
+  components: {
+    Navbar_global,
+    NavBar_market,
+    ItemList,
+  },
 }
 </script>
 
-
 <style scoped>
-
+/* Container for main content */
 .container {
-  padding:0px;
-  margin: 0px;
-  display:flex;
+  padding: 0;
+  margin-left: 100px;
+  display: flex;
+  justify-content: space-between; /* Distribute items evenly */
 }
 
+/* List of items */
 .list {
-  width: 100%;
+  width: 85%; /* Adjust the width as needed */
 }
 
-.nav{
-  margin-right: 0.5vh;
-  width:8%;
+/* Market Navbar */
+.nav {
+  width: 15%; /* Adjust the width as needed */
+  position: sticky;
+  top: 50px;
+  margin-top: 66px;
+  height: 10vh; /* Make it full height */
+  overflow-y: auto; /* Allow scrolling if needed */
+}
+
+/* Global Navbar */
+.nav-global {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Ensure it's above other content */
 }
 </style>

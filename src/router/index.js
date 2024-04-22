@@ -14,7 +14,12 @@ import ViewDiscussion from "@/views/ViewDiscussion.vue";
 import GroupSetting from "@/views/GroupSetting.vue";
 import Test from '@/views/Test.vue';
 import Events from '@/views/Events.vue';
-
+import MarketplaceLanding from '@/views/MarketplaceLanding.vue'
+import MarketplaceDealReq from '@/views/MarketDealReq.vue'
+import MarketplaceMyList from '@/views/MarketMyList.vue'
+import MarketplaceSentReq from '@/views/MarketSentReq.vue'
+import MarketplaceViewItems from '@/views/MarketViewItems.vue'
+import MarketApprove from "@/views/MarketApprove.vue";
 
 
 const routes = [
@@ -34,7 +39,7 @@ const routes = [
     component: Register,
   },
   {
-    path: "/user_dashboard/:userId",
+    path: "/user_dashboard/:user_id",
     name: "UserDashboard",
     component: UserDashboard,
     meta: {requiresAuth: true},
@@ -76,6 +81,46 @@ const routes = [
   },
 
   {
+    path: '/marketplaceLanding',
+    name: 'MarketplaceLanding',
+    component: MarketplaceLanding,
+    meta: {requiresAuth: true},
+  },
+
+  {
+    path: '/marketdealreq',
+    name: 'MarketplaceDealReq',
+    component: MarketplaceDealReq,
+    meta: {requiresAuth: true},
+  },
+
+
+  {
+    path: '/marketmylist',
+    name: 'MarketplaceMyList',
+    component: MarketplaceMyList,
+    meta: {requiresAuth: true},
+  },
+
+
+  {
+    path: '/marketsentreq',
+    name: 'MarketplaceSentReq',
+    component: MarketplaceSentReq,
+    meta: {requiresAuth: true},
+  },
+
+
+  {
+    path: '/marketviewitems',
+    name: 'MarketplaceViewItems',
+    component: MarketplaceViewItems,
+    meta: {requiresAuth: true},
+  },
+
+
+
+  {
     path: '/group_setting/:group/:user',
     name: 'GroupSetting',
     component: GroupSetting,
@@ -86,6 +131,13 @@ const routes = [
     path: '/all_discussion/:group/:user',
     name: 'AllDiscussion',
     component: AllDiscussion,
+    meta: {requiresAuth: true},
+  },
+
+  {
+    path: '/marketapprove/:itemID',
+    name: 'MarketApprove',
+    component: MarketApprove,
     meta: {requiresAuth: true},
   },
 

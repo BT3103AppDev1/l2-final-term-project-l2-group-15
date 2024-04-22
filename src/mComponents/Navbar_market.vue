@@ -1,0 +1,76 @@
+<template>
+    <ul class="vertnav">
+        <li><router-link :to="{name: 'MarketplaceViewItems'}"><img src="@/assets/football_group.jpg" alt="football icon"></router-link></li>
+        <li><router-link :to="{name: 'MarketplaceSentReq'}"><img src="@/assets/discussion.png" alt="Discussions"></router-link></li>
+        <li><router-link :to="{name: 'MarketplaceMyList'}"><img src="@/assets/calendar.png" alt="Calender"></router-link></li>
+        <li><router-link :to="{name: 'MarketplaceDealReq'}"><img src="@/assets/settings.png" alt="Setting"></router-link></li>
+    </ul>
+    </template>
+    
+<script>
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore";
+import { getDoc, doc, onSnapshot, collection} from "firebase/firestore";
+import { getAuth } from 'firebase/auth';
+
+export default {
+    name: "Navbar_groups",
+
+    data() {
+        return {
+            user: getAuth().currentUser.uid,
+        }
+    }
+
+
+}
+</script>
+    
+<style scoped>
+    body {
+            margin: 0;
+    }
+    
+    ul {
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+        width: 80px;
+        background-color: #f1f1f1;
+        position: fixed;
+        height: 100%;
+        overflow: auto;
+    }
+    
+    li {
+        display: block;
+        color: #000;
+        padding: 20px 16px;
+        text-decoration: none;
+        text-align: center;
+    }
+    
+        /* li a.active {
+            background-color: #04AA6D;
+            color: white;
+        } */
+    
+    li :hover {
+        background-color: #c4c4c4;
+        color: white;
+    }
+    
+    img {
+        height: 40px;
+        width: 40px;
+    }
+    
+    #football_group {
+        border-radius: 45px;
+        height: 50px;
+        width: 50px;
+        margin: 0px;
+        padding: 0px;
+        border: 1px solid #555; /* Add border */
+    }
+</style>

@@ -211,7 +211,7 @@ export default {
 h1 {
   background-color: white;
   margin-left: 30px;
-  margin-bottom: 0px;
+  margin-bottom: -10px;
 }
 
 .editProfileButton, .close-btn {
@@ -223,6 +223,7 @@ h1 {
   font-weight: bold;
   background-color: #007bff; /* Bootstrap primary */
   margin-left: auto;
+  margin-top: -5px;
 }
 
 img {
@@ -239,7 +240,6 @@ img {
   display: block;
   width: 50%;
   margin-left: 25%;
-  
 }
 
 .profileImageContainer {
@@ -248,7 +248,7 @@ img {
 
 .username {
   font-size: 30px; /* Adjust as needed */
-  margin-top: 10px;
+  margin-top: 0px;
   margin-bottom: 0px;
 }
 
@@ -256,7 +256,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px;
+  padding: 10px;
 }
 
 .userInfoContainer {
@@ -274,7 +274,7 @@ img {
 
 .userInfoTable td {
   font-size: larger;
-  padding: 10px;
+  padding: 5px;
   width: 0%;
 }
 
@@ -293,8 +293,8 @@ img {
 }
 
 .registerbox {
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 10px;
+  padding: 5px;
   border: 1px solid;
   border-radius: 12px;
   background-color: white;
@@ -305,6 +305,7 @@ img {
 .registerbox h2 {
   align-self: center;
   font-weight: bold;
+  margin-top: 0px;
 }
 
 .registerbox-content{
@@ -316,7 +317,7 @@ img {
 .registerbox-content label {
   display: block;
   font-weight: bold;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   font-size: large;
 }
 
@@ -352,5 +353,7 @@ img {
   background-color: #dc3545; /* Bootstrap danger */
   margin-top: 0px;
   margin-bottom: 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 </style>

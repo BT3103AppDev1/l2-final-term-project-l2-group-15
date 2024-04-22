@@ -142,16 +142,18 @@ export default {
   }
 };
 </script>
+
+
 <style scoped>
 .group-list-item {
   display: flex;
-  align-items: flex-start; /* Align items at the start of the container */
+  align-items: flex-start;
   background-color: #f5f4f4;
   margin-bottom: 1rem;
   border-radius: 10px;
   padding: 10px;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
-  position: relative; /* Add relative positioning */
+  position: relative;
 }
 
 .group-list-item:hover {
@@ -162,10 +164,13 @@ export default {
 .group-image {
   flex: 1;
   max-width: 30%;
+  width: 100px; /* Fixed width for the image container */
 }
 
 .group-image img {
   width: 100%;
+  height: 100px; /* Fixed height for the image */
+  object-fit: cover; /* Maintain aspect ratio */
   border-radius: 10px;
 }
 
@@ -176,7 +181,7 @@ export default {
 
 .group-details h3 {
   margin-top: 0;
-  font-size: 1.5rem; /* Increase font size for item name */
+  font-size: 1.5rem;
 }
 
 .group-details p {
@@ -186,16 +191,16 @@ export default {
 .price {
   font-weight: bold;
   position: absolute;
-  top: 10px; /* Adjust top position */
-  right: 10px; /* Adjust right position */
+  top: 10px;
+  right: 10px;
 }
 
 .button-container {
   display: flex;
-  flex-direction: column; /* Arrange buttons vertically */
+  flex-direction: column;
   position: absolute;
-  bottom: 10px; /* Adjust bottom position */
-  right: 10px; /* Adjust right position */
+  bottom: 10px;
+  right: 10px;
 }
 
 .deal-request-btn button,
@@ -207,7 +212,7 @@ export default {
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px; /* Add margin to separate buttons */
+  margin-top: 10px;
 }
 
 .deal-request-btn button:hover,

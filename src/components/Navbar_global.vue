@@ -68,7 +68,7 @@ export default {
     },
     goMarketplace() {
       // Navigate to the marketplace
-      this.$router.push("/marketplace");
+      this.$router.push("/marketviewitems");
     },
     goAllGroups() {
       // Navigate to all groups

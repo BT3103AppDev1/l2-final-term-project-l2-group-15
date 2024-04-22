@@ -27,8 +27,7 @@ export default {
   methods: {
     goMarketPlace() {
       console.log("goMarketplace");
-      this.$router.push('/marketplace');
-
+      this.$router.push("/marketviewitems");
     },
     goGroups() {
       console.log("goGroups");

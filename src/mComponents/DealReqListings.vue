@@ -1,16 +1,18 @@
 <script setup>
 import DealReqListingComponent from '@/mComponents/DealReqListingComponent.vue';
+import ContactPopup from './ContactPopup.vue';
 </script>
 
 <template>
   <div>
+    <ContactPopup :userId="current_user" v-if="showPopup" @closePopup="runClose"/>
     <br/>
       <div class = "groupFlexbox">
         <div v-if="item_list.length === 0" class="no-item-msg">
             <h1> No Deal Req </h1>
         </div>
         <div v-for="item in item_list" :key="item.id" class="group">
-          <DealReqListingComponent :item="item" />
+          <DealReqListingComponent :item="item" @openPopup="runOpen" :showPopup="showPopup" />
         </div>
       </div>
     </div>
@@ -25,6 +27,7 @@ import { getAuth } from 'firebase/auth';
 export default {
     components: {
         DealReqListingComponent,
+        ContactPopup,
     },
     data() {
         return {
@@ -32,10 +35,21 @@ export default {
             user: getAuth().currentUser.uid,
             isOpen: false,
             item_list: [],
+            showPopup: false,
+            current_item: null,
         };
     },
 
     methods: {
+        runClose() {
+          this.showPopup = false
+        },
+
+        runOpen(item) {
+          this.current_user = item
+          this.showPopup = true
+        },
+
         async fetchItems() {
             const db = getFirestore(firebaseApp)
             const userDocRef = doc(db, 'users', this.user); 

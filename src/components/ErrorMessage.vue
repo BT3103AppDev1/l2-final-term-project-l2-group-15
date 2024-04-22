@@ -52,6 +52,12 @@
         else if (this.condition === "errorLogin" && this.error == "auth/invalid-credential") {
           this.displayMessage = "Incorrect password or email! Please try again";
         }
+        else if (this.condition === "errorRegistration" && this.error == "Firebase: Error (auth/email-already-in-use).") {
+          this.displayMessage = "The email you entered is already in use";
+        }
+        else if (this.condition === "errorRegistration" && this.error == "Postal code invalid. Please try again.") {
+          this.displayMessage = "Postal code entered is invalid! Please try again.";
+        }
         else {
           this.displayMessage = "Something went wrong! Please try again";
         }
@@ -60,8 +66,9 @@
       toggleError() {
         if (this.condition === "errorLogin") {
           this.$emit("close")
-        }
-        else {
+        } else if (this.condition === "errorRegistration") {
+          this.$emit("close")
+        } else {
 
         }
       }

@@ -212,6 +212,7 @@ export default {
     async register() {
       let userCreated = false;
       try {
+        // cretae user account in firebase
         const { user } = await createUserWithEmailAndPassword(
           this.auth,
           this.email,
@@ -221,9 +222,16 @@ export default {
 
         const postalCodeValid = await this.isPostalCodeValid(this.postalCode);
 
+        // postal code validation
         if (!postalCodeValid) {
           this.registrationStatus = "error";
           throw new Error("Postal code invalid. Please try again.");
+        }
+
+        // check if all fields field validation
+        if (!this.email || !this.password || !this.username || !this.address || !this.postalCode || !this.dateOfBirth || !this.gender || !this.telegramHandle || !this.selectedIcon) {
+          this.registrationStatus = "error";
+          throw new Error("Please make sure all fields are filled.");
         }
 
         const userData = {
@@ -254,6 +262,7 @@ export default {
         this.errorMessage = error.message;
         console.log("hereeee -->", this.errorMessage, "lol")
 
+        // if error, delete user
         if (userCreated) {
           const user = this.auth.currentUser;
           if (user) {

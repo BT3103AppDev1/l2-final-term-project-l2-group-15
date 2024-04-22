@@ -61,6 +61,12 @@
         else if (this.condition === "errorRegistration" && this.error == "Firebase: Error (auth/invalid-email).") {
           this.displayMessage = "The email entered is invalid! Please try again.";
         }
+        else if (this.condition === "errorRegistration" && this.error == "Firebase: Error (auth/missing-password).") {
+          this.displayMessage = "You forgot to provide a password!";
+        }
+        else if (this.condition === "errorRegistration" && this.error == "Please make sure all fields are filled.") {
+          this.displayMessage = "You missed out some fields! Please fill them in.";
+        }
         else {
           this.displayMessage = "Something went wrong! Please try again";
         }

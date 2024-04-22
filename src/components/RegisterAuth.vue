@@ -101,16 +101,11 @@
           @close="showIconSelection = false"
         ></IconSelectionPopup>
 
+        <div v-if="showPopup" class="backdrop">
+          <GoogleAdditionalInfoPopup v-if="showPopup" @submit="handlePopupSubmit" />
+        </div>
         <SuccessMessage v-if="registrationStatus === 'success'" :condition="message_passed" :user_id="user_id"/>
         <ErrorMessage v-if="showError" :condition="message_passed" :user_id="user_id" :error="errorMessage" @close="closeErrorMessage"/>
-
-        <!-- <AuthPopup
-          :isVisible="registrationStatus === 'error'"
-          @close="registrationStatus = ''"
-          :registrationStatus="registrationStatus"
-        >
-          <p class="error-message">Registration failed: {{ errorMessage }}</p>
-        </AuthPopup> -->
 
         <p>
           <button
@@ -122,10 +117,6 @@
           </button>
         </p>
       </form>
-    </div>
-
-    <div v-if="showPopup" class="backdrop">
-      <GoogleAdditionalInfoPopup v-if="showPopup" @submit="handlePopupSubmit" />
     </div>
   </div>
 </template>
@@ -301,7 +292,6 @@ export default {
         const userDocSnap = await getDoc(userDocRef);
 
         if (userDocSnap.exists()) {
-          this.showPopup = false;
           this.registrationStatus = "error";
           throw new Error("Account already exists.");
         }
@@ -313,14 +303,17 @@ export default {
 
         await setDoc(userDocRef, userData);
       } catch (error) {
-        this.showPopup = false;
         console.error("Error during registration:", error);
         this.registrationStatus = "error";
         this.errorMessage = error.message;
+        this.showError = true;
+        this.showPopup = false;
+        this.message_passed = "errorRegistration"
+        console.log("hereeee -->", this.errorMessage, "lol")
       }
     },
 
-    // Function to handle popup for additional info after google authentication
+    // Function to handle popup for additional info after google authentication (ie. email is ok and valid)
     async handlePopupSubmit(additionalInfo) {
       if (this.isLoading) return;
       this.isLoading = true;
@@ -337,12 +330,19 @@ export default {
 
         if (!postalCodeValid) {
           this.registrationStatus = "error";
-          this.errorMessage = "Postal code invalid. Please try again.";
-          console.log("pt1");
-          return;
+          throw new Error("Postal code invalid. Please try again.");
         }
 
-        // If the postal code is valid, proceed to save the additional information
+        // check if all fields field validation
+        if (!additionalInfo.username || !additionalInfo.address ||
+          !additionalInfo.postalCode || !additionalInfo.dateOfBirth ||
+          !additionalInfo.gender || !additionalInfo.telegramHandle ||
+          !additionalInfo.selectedIcon) {
+          this.registrationStatus = "error";
+          throw new Error("Please make sure all fields are filled.");
+        }
+
+        // If the postal code is and all fields are filled, valid, proceed to save the additional information
         await setDoc(
           userDocRef,
           {
@@ -362,12 +362,16 @@ export default {
         );
 
         this.registrationStatus = "success";
-        this.message_passed = "registrationSuccess"
         console.log("Additional information saved successfully");
+        this.message_passed = "registrationSuccess"
+        this.showPopup = false;
       } catch (error) {
         console.error("Error saving registration information", error);
         this.registrationStatus = "error";
         this.errorMessage = error.message;
+        this.message_passed = "errorRegistration"
+        this.showError = true;
+        console.log("hereeee -->", this.errorMessage, "lol")
       } finally {
         this.isLoading = false;
       }

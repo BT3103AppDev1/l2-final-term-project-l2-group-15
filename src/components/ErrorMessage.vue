@@ -69,6 +69,10 @@
         else if (this.condition === "errorRegistration" && this.error == "Please make sure all fields are filled.") {
           this.displayMessage = "You missed out some fields! Please fill them in.";
         }
+        // google registration errors
+        else if (this.condition === "errorRegistration" && this.error == "Account already exists.") {
+          this.displayMessage = "The email you entered is already in use";
+        }
         else {
           this.displayMessage = "Something went wrong! Please try again";
         }

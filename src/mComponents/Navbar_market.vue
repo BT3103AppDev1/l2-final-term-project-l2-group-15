@@ -31,10 +31,6 @@ export default {
             margin: 0;
     }
     
-    .vertnav {
-        margin-top: 66px;
-    }
-    
     ul {
         list-style-type: none;
         margin: 0px;

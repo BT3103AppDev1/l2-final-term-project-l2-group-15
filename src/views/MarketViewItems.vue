@@ -52,6 +52,10 @@ export default {
   justify-content: space-between; /* Distribute items evenly */
 }
 
+.vertnav {
+        margin-top: 66px;
+    }
+
 /* List of items */
 .list {
   width: 85%; /* Adjust the width as needed */

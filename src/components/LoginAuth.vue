@@ -26,7 +26,11 @@
           </button>
         </p>
 
-        <SuccessMessage v-if="loginStatus === 'success'" :condition="message_passed" :user_id="user_id"/>
+        <SuccessMessage
+          v-if="loginStatus === 'success'"
+          :condition="message_passed"
+          :user_id="user_id"
+        />
 
         <AuthPopup_login
           :isVisible="loginStatus === 'error'"
@@ -50,7 +54,7 @@ import {
 } from "firebase/auth";
 import AuthPopup_login from "@/components/AuthPopup_login.vue";
 import { useRouter } from "vue-router";
-import SuccessMessage from "@/components/SuccessMessage.vue"; 
+import SuccessMessage from "@/components/SuccessMessage.vue";
 
 const email = ref("");
 const password = ref("");
@@ -61,7 +65,7 @@ let user_id = ref("");
 const auth = getAuth();
 const router = useRouter();
 
-let message_passed = ref("")
+let message_passed = ref("");
 
 const route_user = () => {
   loginStatus = "";
@@ -76,7 +80,7 @@ const login = () => {
       console.log("Login Success");
       user_id = data.user.uid;
       loginStatus.value = "success";
-      message_passed = "loginSuccess"
+      message_passed = "loginSuccess";
     })
     .catch((error) => {
       console.log(error.code);
@@ -96,73 +100,74 @@ const loginWithGoogle = async (event) => {
     const user = result.user;
     user_id.value = user.uid;
     loginStatus.value = "success";
+    message_passed = "loginSuccess";
   } catch (error) {
     console.error("Error during registration:", error);
     loginStatus.value = "error";
     errorMessage.value = error.message;
   }
-}
+};
 </script>
 
 <style scoped>
-  .login {
-    text-align: center;
-  }
+.login {
+  text-align: center;
+}
 
-  .loginbox {
-    margin-top: 5%;
-    margin-left: 35%;
-    margin-right: 35%;
-    border: 1px solid;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
-  }
+.loginbox {
+  margin-top: 5%;
+  margin-left: 35%;
+  margin-right: 35%;
+  border: 1px solid;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
 
-  .loginbox p {
-    font-size: 11px;
-    font-weight: bold;
-  }
+.loginbox p {
+  font-size: 11px;
+  font-weight: bold;
+}
 
-  .loginbox label {
-    display: block;
-    margin-bottom: 5px;
-  }
+.loginbox label {
+  display: block;
+  margin-bottom: 5px;
+}
 
-  .loginbox input {
-    width: 150px;
-    padding: 3px;
-    border: 1px solid #ccc;
-  }
+.loginbox input {
+  width: 150px;
+  padding: 3px;
+  border: 1px solid #ccc;
+}
 
-  .loginbox button {
-    padding: 5px 10px;
-    font-size: 11px;
-    cursor: pointer;
-    margin-top: 10px;
-    display: block;
-    width: 50%;
-    box-sizing: border-box;
-    width: 100%;
-    margin-bottom: 10px;
-  }
+.loginbox button {
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: block;
+  width: 50%;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 10px;
+}
 
-  .loginbox button:hover {
-    opacity: 0.9;
-  }
+.loginbox button:hover {
+  opacity: 0.9;
+}
 
-  .login-btn {
-    background-color: rgb(227, 47, 47);
-    color: white;
-    border: 1px solid black;
-  }
+.login-btn {
+  background-color: rgb(227, 47, 47);
+  color: white;
+  border: 1px solid black;
+}
 
-  .google-login-btn {
-    background-color: white;
-    color: black;
-    border: 1px solid;
-  }
+.google-login-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid;
+}
 </style>

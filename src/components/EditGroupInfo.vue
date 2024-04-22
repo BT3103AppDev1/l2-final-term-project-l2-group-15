@@ -1,250 +1,336 @@
 <template>
-    <div class="edit-group">
-      <div class="header">
-        <h2>Edit Group</h2>
-        <div class="delete-group">
-          <button class="deleteGroupButton" @click="deleteGroup">Delete Group</button>
-        </div>
-      </div>
-      <form @submit.prevent="updateGroup" class="group-form">
-        <div class="change-image">
-          <span><strong>Group Image:</strong></span>
-          <!-- Display the current image -->
-          <div class="image-container">
-            <img @click="openFileInput" :src="imageUrl" alt="Current Image" />
-          </div>
-          <input type="file" accept="image/*" ref="fileInput" @change="handleImageChange" class="file-input" />
-        </div>
-        <div class="form-group">
-          <label for="groupName">Group Name:</label>
-          <input type="text" id="groupName" v-model="groupName" placeholder="Enter a new group name."/>
-        </div>
-        <div class="form-group">
-          <label for="groupDescription">Description:</label>
-          <textarea id="groupDescription" v-model="groupDescription" placeholder="Enter a new group description."></textarea>
-        </div>
-        <button type="submit" class="update-btn">Update Group</button>
-      </form>
-
-      <!-- Modal Overlay -->
-      <div v-if="showMessage" class="modal-overlay" @click.self="closeMessage">
-        <div class="modal-content">
-          <p>{{ message }}</p>
-        </div>
-      </div>
-      
-      <div class="members-section">
-        <h2>Members</h2>
-        <ul class="members-list">
-          <li v-for="member in groupMemberNames" :key="member.id" class="member-item">
-            {{ member.name }}
-            <button @click="removeMemberFromGroup(member.id)" class="kick-btn">Kick Out</button>
-          </li>
-        </ul>
+  <div class="edit-group">
+    <div class="header">
+      <h2>Edit Group</h2>
+      <div class="delete-group">
+        <button class="deleteGroupButton" @click="showWarning">
+          Delete Group
+        </button>
       </div>
     </div>
+    <form @submit.prevent="updateGroup" class="group-form">
+      <div class="change-image">
+        <span><strong>Group Image:</strong></span>
+        <!-- Display the current image -->
+        <div class="image-container">
+          <img @click="openFileInput" :src="imageUrl" alt="Current Image" />
+        </div>
+        <input
+          type="file"
+          accept="image/*"
+          ref="fileInput"
+          @change="handleImageChange"
+          class="file-input"
+        />
+      </div>
+      <div class="form-group">
+        <label for="groupName">Group Name:</label>
+        <input
+          type="text"
+          id="groupName"
+          v-model="groupName"
+          placeholder="Enter a new group name."
+        />
+      </div>
+      <div class="form-group">
+        <label for="groupDescription">Description:</label>
+        <textarea
+          id="groupDescription"
+          v-model="groupDescription"
+          placeholder="Enter a new group description."
+        ></textarea>
+      </div>
+      <button type="submit" class="update-btn">Update Group</button>
+    </form>
+
+    <!-- Modal Overlay -->
+    <div v-if="showMessage" class="modal-overlay" @click.self="closeMessage">
+      <div class="modal-content">
+        <p>{{ message }}</p>
+      </div>
+    </div>
+
+    <div class="members-section">
+      <h2>Members</h2>
+      <ul class="members-list">
+        <li
+          v-for="member in groupMemberNames"
+          :key="member.id"
+          class="member-item"
+        >
+          {{ member.name }}
+          <button @click="showWarning(member.id)" class="kick-btn">
+            Kick Out
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <!--Warning Message for Delete Member-->
+    <WarningMessage
+      v-if="showWarningMessage"
+      :condition="condition"
+      :memberid="selectedMemberId"
+      @confirm="removeMemberFromGroup"
+      @cancel="hideWarning"
+    />
+
+    <!--Warning Message for Delete Group-->
+    <WarningMessage
+      v-if="showWarningMessage"
+      :condition="condition"
+      @confirm="deleteGroup"
+      @cancel="hideWarning"
+    />
+  </div>
 </template>
 
 <script>
-import firebaseApp from '../firebase.js'
-import { getFirestore, updateDoc } from 'firebase/firestore'
-import { doc, getDoc, getDocs, arrayRemove, deleteDoc, collection, onSnapshot } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import firebaseApp from "../firebase.js";
+import WarningMessage from "@/components/WarningMessage.vue";
+import { getFirestore, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  arrayRemove,
+  deleteDoc,
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 
 const db = getFirestore(firebaseApp);
 const storage = getStorage();
 
 export default {
-    props: {
-        group: {
-            type: String,
-            required: true
-        },
-        user: {
-            type: String,
-            required: true
-        }
+  components: {
+    WarningMessage,
+  },
+  props: {
+    group: {
+      type: String,
+      required: true,
     },
-    data() {
-        return {
-            groupDoc: {},
-            groupMemberNames: [],
-            groupName: '',
-            groupDescription: '',
-            showMessage: false,
-            message: '',
-            imageUrl: '',
-            selectedFile: null
-        }
+    user: {
+      type: String,
+      required: true,
     },
-    methods: {
-        fetchGroupData() {
-            const docRef = doc(db, 'group', this.group);
-            onSnapshot(docRef, (docSnap) => {
-            if (docSnap.exists()) {
-              this.groupDoc = docSnap.data();
-              this.groupName = this.groupDoc.GroupName;
-              this.groupDescription = this.groupDoc.GroupDescription;
-              // get imageURL
-              this.getImage(this.group).then(url => {
-                this.imageUrl = url;
-              });
+  },
+  data() {
+    return {
+      groupDoc: {},
+      groupMemberNames: [],
+      groupName: "",
+      groupDescription: "",
+      showMessage: false,
+      message: "",
+      imageUrl: "",
+      selectedFile: null,
+      showWarningMessage: false,
+      selectedMemberId: "",
+      condition: "",
+    };
+  },
+  methods: {
+    fetchGroupData() {
+      const docRef = doc(db, "group", this.group);
+      onSnapshot(
+        docRef,
+        (docSnap) => {
+          if (docSnap.exists()) {
+            this.groupDoc = docSnap.data();
+            this.groupName = this.groupDoc.GroupName;
+            this.groupDescription = this.groupDoc.GroupDescription;
+            // get imageURL
+            this.getImage(this.group).then((url) => {
+              this.imageUrl = url;
+            });
 
-              // Clear the previous group members
-              this.groupMemberNames = [];
+            // Clear the previous group members
+            this.groupMemberNames = [];
 
-              // get username, userid of each member except admin
-              for (const userid of this.groupDoc.GroupMembers) {
-                if (!this.groupDoc.GroupAdmin.includes(userid)) {
-                  // Since we are inside an async callback, we need to handle promises properly
-                  this.getUsername(userid).then(username => {
-                    this.groupMemberNames.push({ name: username, id: userid });
-                  });
-                }
-              }
-            } else {
-              console.log("Group cannot be found!");
-            }
-          }, (error) => {
-            console.error("Error fetching group data:", error);
-          });
-        },
-        async updateGroup() {
-            try {
-                const docRef = doc(db, 'group', this.group);
-                await updateDoc(docRef, {
-                  GroupName: this.groupName,
-                  GroupDescription: this.groupDescription
+            // get username, userid of each member except admin
+            for (const userid of this.groupDoc.GroupMembers) {
+              if (!this.groupDoc.GroupAdmin.includes(userid)) {
+                // Since we are inside an async callback, we need to handle promises properly
+                this.getUsername(userid).then((username) => {
+                  this.groupMemberNames.push({ name: username, id: userid });
                 });
-                await this.updateImage();
-                console.log("Group info updated:", this.group);
-                this.message = "Group updated successfully!";
-                this.showMessage = true;
-            } catch (error) {
-                console.log("Error updating group", error);
-                this.message = "Error updating group!"
-                this.showMessage = true;
-            };
-        },
-        async removeMemberFromGroup(memberID) {
-            try {
-                // Remove member from group in Firestore
-                const docRef = doc(db, 'group', this.group);
-                await updateDoc(docRef, {
-                    GroupMembers: arrayRemove(memberID)
-                });
-                console.log("User has been kicked out:", memberID);
-
-                // remove the group from user doc as well
-                await this.removeGroupFromUser(memberID);
-            } catch (error) {
-                console.log("Error in kicking member out", error);
-            };
-        },
-        async removeGroupFromUser(memberID) {
-            try {
-                // Remove group from member in Firestore
-                const docRef = doc(db, 'users', memberID);
-                await updateDoc(docRef, {
-                    groups: arrayRemove(this.group)
-                });
-                console.log("Group has been removed from user:", this.groupID);
-            } catch (error) {
-                console.log("Error in removing group from user", error);
-            };
-        },
-        async getUsername(userid) {
-          try {
-            const docs = await getDocs(collection(db, "users"));
-            for (const doc of docs.docs) {
-              if (doc.data().uid == userid) {
-                const username = doc.data().username;
-                console.log("Username retrieved successfully:", username);
-                return username; 
               }
             }
-          } catch (error) {
-            console.error("Error retrieving username:", error);
+          } else {
+            console.log("Group cannot be found!");
           }
         },
-        closeMessage() {
-          this.showMessage = false;
-          //navigate user to the group dashboard page upon closing message
-          this.$router.push({name:'SpecificGroupHome', params: {user: this.user, group: this.group}});
-        },
-        async getImage(fileID) {
-          console.log(fileID)
-          let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
-          let fileRef = ref(storage, filePath)
-          let fileURL = await getDownloadURL(fileRef)
-          console.log("url is here", fileURL)
-          return fileURL;
-        },
-        openFileInput() {
-            this.$refs.fileInput.click()
-        },
-        handleImageChange(event) {
-            this.selectedFile = event.target.files[0]
-            if (this.selectedFile) {
-                this.imageUrl = URL.createObjectURL(this.selectedFile)
-                console.log("Selected file",this.selectedFile)
-            }
-        },
-        async updateImage() {
-          if (!this.selectedFile) {
-            alert("Please select a file first.");
-            return;
-          }
-
-          const imageName = this.group; // The name of the image to replace
-
-          try {
-      
-            // Delete the existing image
-            const existingImageRef = ref(storage, `gs://connecthub-88e58.appspot.com/${imageName}`);
-            if (existingImageRef) {
-              await deleteObject(existingImageRef);
-            };
-            
-            // Upload the new image
-            const newImageRef = ref(storage, imageName);
-            const uploadResult = await uploadBytes(newImageRef, this.selectedFile);
-            const newImageUrl = await getDownloadURL(uploadResult.ref);
-
-            // Update the current image URL in the component's state
-            this.imageUrl = newImageUrl;
-
-            console.log("Image updated successfully:", newImageUrl);
-          } catch (error) {
-            console.error("Failed to update image:", error);
-          }
-        },
-        async deleteGroupFromFirestore(groupID) {
-          const groupDocRef = doc(db, 'group', groupID);
-          await deleteDoc(groupDocRef);
-        },
-        async deleteMembersfromGroup(groupID) {
-          // get GroupMembers array from Group
-          const groupDocRef = doc(db, 'group', groupID)
-          const groupDocSnapshot = await getDoc(groupDocRef)
-          const groupData = groupDocSnapshot.data()
-          const groupMembers = groupData.GroupMembers || []
-
-          // find each member and delete the group
-          for (const groupMemberID of groupMembers) {
-            await this.removeGroupFromUser(groupMemberID);
-          }
-        },
-        async deleteGroup() { // all users group array must no longer contain current group 
-          await this.deleteMembersfromGroup(this.group);
-          await this.deleteGroupFromFirestore(this.group)
-          this.$router.push({name:'MyGroups'});
+        (error) => {
+          console.error("Error fetching group data:", error);
         }
+      );
     },
-    created() {
-        this.fetchGroupData();
-    }
-}
+    async updateGroup() {
+      try {
+        const docRef = doc(db, "group", this.group);
+        await updateDoc(docRef, {
+          GroupName: this.groupName,
+          GroupDescription: this.groupDescription,
+        });
+        await this.updateImage();
+        console.log("Group info updated:", this.group);
+        this.message = "Group updated successfully!";
+        this.showMessage = true;
+      } catch (error) {
+        console.log("Error updating group", error);
+        this.message = "Error updating group!";
+        this.showMessage = true;
+      }
+    },
+    async removeMemberFromGroup(memberID) {
+      try {
+        // Remove member from group in Firestore
+        const docRef = doc(db, "group", this.group);
+        await updateDoc(docRef, {
+          GroupMembers: arrayRemove(memberID),
+        });
+        console.log("User has been kicked out:", memberID);
+
+        // remove the group from user doc as well
+        await this.removeGroupFromUser(memberID);
+        this.showWarningMessage = false;
+        this.selectedMemberId = "";
+      } catch (error) {
+        console.log("Error in kicking member out", error);
+      }
+    },
+    async removeGroupFromUser(memberID) {
+      try {
+        // Remove group from member in Firestore
+        const docRef = doc(db, "users", memberID);
+        await updateDoc(docRef, {
+          groups: arrayRemove(this.group),
+        });
+        console.log("Group has been removed from user:", this.group);
+      } catch (error) {
+        console.log("Error in removing group from user", error);
+      }
+    },
+    async getUsername(userid) {
+      try {
+        const docs = await getDocs(collection(db, "users"));
+        for (const doc of docs.docs) {
+          if (doc.data().uid == userid) {
+            const username = doc.data().username;
+            console.log("Username retrieved successfully:", username);
+            return username;
+          }
+        }
+      } catch (error) {
+        console.error("Error retrieving username:", error);
+      }
+    },
+    closeMessage() {
+      this.showMessage = false;
+      //navigate user to the group dashboard page upon closing message
+      this.$router.push({
+        name: "SpecificGroupHome",
+        params: { user: this.user, group: this.group },
+      });
+    },
+    async getImage(fileID) {
+      console.log(fileID);
+      let filePath = "gs://connecthub-88e58.appspot.com/" + fileID;
+      let fileRef = ref(storage, filePath);
+      let fileURL = await getDownloadURL(fileRef);
+      console.log("url is here", fileURL);
+      return fileURL;
+    },
+    openFileInput() {
+      this.$refs.fileInput.click();
+    },
+    handleImageChange(event) {
+      this.selectedFile = event.target.files[0];
+      if (this.selectedFile) {
+        this.imageUrl = URL.createObjectURL(this.selectedFile);
+        console.log("Selected file", this.selectedFile);
+      }
+    },
+    async updateImage() {
+      if (!this.selectedFile) {
+        alert("Please select a file first.");
+        return;
+      }
+
+      const imageName = this.group; // The name of the image to replace
+
+      try {
+        // Delete the existing image
+        const existingImageRef = ref(
+          storage,
+          `gs://connecthub-88e58.appspot.com/${imageName}`
+        );
+        if (existingImageRef) {
+          await deleteObject(existingImageRef);
+        }
+
+        // Upload the new image
+        const newImageRef = ref(storage, imageName);
+        const uploadResult = await uploadBytes(newImageRef, this.selectedFile);
+        const newImageUrl = await getDownloadURL(uploadResult.ref);
+
+        // Update the current image URL in the component's state
+        this.imageUrl = newImageUrl;
+
+        console.log("Image updated successfully:", newImageUrl);
+      } catch (error) {
+        console.error("Failed to update image:", error);
+      }
+    },
+    async deleteGroupFromFirestore(groupID) {
+      const groupDocRef = doc(db, "group", groupID);
+      await deleteDoc(groupDocRef);
+    },
+    async deleteMembersfromGroup(groupID) {
+      // get GroupMembers array from Group
+      const groupDocRef = doc(db, "group", groupID);
+      const groupDocSnapshot = await getDoc(groupDocRef);
+      const groupData = groupDocSnapshot.data();
+      const groupMembers = groupData.GroupMembers || [];
+
+      // find each member and delete the group
+      for (const groupMemberID of groupMembers) {
+        await this.removeGroupFromUser(groupMemberID);
+      }
+    },
+    async deleteGroup() {
+      // all users group array must no longer contain current group
+      await this.deleteMembersfromGroup(this.group);
+      await this.deleteGroupFromFirestore(this.group);
+      this.$router.push({ name: "MyGroups" });
+    },
+
+    showWarning(memberId = null) {
+      if (memberId instanceof Event) {
+        this.condition = "deleteGroup";
+      } else {
+        this.selectedMemberId = memberId;
+        this.condition = "deleteMemberFromGroup";
+      }
+      this.showWarningMessage = true;
+    },
+    hideWarning() {
+      this.showWarningMessage = false;
+    },
+  },
+  created() {
+    this.fetchGroupData();
+  },
+};
 </script>
 
 <style scoped>
@@ -341,7 +427,7 @@ export default {
   padding: 20px;
   margin-top: 30px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .members-list {

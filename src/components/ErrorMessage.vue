@@ -56,7 +56,10 @@
           this.displayMessage = "The email you entered is already in use";
         }
         else if (this.condition === "errorRegistration" && this.error == "Postal code invalid. Please try again.") {
-          this.displayMessage = "Postal code entered is invalid! Please try again.";
+          this.displayMessage = "Invalid postal code! Please try again.";
+        }
+        else if (this.condition === "errorRegistration" && this.error == "Firebase: Error (auth/invalid-email).") {
+          this.displayMessage = "The email entered is invalid! Please try again.";
         }
         else {
           this.displayMessage = "Something went wrong! Please try again";

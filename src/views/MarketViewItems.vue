@@ -61,8 +61,8 @@ export default {
 .nav {
   width: 15%; /* Adjust the width as needed */
   position: sticky;
-  top: 50px;
-  margin-top: 66px;
+  top: 100px;
+  border-top: 66px;
   height: 10vh; /* Make it full height */
   overflow-y: auto; /* Allow scrolling if needed */
 }

@@ -5,7 +5,7 @@
         <li><router-link :to="{name: 'MarketplaceMyList'}"><img src="@/assets/sell_icon.png" alt="Calender"></router-link></li>
         <li><router-link :to="{name: 'MarketplaceDealReq'}"><img src="@/assets/approve.png" alt="Setting"></router-link></li>
     </ul>
-    </template>
+</template>
     
 <script>
 import firebaseApp from '../firebase.js';
@@ -29,6 +29,10 @@ export default {
 <style scoped>
     body {
             margin: 0;
+    }
+    
+    .vertnav {
+        margin-top: 66px;
     }
     
     ul {
@@ -63,14 +67,5 @@ export default {
     img {
         height: 40px;
         width: 40px;
-    }
-    
-    #football_group {
-        border-radius: 45px;
-        height: 50px;
-        width: 50px;
-        margin: 0px;
-        padding: 0px;
-        border: 1px solid #555; /* Add border */
     }
 </style>

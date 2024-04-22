@@ -277,6 +277,17 @@ export default {
 
     // Google Registration Function
     async registerWithGoogle(event) {
+      // clear all fields in case user filled to prevent errors
+      this.email = "";
+      this.password = "";
+      this.username = "";
+      this.address = "";
+      this.postalCode = "";
+      this.dateOfBirth = "";
+      this.gender = "";
+      this.telegramHandle = "";
+      this.selectedIcon = null;
+      
       // Prevent form from submitting
       event.preventDefault();
       event.stopPropagation();
@@ -388,12 +399,13 @@ export default {
 <style scoped>
   .register {
     text-align: center;
+    display: flex;
+    justify-content: center;
   }
 
   .registerbox {
+    position: fixed;
     margin-top: 3%;
-    margin-left: 25%;
-    margin-right: 25%;
     border: 1px solid;
     border-radius: 12px;
     display: flex;

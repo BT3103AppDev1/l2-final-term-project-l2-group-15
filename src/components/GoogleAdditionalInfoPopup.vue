@@ -56,7 +56,7 @@ import SuccessMessage from "@/components/SuccessMessage.vue";
 export default {
   components: {
     IconSelectionPopup,
-    SuccessMessage
+    SuccessMessage,
   },
   data() {
     return {

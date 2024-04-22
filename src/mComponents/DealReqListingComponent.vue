@@ -11,6 +11,7 @@
               <button>View Contact Details</button>
             </div>
             <div v-else class="buy-request">
+              <h3>Deal Pending</h3>
               <button @click="goDealReq()">View Buy Request</button>      
             </div>
         </div>

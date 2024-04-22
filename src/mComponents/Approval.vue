@@ -2,7 +2,6 @@
     <div class="group-list-item">
         <div class="group-details">
             <h3>{{ user.username }}</h3>
-            <p>Postal Code: {{ user.Location }}</p>
             <button @click="approveReq()"> Approve </button>
             <!--<button @click="rejectReq()" > Reject </button>-->
         </div>
@@ -89,6 +88,7 @@
             this.updateItem()
             this.updateSeller()
             alert('approved')
+            this.$router.push({ name: 'MarketplaceDealReq'})
         },
 
         async getImage(fileID) {

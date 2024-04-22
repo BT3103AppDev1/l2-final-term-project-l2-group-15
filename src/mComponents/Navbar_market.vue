@@ -1,9 +1,9 @@
 <template>
     <ul class="vertnav">
-        <li><router-link :to="{name: 'MarketplaceViewItems'}"><img src="@/assets/football_group.jpg" alt="football icon"></router-link></li>
-        <li><router-link :to="{name: 'MarketplaceSentReq'}"><img src="@/assets/discussion.png" alt="Discussions"></router-link></li>
-        <li><router-link :to="{name: 'MarketplaceMyList'}"><img src="@/assets/calendar.png" alt="Calender"></router-link></li>
-        <li><router-link :to="{name: 'MarketplaceDealReq'}"><img src="@/assets/settings.png" alt="Setting"></router-link></li>
+        <li><router-link :to="{name: 'MarketplaceViewItems'}"><img src="@/assets/buy_icon.png" alt="football icon"></router-link></li>
+        <li><router-link :to="{name: 'MarketplaceSentReq'}"><img src="@/assets/shopping_cart.png" alt="Discussions"></router-link></li>
+        <li><router-link :to="{name: 'MarketplaceMyList'}"><img src="@/assets/sell_icon.png" alt="Calender"></router-link></li>
+        <li><router-link :to="{name: 'MarketplaceDealReq'}"><img src="@/assets/approve.png" alt="Setting"></router-link></li>
     </ul>
     </template>
     

@@ -34,7 +34,7 @@
                   <div class="group-stats">
                       <p><strong>Total members:</strong> {{ group.GroupMembers.length }} </p>  <!-- change to update-->
                       <p><strong>Last event:</strong> 12/5/2023</p>
-                      <p><strong>Admin:</strong> {{ group.GroupAdmin }}</p>
+                      <p><strong>Admin:</strong> {{ groupAdminName }}</p>
                   </div>
                   
                 <div class="join" v-if="! isMember">
@@ -66,7 +66,7 @@
 import { getAuth } from 'firebase/auth';
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";  
-import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
+import { doc, updateDoc, getDoc, getDocs, arrayUnion, collection } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
@@ -97,6 +97,7 @@ export default {
           fileID: this.group.GroupId,
           isMember: false,
           message_passed: "joinGroup",
+          groupAdminName: ''
       }
   },
 
@@ -182,7 +183,23 @@ export default {
         } else {
           this.isMember = false
         }
-      }
+      },
+
+      async getAdminName(userid) {
+          const db = getFirestore(firebaseApp)
+          try {
+            const docs = await getDocs(collection(db, "users"));
+            for (const doc of docs.docs) {
+              if (doc.data().uid == userid) {
+                const username = doc.data().username;
+                console.log("Username retrieved successfully:", username);
+                this.groupAdminName = username; 
+              }
+            }
+          } catch (error) {
+            console.error("Error retrieving username:", error);
+          }
+        }
     },
 
   mounted() {
@@ -192,6 +209,8 @@ export default {
     } catch (e) {
       this.fileURL = null
     }
+
+    this.getAdminName(this.group.GroupAdmin[0]);
   }
   }
 </script>

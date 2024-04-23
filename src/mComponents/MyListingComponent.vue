@@ -11,7 +11,7 @@
             </div>
             <div v-else class="free-div">
               <button @click="$emit('openPopup', this.fileID)">Edit Listing </button>
-              <button>Remove Listing</button>
+              <button @click="removeListing">Remove Listing</button>
             </div>
         </div>
     </div> 
@@ -21,7 +21,7 @@
   import { getAuth } from 'firebase/auth';
   import firebaseApp from '../firebase.js';
   import { getFirestore } from "firebase/firestore";  
-  import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
+  import { doc, updateDoc, getDoc, arrayUnion, deleteDoc} from "firebase/firestore";
   import { getStorage, ref, getDownloadURL } from 'firebase/storage';
   
   export default {
@@ -42,6 +42,7 @@
             isMember: false,
             hasBuyRequest: false,
             isOpen: false,
+            refreshKey: 0,
         }
     },
   
@@ -53,6 +54,22 @@
         toggleSuccess() {
           this.showSuccess = false
           this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
+        },
+
+        async removeListing() {
+          const db = getFirestore(firebaseApp)
+          const itemDocRef = doc(db, 'Items', this.fileID)
+          const itemDocSnap = await getDoc(itemDocRef)
+          const itemData = itemDocSnap.data()
+
+          const sellerID = itemData.sellerID
+          const userDocRef = doc(db, 'users', sellerID)
+          const userDocSnap = await getDoc(userDocRef)
+          const userData = userDocSnap.data()
+          const updatedListedItems = userData.listedItem.filter(id => id !== this.fileID);
+          await updateDoc(userDocRef, { listedItem: updatedListedItems });
+          await deleteDoc(itemDocRef)
+          this.$router.push({ name: 'MarketplaceViewItems'})
         },
   
         async updateUserDBJoin(documentId, newGroupId) {

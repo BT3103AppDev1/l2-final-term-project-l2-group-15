@@ -11,7 +11,7 @@ import EditListing from '@/mComponents/EditListing.vue'
             <h1> You have no active listings </h1>
       </div>
       <div v-for="item in item_list" :key="item.id" class="group">
-        <MyListingComponent :item="item" @openPopup="togglePopup" />
+        <MyListingComponent :item="item" @openPopup="togglePopup"/>
       </div>
     </div>
 

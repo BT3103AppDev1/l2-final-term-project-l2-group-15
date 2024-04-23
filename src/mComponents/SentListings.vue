@@ -89,7 +89,6 @@ h1 {
 }
 
 .groupFlexbox {
-  display: flex;
   flex-wrap: wrap;
   text-align: center;
 }

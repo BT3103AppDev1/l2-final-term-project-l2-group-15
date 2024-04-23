@@ -6,11 +6,14 @@
 
 <template>
   <body>
-      <Navbar_global />
-      <div class="container">
-        <div class="nav">
+      <div class="global-nav">
+        <Navbar_global />
+      </div>
+
+      <div class="nav">
           <NavBar_market />
-        </div>
+      </div>
+      <div class="container">
         <div class="list">
           <div class="list-header">
             <h1>Sent Requests</h1>
@@ -38,26 +41,39 @@ export default {
 <style scoped>
 
 .container {
-  padding:0px;
-  margin: 0px;
-  display: grid;
-  grid-template-columns: 3fr 35fr;
+  padding: 0;
+  margin-left: 100px;
+  margin-top:67px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute items evenly */
 }
 
-
+/* List of items */
 .list {
-  width: 100%;
-  margin:auto;
+  width: 85%; /* Adjust the width as needed */
 }
 
-.list-header {
-  margin-left: 1.5vh;
+img {
+  padding-top: 25px;
+  max-width: 100px;
+}
+/* Market Navbar */
+
+.nav {
+  width: 15%; /* Adjust the width as needed */
+  position: fixed;
+  border-top: 66px;
+  overflow-y: auto; /* Allow scrolling if needed */
 }
 
-
-.nav{
-  margin-right: 0.5vh;
-  width:50%;
+/* Global Navbar */
+.global-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 </style>

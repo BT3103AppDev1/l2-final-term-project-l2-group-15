@@ -1,47 +1,50 @@
-<script setup>
-  import Navbar_global from '@/components/Navbar_global.vue'
-  import NavBar_market from '@/mComponents/Navbar_market.vue'
-  import Approval from '@/mComponents/Approval.vue'
-</script>
-
 <template>
   <body>
+    <!-- Global Navbar -->
+    <div class="global-nav">
       <Navbar_global />
-      <div class="container">
-        <div class="nav">
-          <NavBar_market />
-        </div>
-        <div class="list">
-            <div class="group-image">
+    </div>
+
+    <div class="nav">
+        <NavBar_market />
+    </div>
+
+    <div class="container">
+      <!-- List of Approval Items -->
+      <div class="list">
+        <div class="list-header">
+        <h1> Deal Requests </h1>
+          <div class="group-image">
                 <img :src='fileURL' alt="No Image Logo"/>
             </div>
-          <div class="list-header">
-            <div class="create-btn-container">
-              <h1>{{ itemName }}</h1>
-            </div>
-          </div>
-          <div>
-            <div v-for="users in buyerList" :key="users.id" class="user_list">
-                <Approval :user="users" :itemID="itemID"/>
-            </div>
+          <h1>Item Name: {{ itemName }}</h1>
+        </div>
+        <div class="approval-items">
+          <div v-for="user in buyerList" :key="user.id" class="user-item">
+            <Approval :user="user" :itemID="itemID" />
           </div>
         </div>
       </div>
+    </div>
   </body>
 </template>
 
-
-
 <script>
-
 import { getAuth } from 'firebase/auth';
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";  
 import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-  
-export default {
+import Navbar_global from '@/components/Navbar_global.vue'
+import NavBar_market from '@/mComponents/Navbar_market.vue'
+import Approval from '@/mComponents/Approval.vue'
 
+export default {
+  components: {
+    Navbar_global,
+    NavBar_market,
+    Approval
+  },
   data() {
     return {
       isOpen:false,
@@ -54,33 +57,32 @@ export default {
   },
 
   methods: {
-
     async getImage(fileID) {
-        try {
-            let storage = getStorage()
-            let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
-            let fileRef = ref(storage, filePath)
-            let fileURL = await getDownloadURL(fileRef)
-            this.fileURL = fileURL
-        } catch (error) {
-            console.log("No Image Found")
-        }
+      try {
+          let storage = getStorage()
+          let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
+          let fileRef = ref(storage, filePath)
+          let fileURL = await getDownloadURL(fileRef)
+          this.fileURL = fileURL
+      } catch (error) {
+          console.log("No Image Found")
+      }
     },
 
     async getItemDetails(fileID) {
-        const db = getFirestore(firebaseApp)
-        const itemDocRef = doc(db, 'Items', fileID)
-        const itemDocSnap = await getDoc(itemDocRef)
-        const itemData = itemDocSnap.data()
-        this.itemName = itemData.Name
-        const buyerIDList = itemData.buyerID
+      const db = getFirestore(firebaseApp)
+      const itemDocRef = doc(db, 'Items', fileID)
+      const itemDocSnap = await getDoc(itemDocRef)
+      const itemData = itemDocSnap.data()
+      this.itemName = itemData.Name
+      const buyerIDList = itemData.buyerID
 
-        for (const id of buyerIDList) {
-            const buyerDocRef = doc(db, 'users', id)
-            const buyerDocSnap = await getDoc(buyerDocRef)
-            const buyerData = buyerDocSnap.data()
-            this.buyerList.push(buyerData)
-        }
+      for (const id of buyerIDList) {
+          const buyerDocRef = doc(db, 'users', id)
+          const buyerDocSnap = await getDoc(buyerDocRef)
+          const buyerData = buyerDocSnap.data()
+          this.buyerList.push(buyerData)
+      }
     },
 
   },
@@ -93,33 +95,37 @@ export default {
 }
 </script>
 
-
 <style scoped>
-
 .container {
-  padding:0px;
-  margin: 0px;
-  display: grid;
-  grid-template-columns: 3fr 35fr;
-}
-
-
-.list {
-  width: 100%;
-  margin:auto;
-}
-
-.list-header {
-  margin-left: 1.5vh;
-}
-
-.create-btn-container {
+  padding: 0;
+  margin-left: 100px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute items evenly */
 }
 
-.nav{
-  margin-right: 0.5vh;
-  width:50%;
+/* List of items */
+.list {
+  width: 85%; /* Adjust the width as needed */
+}
+
+img {
+  padding-top: 25px;
+  max-width: 100px;
+}
+/* Market Navbar */
+.nav {
+  width: 15%; /* Adjust the width as needed */
+  position: fixed;
+  border-top: 66px;
+  overflow-y: auto; /* Allow scrolling if needed */
+}
+
+/* Global Navbar */
+.nav-global {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 </style>

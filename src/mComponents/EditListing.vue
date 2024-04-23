@@ -227,7 +227,6 @@ export default {
     opacity: 0;
     overflow: hidden;
     position: absolute;
-    z-index: -1;
 }
 
 .image-section, .fields-section {

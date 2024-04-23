@@ -6,11 +6,16 @@
 
 <template>
   <body>
+    <!-- Global Navbar -->
+    <div class="global-nav">
       <Navbar_global />
+    </div>
+
+    <div class="nav">
+        <NavBar_market />
+    </div>
+
       <div class="container">
-        <div class="nav">
-          <NavBar_market />
-        </div>
         <div class="list">
           <div class="list-header">
             <div class="create-btn-container">
@@ -40,29 +45,36 @@ export default {
 <style scoped>
 
 .container {
-  padding:0px;
-  margin: 0px;
-  display: grid;
-  grid-template-columns: 3fr 35fr;
-}
-
-
-.list {
-  width: 100%;
-  margin:auto;
-}
-
-.list-header {
-  margin-left: 1.5vh;
-}
-
-.create-btn-container {
+  padding: 0;
+  margin-left: 100px;
+  margin-top:67px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute items evenly */
 }
 
-.nav{
-  margin-right: 0.5vh;
-  width:50%;
+/* List of items */
+.list {
+  width: 85%; /* Adjust the width as needed */
+}
+
+img {
+  padding-top: 25px;
+  max-width: 100px;
+}
+/* Market Navbar */
+.nav {
+  width: 15%; /* Adjust the width as needed */
+  position: fixed;
+  overflow-y: auto; /* Allow scrolling if needed */
+}
+
+/* Global Navbar */
+.global-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 </style>

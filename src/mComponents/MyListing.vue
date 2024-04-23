@@ -8,10 +8,10 @@ import EditListing from '@/mComponents/EditListing.vue'
     <br/>
     <div class="groupFlexbox">
       <div v-if="item_list.length === 0" class="no-item-msg">
-            <h1> You have no listed anything yet </h1>
+            <h1> You have no active listings </h1>
       </div>
       <div v-for="item in item_list" :key="item.id" class="group">
-        <MyListingComponent :item="item" @openPopup="togglePopup" />
+        <MyListingComponent :item="item" @openPopup="togglePopup"/>
       </div>
     </div>
 
@@ -93,7 +93,6 @@ h1 {
 }
 
 .groupFlexbox {
-  display: flex;
   flex-wrap: wrap;
   text-align: center;
 }

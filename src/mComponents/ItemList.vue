@@ -4,7 +4,8 @@ import ItemListComponent from '@/mComponents/ItemListComponent.vue';
 
 <template>
   <div>
-    <h1>All Items List </h1>
+    <h1> All Items List </h1>
+    <br/>
     <div class="grid-container">
       <div v-for="item in Items" :key="item.id" class="group">
           <ItemListComponent :item="item"/>
@@ -155,7 +156,7 @@ export default {
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(40%, 40% )); /* Adjust column width as needed */
+  grid-template-columns: repeat(auto-fit, minmax(49%, 49% )); /* Adjust column width as needed */
   gap: 10px; /* Adjust gap between items as needed */
 }
 

@@ -427,7 +427,7 @@ export default {
 
     closeErrorMessage() {
       this.showError = false;
-    }
+    },
     
     async cancelGoogleAuth() {
       try {

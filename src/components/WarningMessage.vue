@@ -1,11 +1,10 @@
 <template>
   <div class="modal">
     <div class="model-flexbox">
+      <span class="close" @click="handleCancel">&times;</span>
       <img id="warnImg" src="@/assets/warn.png" alt="warnCheck" />
-      <p id="warningMessage">Warning!</p>
       <span id="message">{{ displayMessage }}</span>
-      <button @click="handleConfirm">Confirm</button>
-      <button @click="handleCancel">Cancel</button>
+      <button id="button" @click="handleConfirm">Confirm</button>
     </div>
   </div>
 </template>
@@ -50,20 +49,19 @@ export default {
     // Get the warning message from parent component
     getMessage() {
       if (this.condition === "deleteMemberFromGroup") {
-        this.displayMessage = "You are about to remove user from group";
+        this.displayMessage =
+          "Warning! You are about to remove user from group";
       } else if (this.condition === "deleteGroup") {
-        this.displayMessage = "You are about to delete group!";
+        this.displayMessage = "Warning! You are about to delete group!";
       } else if (this.condition === "deleteDiscussion") {
         this.displayMessage =
-          "Deleting Discussion will delete all message threads";
+          "Warning! Deleting Discussion will delete all message threads";
       } else if (this.condition === "deleteReply") {
         this.displayMessage =
-          "Members will no longer be able to view deleted reply";
+          "Warning! Members will no longer be able to view deleted reply";
       } else if (this.condition === "deleteEvent") {
         this.displayMessage =
-          "Deleting Event will remove all joined members from Event";
-      } else if (this.condition === "leaveEvent") {
-        this.displayMessage = "Leaving Event ";
+          "Warning! Deleting Event will remove all joined members from Event";
       }
     },
 
@@ -104,40 +102,55 @@ export default {
 }
 
 .model-flexbox {
-  background: linear-gradient(lightgreen 68%, white 20%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgb(233, 119, 119) 62%, white 20%);
   margin: 10% auto;
   padding: 20px;
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  position: relative;
 }
 
 img {
   margin-top: 10px;
-  margin-left: 20px;
   width: 160px;
   height: 160px;
   padding: 0px;
-  margin-bottom: 0px;
-}
-
-#successMessage {
-  margin-bottom: 10px;
-  font-size: 30px;
-  color: #12b332;
+  margin-bottom: 15px;
 }
 
 .close {
-  float: right;
+  position: absolute;
+  top: 10px;
+  right: 10px;
   font-size: 1.5rem;
   font-weight: bold;
   cursor: pointer;
 }
 
 #message {
-  margin-top: 10px;
+  margin-top: 20px;
   font-size: 20px;
   margin-bottom: 0px;
+}
+
+#button {
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-top: 15px;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div class="popup-container">
     <div class="popup">
+      <span class="close" @click="handleCancel">&times;</span>
       <h3>Complete Your Profile</h3>
       <form @submit.prevent="submit">
-        
         <div class="profile-icon-container">
           <div v-if="selectedIcon === 'icon1.png'" class="selected-icon">
             <img src="@/assets/icon1.png" alt="Selected Icon" />
@@ -17,33 +17,53 @@
           <div v-else class="image-placeholder">
             <img src="../assets/add-icon.png" alt="Profile Icon Placeholder" />
           </div>
-          <button class="iconbutton" type="button" @click="showIconSelection = true">
+          <button
+            class="iconbutton"
+            type="button"
+            @click="showIconSelection = true"
+          >
             Choose Profile Icon
           </button>
         </div>
 
-        <div class = "registerbox">
-          <div class = "registerbox-content">
-          <label for="username">Username</label>
-          <input type="text" placeholder="Username" v-model="username" /><br>
-          <label for="address">Address</label>
-          <input type="text" placeholder="Address" v-model="address" /><br>
-          <label for="postalCode">Postal Code</label>
-          <input type="text" placeholder="Postal Code" v-model="postalCode" /><br>
-          <label for="dateOfBirth">Date of Birth</label
-          ><input type="date" v-model="dateOfBirth" /><br>
-          <label for="gender">Gender</label>
-          <select placeholder="Gender" v-model="gender">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select><br>
-          <label for="telegramHandle">Telegram Handle</label>
-          <input type="text" placeholder="Telegram Handle" v-model="telegramHandle"/><br>
-          
-          <IconSelectionPopup :isVisible="showIconSelection" @iconSelected="iconSelected" @close="showIconSelection = false" ></IconSelectionPopup>
+        <div class="registerbox">
+          <div class="registerbox-content">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              placeholder="Username"
+              v-model="username"
+            /><br />
+            <label for="address">Address</label>
+            <input type="text" placeholder="Address" v-model="address" /><br />
+            <label for="postalCode">Postal Code</label>
+            <input
+              type="text"
+              placeholder="Postal Code"
+              v-model="postalCode"
+            /><br />
+            <label for="dateOfBirth">Date of Birth</label
+            ><input type="date" v-model="dateOfBirth" /><br />
+            <label for="gender">Gender</label>
+            <select placeholder="Gender" v-model="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option></select
+            ><br />
+            <label for="telegramHandle">Telegram Handle</label>
+            <input
+              type="text"
+              placeholder="Telegram Handle"
+              v-model="telegramHandle"
+            /><br />
+
+            <IconSelectionPopup
+              :isVisible="showIconSelection"
+              @iconSelected="iconSelected"
+              @close="showIconSelection = false"
+            ></IconSelectionPopup>
+          </div>
+          <button class="button" type="submit">Submit</button>
         </div>
-        <button class="button" type="submit">Submit</button>
-      </div>
       </form>
     </div>
   </div>
@@ -51,7 +71,7 @@
 
 <script>
 import IconSelectionPopup from "@/components/IconSelectionPopup.vue";
-import SuccessMessage from "@/components/SuccessMessage.vue"; 
+import SuccessMessage from "@/components/SuccessMessage.vue";
 
 export default {
   components: {
@@ -129,7 +149,6 @@ h3 {
   color: white;
   font-weight: bold;
   background-color: #007bff; /* Bootstrap primary */
-  margin-left: auto;
   margin-bottom: 0px;
 }
 
@@ -177,6 +196,7 @@ h3 {
   padding: 5px;
   width: 60%;
   margin-left: 20%;
+  margin-bottom: 10%;
 }
 
 .registerbox h2 {
@@ -208,5 +228,13 @@ h3 {
   padding: 3px;
   border: 1px solid #ccc;
   margin-bottom: 5px;
+}
+
+.close {
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  right: 260px;
 }
 </style>

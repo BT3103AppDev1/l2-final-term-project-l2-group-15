@@ -128,6 +128,7 @@
           <GoogleAdditionalInfoPopup
             v-if="showPopup"
             @submit="handlePopupSubmit"
+            @close="cancelGoogleAuth"
           />
         </div>
         <SuccessMessage

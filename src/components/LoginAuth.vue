@@ -12,8 +12,16 @@
           <label for="password">Password</label>
           <input type="password" placeholder="Password" v-model="password" />
         </p>
+
         <p>
-          <button class="login-btn" @click="login">Login with email</button>
+          <button class="login-btn" @click="login">
+            <img
+              src="@/assets/maillogo.png"
+              alt="Email Icon"
+              class="email-icon"
+            />
+            &nbsp;Login with email
+          </button>
         </p>
 
         <p>
@@ -22,6 +30,11 @@
             @click="loginWithGoogle"
             class="google-login-btn"
           >
+            <img
+              src="@/assets/googlelogo.png"
+              alt="Google Icon"
+              class="google-icon"
+            />
             Login with Google
           </button>
         </p>
@@ -169,9 +182,16 @@ const closeErrorMessage = () => {
     border: 1px solid black;
   }
 
-  .google-login-btn {
-    background-color: white;
-    color: black;
-    border: 1px solid;
+.google-login-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid;
+}
+
+@media (max-width: 768px) {
+  .loginbox {
+    margin-left: 10%;
+    margin-right: 10%;
   }
+}
 </style>

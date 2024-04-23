@@ -86,6 +86,9 @@ export default {
       this.selectedIcon = iconPath;
       console.log(this.selectedIcon);
     },
+    handleCancel() {
+      this.$emit("close");
+    },
   },
 };
 </script>
@@ -206,5 +209,4 @@ h3 {
   border: 1px solid #ccc;
   margin-bottom: 5px;
 }
-
 </style>

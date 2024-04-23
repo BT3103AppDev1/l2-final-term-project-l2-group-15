@@ -93,8 +93,31 @@
         </div>
 
         <p>
-          <button type="submit" class="register-btn">Sign Up With Email</button>
+          <button type="submit" class="register-btn">
+            <img
+              src="@/assets/maillogo.png"
+              alt="Email Icon"
+              class="email-icon"
+            />
+            Sign Up With Email
+          </button>
         </p>
+
+        <p>
+          <button
+            type="button"
+            @click="registerWithGoogle"
+            class="google-login-btn"
+          >
+            <img
+              src="@/assets/googlelogo.png"
+              alt="Google Icon"
+              class="google-icon"
+            />
+            Sign Up With Google
+          </button>
+        </p>
+
         <IconSelectionPopup
           :isVisible="showIconSelection"
           @iconSelected="iconSelected"
@@ -212,6 +235,7 @@ export default {
         );
         userCreated = true;
 
+        // Check postal code validity
         const postalCodeValid = await this.isPostalCodeValid(this.postalCode);
 
         // postal code validation
@@ -226,6 +250,7 @@ export default {
           throw new Error("Please make sure all fields are filled.");
         }
 
+        // User information
         const userData = {
           uid: user.uid,
           username: this.username,
@@ -238,9 +263,15 @@ export default {
           selectedIcon: this.selectedIcon,
           events: [],
           groups: [],
+          receivedRequestforItem: [],
+          sentRequestforItem: [],
+          listedItem: [],
         };
 
         this.user_Id = user.uid;
+        
+        // Setting user information on firebase
+        this.userId = user.uid;
         const userDocRef = doc(firestore, "users", user.uid);
         await setDoc(userDocRef, userData);
         console.log("Registration Success");
@@ -284,6 +315,7 @@ export default {
       event.stopPropagation();
       const provider = new GoogleAuthProvider();
       try {
+        // Google Popup
         const result = await signInWithPopup(this.auth, provider);
         const user = result.user;
         this.showPopup = true;
@@ -296,11 +328,13 @@ export default {
           throw new Error("Account already exists.");
         }
 
+        // User information
         const userData = {
           uid: user.uid,
           email: user.email,
         };
 
+        // Set user info into firebase
         await setDoc(userDocRef, userData);
       } catch (error) {
         console.error("Error during registration:", error);
@@ -315,6 +349,7 @@ export default {
 
     // Function to handle popup for additional info after google authentication (ie. email is ok and valid)
     async handlePopupSubmit(additionalInfo) {
+      // For icon popup selection
       if (this.isLoading) return;
       this.isLoading = true;
 
@@ -322,7 +357,7 @@ export default {
       const userDocRef = doc(firestore, "users", user.uid);
 
       try {
-        // First, validate the postal code
+        // Postal Code Validation
         const postalCodeValid = await this.isPostalCodeValid(
           additionalInfo.postalCode
         );
@@ -357,6 +392,9 @@ export default {
             selectedIcon: additionalInfo.selectedIcon,
             events: [],
             groups: [],
+            receivedRequestforItem: [],
+            sentRequestforItem: [],
+            listedItem: [],
           },
           { merge: true }
         );
@@ -371,12 +409,12 @@ export default {
         this.errorMessage = error.message;
         this.message_passed = "errorRegistration"
         this.showError = true;
-        console.log("hereeee -->", this.errorMessage, "lol")
       } finally {
         this.isLoading = false;
       }
     },
 
+    // Handle Selected Icon
     iconSelected(iconPath) {
       this.selectedIcon = iconPath;
       console.log(this.selectedIcon);
@@ -390,8 +428,20 @@ export default {
     closeErrorMessage() {
       this.showError = false;
     }
+    
+    async cancelGoogleAuth() {
+      try {
+        const user = this.auth.currentUser;
+        await user.delete();
+        console.log("User account deleted successfully");
+        this.showPopup = false;
+      } catch (error) {
+        console.error("Error deleting user account:", error);
+      }
+    },
   },
   computed: {
+    // Create path to Selected Icon
     imageSrc() {
       console.log(`@/assets/${this.selectedIcon}`);
       return new URL(`@/assets/${this.selectedIcon}`, import.meta.url).href;
@@ -543,4 +593,186 @@ export default {
     cursor: pointer;
     font-size: 13px;
   }
+</style>
+=======
+<style>
+.register {
+  text-align: center;
+}
+
+.registerbox {
+  margin-top: 5%;
+  margin-left: 25%;
+  margin-right: 25%;
+  border: 1px solid;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.registerbox p {
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.registerbox label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.registerbox input {
+  width: 150px;
+  padding: 3px;
+  border: 1px solid #ccc;
+}
+
+.registerbox select {
+  width: 160px;
+  padding: 3px;
+  border: 1px solid #ccc;
+}
+
+.registerbox button:hover {
+  opacity: 0.9;
+}
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  margin-inline: 40px;
+}
+
+.formcol {
+  padding: 0 30px;
+}
+
+.emailpwgroup {
+  margin-top: 50px;
+}
+
+.profile-icon-container {
+  margin-top: 40px;
+}
+
+.email-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.google-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.register-btn {
+  background-color: rgb(227, 47, 47);
+  color: white;
+  border: 1px solid black;
+  font-size: 11px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 1px;
+  width: 40%;
+  box-sizing: border-box;
+  margin-bottom: 1px;
+}
+
+.google-login-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid;
+  font-size: 11px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 1px;
+  width: 40%;
+  box-sizing: border-box;
+  margin-bottom: 1px;
+}
+
+.iconbutton {
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: block;
+  width: 75%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.image-placeholder {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  margin: auto;
+}
+
+.image-placeholder img {
+  width: 50%;
+  height: 50%;
+  padding-left: 8px;
+  object-fit: cover;
+}
+
+.selected-icon img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .registerbox {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+
+  .registerbox input,
+  .registerbox select {
+    width: 100%;
+  }
+
+  .form {
+    flex-direction: column;
+  }
+
+  .formcol {
+    padding: 0;
+  }
+
+  .emailpwgroup {
+    margin-top: 5px;
+  }
+
+  .register-btn,
+  .google-login-btn,
+  .iconbutton {
+    width: 70%;
+  }
+
+  .profile-icon-container {
+    margin-top: 10px;
+  }
+}
 </style>

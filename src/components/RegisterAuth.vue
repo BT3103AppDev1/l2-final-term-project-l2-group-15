@@ -125,20 +125,23 @@
         ></IconSelectionPopup>
 
         <div v-if="showPopup" class="backdrop">
-          <GoogleAdditionalInfoPopup v-if="showPopup" @submit="handlePopupSubmit" />
+          <GoogleAdditionalInfoPopup
+            v-if="showPopup"
+            @submit="handlePopupSubmit"
+          />
         </div>
-        <SuccessMessage v-if="registrationStatus === 'success'" :condition="message_passed" :user_id="user_id"/>
-        <ErrorMessage v-if="showError" :condition="message_passed" :user_id="user_id" :error="errorMessage" @close="closeErrorMessage"/>
-
-        <p>
-          <button
-            type="button"
-            @click="registerWithGoogle"
-            class="google-login-btn"
-          >
-            Sign Up With Google
-          </button>
-        </p>
+        <SuccessMessage
+          v-if="registrationStatus === 'success'"
+          :condition="message_passed"
+          :user_id="user_id"
+        />
+        <ErrorMessage
+          v-if="showError"
+          :condition="message_passed"
+          :user_id="user_id"
+          :error="errorMessage"
+          @close="closeErrorMessage"
+        />
       </form>
     </div>
   </div>
@@ -158,8 +161,7 @@ import AuthPopup from "@/components/AuthPopup.vue";
 import GoogleAdditionalInfoPopup from "@/components/GoogleAdditionalInfoPopup.vue";
 import IconSelectionPopup from "@/components/IconSelectionPopup.vue";
 import SuccessMessage from "./SuccessMessage.vue";
-import ErrorMessage from "@/components/ErrorMessage.vue"; 
-
+import ErrorMessage from "@/components/ErrorMessage.vue";
 
 export default {
   components: {
@@ -245,7 +247,17 @@ export default {
         }
 
         // check if all fields field validation
-        if (!this.email || !this.password || !this.username || !this.address || !this.postalCode || !this.dateOfBirth || !this.gender || !this.telegramHandle || !this.selectedIcon) {
+        if (
+          !this.email ||
+          !this.password ||
+          !this.username ||
+          !this.address ||
+          !this.postalCode ||
+          !this.dateOfBirth ||
+          !this.gender ||
+          !this.telegramHandle ||
+          !this.selectedIcon
+        ) {
           this.registrationStatus = "error";
           throw new Error("Please make sure all fields are filled.");
         }
@@ -269,21 +281,21 @@ export default {
         };
 
         this.user_Id = user.uid;
-        
+
         // Setting user information on firebase
         this.userId = user.uid;
         const userDocRef = doc(firestore, "users", user.uid);
         await setDoc(userDocRef, userData);
         console.log("Registration Success");
         this.registrationStatus = "success";
-        this.message_passed = "registrationSuccess"
+        this.message_passed = "registrationSuccess";
       } catch (error) {
         console.error("Error during registration:", error);
         this.registrationStatus = "error";
         this.showError = true;
-        this.message_passed = "errorRegistration"
+        this.message_passed = "errorRegistration";
         this.errorMessage = error.message;
-        console.log("hereeee -->", this.errorMessage, "lol")
+        console.log("hereeee -->", this.errorMessage, "lol");
 
         // if error, delete user
         if (userCreated) {
@@ -309,7 +321,7 @@ export default {
       this.gender = "";
       this.telegramHandle = "";
       this.selectedIcon = null;
-      
+
       // Prevent form from submitting
       event.preventDefault();
       event.stopPropagation();
@@ -342,8 +354,8 @@ export default {
         this.errorMessage = error.message;
         this.showError = true;
         this.showPopup = false;
-        this.message_passed = "errorRegistration"
-        console.log("hereeee -->", this.errorMessage, "lol")
+        this.message_passed = "errorRegistration";
+        console.log("hereeee -->", this.errorMessage, "lol");
       }
     },
 
@@ -369,10 +381,15 @@ export default {
         }
 
         // check if all fields field validation
-        if (!additionalInfo.username || !additionalInfo.address ||
-          !additionalInfo.postalCode || !additionalInfo.dateOfBirth ||
-          !additionalInfo.gender || !additionalInfo.telegramHandle ||
-          !additionalInfo.selectedIcon) {
+        if (
+          !additionalInfo.username ||
+          !additionalInfo.address ||
+          !additionalInfo.postalCode ||
+          !additionalInfo.dateOfBirth ||
+          !additionalInfo.gender ||
+          !additionalInfo.telegramHandle ||
+          !additionalInfo.selectedIcon
+        ) {
           this.registrationStatus = "error";
           throw new Error("Please make sure all fields are filled.");
         }
@@ -401,13 +418,13 @@ export default {
 
         this.registrationStatus = "success";
         console.log("Additional information saved successfully");
-        this.message_passed = "registrationSuccess"
+        this.message_passed = "registrationSuccess";
         this.showPopup = false;
       } catch (error) {
         console.error("Error saving registration information", error);
         this.registrationStatus = "error";
         this.errorMessage = error.message;
-        this.message_passed = "errorRegistration"
+        this.message_passed = "errorRegistration";
         this.showError = true;
       } finally {
         this.isLoading = false;
@@ -420,15 +437,15 @@ export default {
       console.log(this.selectedIcon);
     },
 
-    closeGooglePopUp(){
+    closeGooglePopUp() {
       this.showPopup = false;
-      console.log("working")
+      console.log("working");
     },
 
     closeErrorMessage() {
       this.showError = false;
     },
-    
+
     async cancelGoogleAuth() {
       try {
         const user = this.auth.currentUser;
@@ -451,148 +468,148 @@ export default {
 </script>
 
 <style scoped>
-  .register {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-  }
+.register {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
 
-  .registerbox {
-    position: fixed;
-    margin-top: 3%;
-    border: 1px solid;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
-  }
+.registerbox {
+  position: fixed;
+  margin-top: 3%;
+  border: 1px solid;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+}
 
-  .registerbox p {
-    font-size: 11px;
-    font-weight: bold;
-  }
+.registerbox p {
+  font-size: 11px;
+  font-weight: bold;
+}
 
-  .registerbox label {
-    display: block;
-    margin-bottom: 5px;
-  }
+.registerbox label {
+  display: block;
+  margin-bottom: 5px;
+}
 
-  .registerbox input {
-    width: 150px;
-    padding: 3px;
-    border: 1px solid #ccc;
-  }
+.registerbox input {
+  width: 150px;
+  padding: 3px;
+  border: 1px solid #ccc;
+}
 
-  .registerbox select {
-    width: 160px;
-    padding: 3px;
-    border: 1px solid #ccc;
-  }
+.registerbox select {
+  width: 160px;
+  padding: 3px;
+  border: 1px solid #ccc;
+}
 
-  .registerbox button:hover {
-    opacity: 0.9;
-  }
+.registerbox button:hover {
+  opacity: 0.9;
+}
 
-  .form {
-    display: flex;
-    justify-content: space-between;
-    margin-inline: 40px;
-  }
+.form {
+  display: flex;
+  justify-content: space-between;
+  margin-inline: 40px;
+}
 
-  .formcol {
-    padding: 0 30px;
-  }
+.formcol {
+  padding: 0 30px;
+}
 
-  .emailpwgroup {
-    margin-top: 50px;
-  }
+.emailpwgroup {
+  margin-top: 50px;
+}
 
-  .profile-icon-container {
-    margin-top: 40px;
-  }
+.profile-icon-container {
+  margin-top: 40px;
+}
 
-  .register-btn {
-    background-color: rgb(227, 47, 47);
-    color: white;
-    border: 1px solid black;
-    font-size: 11px;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-top: 1px;
-    width: 40%;
-    box-sizing: border-box;
-    margin-bottom: 1px;
-  }
+.register-btn {
+  background-color: rgb(227, 47, 47);
+  color: white;
+  border: 1px solid black;
+  font-size: 11px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 1px;
+  width: 40%;
+  box-sizing: border-box;
+  margin-bottom: 1px;
+}
 
-  .google-login-btn {
-    background-color: white;
-    color: black;
-    border: 1px solid;
-    font-size: 11px;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-top: 1px;
-    width: 40%;
-    box-sizing: border-box;
-    margin-bottom: 1px;
-  }
+.google-login-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid;
+  font-size: 11px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 1px;
+  width: 40%;
+  box-sizing: border-box;
+  margin-bottom: 1px;
+}
 
-  .iconbutton {
-    padding: 5px 10px;
-    font-size: 11px;
-    cursor: pointer;
-    margin-top: 10px;
-    display: block;
-    width: 75%;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-  }
+.iconbutton {
+  padding: 5px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: block;
+  width: 75%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
 
-  .backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-  }
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
 
-  .image-placeholder {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    margin: auto;
-  }
+.image-placeholder {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  margin: auto;
+}
 
-  .image-placeholder img {
-    width: 50%;
-    height: 50%;
-    padding-left: 8px;
-    object-fit: cover;
-  }
+.image-placeholder img {
+  width: 50%;
+  height: 50%;
+  padding-left: 8px;
+  object-fit: cover;
+}
 
-  .selected-icon img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-  }
+.selected-icon img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
 
-  .iconbutton {
-    width: 100%;
-    padding: 5px 5px;
-    display: block;
-    color: darkblue;
-    border: none;
-    background-color: white;
-    cursor: pointer;
-    font-size: 13px;
-  }
+.iconbutton {
+  width: 100%;
+  padding: 5px 5px;
+  display: block;
+  color: darkblue;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  font-size: 13px;
+}
 </style>
 =======
 <style>

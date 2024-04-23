@@ -41,17 +41,17 @@
               Delete Event
             </button>
           </div>
-
-          <div v-if="this.showParticipants">
-            <EventParticipants
-              :participants="this.participants"
-              @close="closeEventParticipants"
-            />
-          </div>
         </div>
       </div>
     </div>
   </div>
+  <div v-if="this.showParticipants">
+    <EventParticipants
+      :participants="this.participants"
+      @close="closeEventParticipants"
+    />
+  </div>
+
   <SuccessMessage
     v-if="showSuccess"
     :condition="message_passed"

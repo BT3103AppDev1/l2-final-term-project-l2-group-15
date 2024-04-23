@@ -72,8 +72,14 @@
         },
 
         mounted() {
-            this.fetchEvent(this.event);
+            this.unsubscribe = this.fetchEvent(this.event);
             this.checkMember(this.event);
+        },
+
+        beforeDestroy() {
+            if (this.unsubscribe) {
+                this.unsubscribe();
+            }
         },
 
         methods: {
@@ -103,24 +109,31 @@
                     console.error("Error fetching user data:", error);
                 });
             },
-            async fetchEvent(event) {
+            fetchEvent(event) {
                 const eventRef = doc(db, "Events", event);
-                try {
-                    const docSnap = await getDoc(eventRef);
+                
+                // Listen to changes in real-time
+                const unsubscribeEvent = onSnapshot(eventRef, async (docSnap) => {
                     if (docSnap.exists()) {
-                        // console.log("Event data:", docSnap.data());
+                        console.log("Event data:", docSnap.data());
                         this.eventobj = docSnap.data();
-                        const participantPromises = this.eventobj.EventParticipants.map(async (userId) => {
-                            const userRef = doc(db, "users", userId); // Reference to the user document
-                            const userSnap = await getDoc(userRef);
-                            // console.log(userSnap.data())
-                            if (userSnap.exists()) {
-                                console.log(userSnap.data().username, "LOL")
-                                return userSnap.data().username; 
-                            } else {
-                                console.log(`No user found for ID: ${userId}`);
-                                return null; // Return null or some default value if user not found
-                            }
+                        
+                        // Listen to changes in participant data in real-time
+                        const participantPromises = this.eventobj.EventParticipants.map(userId => {
+                            return new Promise((resolve) => {
+                                const userRef = doc(db, "users", userId);
+                                const unsubscribeUser = onSnapshot(userRef, (userSnap) => {
+                                    if (userSnap.exists()) {
+                                        resolve(userSnap.data().username);  // Assume username is the field you need
+                                    } else {
+                                        console.log(`No user found for ID: ${userId}`);
+                                        resolve(null);  // Resolve with null if no user found
+                                    }
+                                }, (error) => {
+                                    console.error("Error fetching user data:", error);
+                                    resolve(null);  // Resolve with null on error
+                                });
+                            });
                         });
 
                         // Resolve all promises and update the participants array with names
@@ -129,10 +142,44 @@
                     } else {
                         console.log("No such event!");
                     }
-                } catch (error) {
+                }, (error) => {
                     console.error("Error fetching event:", error);
-                }
+                });
+
+                // Return the unsubscribe function so you can stop listening to changes when necessary
+                return unsubscribeEvent;
             },
+
+            // async fetchEvent(event) {
+            //     const eventRef = doc(db, "Events", event);
+            //     try {
+            //         const docSnap = await getDoc(eventRef);
+            //         if (docSnap.exists()) {
+            //             // console.log("Event data:", docSnap.data());
+            //             this.eventobj = docSnap.data();
+            //             const participantPromises = this.eventobj.EventParticipants.map(async (userId) => {
+            //                 const userRef = doc(db, "users", userId); // Reference to the user document
+            //                 const userSnap = await getDoc(userRef);
+            //                 // console.log(userSnap.data())
+            //                 if (userSnap.exists()) {
+            //                     console.log(userSnap.data().username, "LOL")
+            //                     return userSnap.data().username; 
+            //                 } else {
+            //                     console.log(`No user found for ID: ${userId}`);
+            //                     return null; // Return null or some default value if user not found
+            //                 }
+            //             });
+
+            //             // Resolve all promises and update the participants array with names
+            //             this.participants = await Promise.all(participantPromises);
+            //             console.log("Participants loaded:", this.participants);
+            //         } else {
+            //             console.log("No such event!");
+            //         }
+            //     } catch (error) {
+            //         console.error("Error fetching event:", error);
+            //     }
+            // },
 
             joinEvent(event_id) {
                 let user_id = this.user

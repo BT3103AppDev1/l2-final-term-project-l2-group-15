@@ -9,8 +9,7 @@ import CreateEventForm from '@/components/CreateEventForm.vue';
         <h1>Events</h1>
         <button class="create-event-btn" @click="isOpen = true">Create Event</button>
       </div>
-      <h2>My Events</h2>
-      <hr>
+      <br>
       <div v-if="isOpen" class="modal">
         <div class="modal-content">
           <button class="close-btn" @click="isOpen = false">Close</button>

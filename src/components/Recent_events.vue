@@ -94,9 +94,9 @@
 <style scoped>
 h2 {
   font-size: 24px;
-  margin-top: 5px;
+  margin-top: 8px;
   margin-left: 10px;
-  margin-bottom: -5px;
+  margin-bottom: -10px;
 }
 
 h3 {

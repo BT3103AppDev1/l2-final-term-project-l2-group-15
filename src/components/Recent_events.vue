@@ -1,18 +1,24 @@
 <template>
-    <div class="Events-container">
-        <h2>Recent Events</h2>
-        <hr>
-        <div id = 'Events-content'>
-          <div v-for="event in group_events" :key="event.EventId" class="event-card">
-            <h3>{{ event.EventName }}</h3>
-            <span class="event-date">
-              Date: {{ event.EventTime }}</span><br>
-            <span class="event-location">Location: {{ event.EventLocation }}</span>
-          </div>
+  <div class="events-container">
+    <h2>Recent Events</h2>
+    <hr>
+    <div class="events-content">
+      <div v-for="event in group_events" :key="event.EventId" class="event-card">
+        <div class="event-image-container" v-if="event.ImageUrl">
+          <img :src="event.ImageUrl" alt="Event Image" class="event-image">
         </div>
+        <div class="event-details">
+          <h3>{{ event.EventName }}</h3>
+          <p class="event-date">
+            Date: <span v-html="formatDate(event.EventTime).replace(/\n/g, '<br>')"></span>
+          </p>
+          <p class="event-location">Location: {{ event.EventLocation }}</p>
+        </div>
+      </div>
     </div>
-  </template>
-    
+  </div>
+</template>
+
   <script>
     import firebaseApp from '../firebase.js';
     import { getFirestore } from "firebase/firestore"
@@ -37,6 +43,14 @@
       },
 
       methods: {
+        formatDate(dateString) {
+            const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+            const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: true };
+            const date = new Date(dateString);
+            const formattedDate = date.toLocaleDateString(undefined, optionsDate);
+            const formattedTime = date.toLocaleTimeString(undefined, optionsTime);
+            return `${formattedDate}\nTime: ${formattedTime}`;
+        },
         async fetchGroupEvents() {
           const ref = doc(db, "group", this.groupId);
           try {
@@ -92,18 +106,61 @@
       margin-bottom: 20px;
     }
 
-    .event-card {
-      background-color: #f9f9f9;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      margin-bottom: 20px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
     .event-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-  </style>
+    .events-container {
+      width: 100%;
+      padding: 20px;
+    }
+
+    .events-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .event-card {
+      display: flex;
+      align-items: center; /* Align items vertically in the center */
+      margin-bottom: 20px; /* Space between cards */
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden; /* Ensures the image and details are contained within the card's border-radius */
+    }
+
+    .event-image-container {
+      flex: 0 0 150px; /* Fixed width for the image container */
+      height: 100px; /* Fixed height for the image container */
+      overflow: hidden; /* Hide overflow to maintain aspect ratio */
+    }
+
+    .event-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Ensures the image fully covers the designated area */
+      border-radius: 10px; /* Rounds the corners of the image */
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+
+    .event-details {
+      padding: 10px;
+      flex: 1; /* Takes the remaining space in the flex container */
+    }
+
+    .event-date, .event-location {
+      margin-top: 5px;
+    }
+
+    hr {
+      margin-top: 20px;
+      border: 0;
+      height: 1px;
+      background-color: #ccc;
+    }
+    </style>
+
   

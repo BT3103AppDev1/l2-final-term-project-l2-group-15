@@ -15,8 +15,10 @@
         <hr>
         <div v-for="event in user_events" :key="event.EventId" class="event-card">
             <h3>{{ event.EventName }}</h3>
-            <p class="event-date">Date: {{ event.EventTime }}</p>
-            <p class="event-location">{{ event.EventLocation }}</p>
+            <p class="event-date">
+                Date: <span v-html="formatDate(event.EventTime).replace(/\n/g, '<br>')"></span>
+            </p>
+            <p class="event-location">Location: {{ event.EventLocation }}</p>
         </div>
     </div>
 </template>
@@ -47,6 +49,14 @@
         },
 
         methods: {
+            formatDate(dateString) {
+                const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+                const optionsTime = { hour: '2-digit', minute: '2-digit', hour12: true };
+                const date = new Date(dateString);
+                const formattedDate = date.toLocaleDateString(undefined, optionsDate);
+                const formattedTime = date.toLocaleTimeString(undefined, optionsTime);
+                return `${formattedDate}\nTime: ${formattedTime}`;
+            },
             async fetchUserEvents() {
                 const ref = doc(db, "users", this.user);
                 try {

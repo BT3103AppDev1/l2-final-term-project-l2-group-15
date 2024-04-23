@@ -9,7 +9,7 @@ import ContactPopup from './ContactPopup.vue';
     <br/>
       <div class = "groupFlexbox">
         <div v-if="item_list.length === 0" class="no-item-msg">
-            <h1> No Deal Req </h1>
+            <h1> No Pending Deal Requests </h1>
         </div>
         <div v-for="item in item_list" :key="item.id" class="group">
           <DealReqListingComponent :item="item" @openPopup="runOpen" :showPopup="showPopup" />

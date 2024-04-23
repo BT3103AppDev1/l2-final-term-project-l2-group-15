@@ -93,7 +93,6 @@ h1 {
 }
 
 .groupFlexbox {
-  display: flex;
   flex-wrap: wrap;
   text-align: center;
 }
@@ -108,6 +107,5 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
 }
 </style>

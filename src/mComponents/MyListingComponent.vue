@@ -1,21 +1,34 @@
 <template>
-    <div class="group-list-item">
-        <div class="group-image">
-            <img :src='fileURL' alt="No Group Logo"/>
-        </div>
-        <div class="group-details">
-            <h3>{{ item.Name }}</h3>
-            <p>Postal Code: {{ item.Location }}</p>
-            <div v-if="hasBuyRequest" class="busy-div">
-              <button>Pending Buy Request</button>
+  <div class="group-list-item">
+    <!-- Image on the left -->
+    <div class="group-image">
+      <img :src="fileURL" alt="No Group Logo" />
+    </div>
+    
+    <!-- Details on the right -->
+    <div class="group-details">
+      <!-- Item Name -->
+      <h3>{{ item.Name }}</h3>
+      
+      <!-- Location -->
+      <p>Location: {{ item.Location }}</p>
+      
+      <!-- Price (moved to top right) -->
+      <div v-if="!hasBuyRequest">
+        <button class="edit-button" @click="$emit('openPopup', this.fileID)">Edit Listing </button>
+      </div>
+      <!-- Button (moved to bottom right) -->
+      <div class="button-container">
+            <div v-if="hasBuyRequest">
+              <p>Pending Buy Request</p>
             </div>
-            <div v-else class="free-div">
-              <button @click="$emit('openPopup', this.fileID)">Edit Listing </button>
-              <button @click="removeListing">Remove Listing</button>
+            <div v-else>
+              <button class="remove-button" @click="removeListing">Delete Listing</button>
             </div>
-        </div>
-    </div> 
-  </template>
+      </div>
+    </div>
+  </div>
+</template>
   
   <script> 
   import { getAuth } from 'firebase/auth';
@@ -66,8 +79,8 @@
           const userDocRef = doc(db, 'users', sellerID)
           const userDocSnap = await getDoc(userDocRef)
           const userData = userDocSnap.data()
-          const updatedListedItems = userData.listedItem.filter(id => id !== this.fileID);
-          await updateDoc(userDocRef, { listedItem: updatedListedItems });
+          const updatedListedItems = userData.listedItem.filter(id => id !== this.fileID)
+          await updateDoc(userDocRef, { listedItem: updatedListedItems })
           await deleteDoc(itemDocRef)
           this.$router.push({ name: 'MarketplaceViewItems'})
         },
@@ -126,64 +139,89 @@
     }
     }
   </script>
-  
-  <style scoped>
+ 
+<style scoped>
+.group-list-item {
+  display: flex;
+  align-items: flex-start;
+  background-color: #f5f4f4;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  padding: 10px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  position: relative;
+}
+
+.group-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.group-image {
+  flex: 1;
+  max-width: 30%;
+  width: 100px; /* Fixed width for the image container */
+}
+
+.group-image img {
+  width: 100%;
+  height: 100px; /* Fixed height for the image */
+  object-fit: cover; /* Maintain aspect ratio */
+  border-radius: 10px;
+}
+
+.group-details {
+  margin-left: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.group-details h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.group-details p {
+  margin: 5px 0;
+}
+
+.edit-button {
+  font-weight: bold;
+  position: absolute;
+  top: 3px;
+  right: 10px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.remove-button,
+.edit-button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.remove-button {
+  background-color: lightcoral;
+}
+
+.edit-button {
+  background-color: lightgray;
+}
+
+@media (max-width: 768px) {
   .group-list-item {
-    display: flex;
-    align-items: center;
-    background-color: #f5f4f4;
-    margin-left: 15px;
-    margin-right: 15px;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-    padding: 10px;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    margin-left: 10px;
+    margin-right: 10px;
   }
-  
-  .group-list-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-  }
-  
-  .group-image {
-    flex: 1;
-    background-color: #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    max-width: 20%; 
-  }
-  
-  .group-image {
-    width: 150px; /* Adjust as needed */
-    height: 150px; /* Adjust as needed */
-    overflow: hidden;
-    margin: 20px;
-    border-radius: 10px;
-  }
-  
-  .group-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire space */
-  }
-  
-  .group-details {
-    flex: 4;
-    padding-left: 20px;
-  }
-  
-  .group-details h3 {
-    margin-top: 0;
-  }
-  
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .modal-content {
-      margin: 20% auto;
-      width: 95%;
-    }
-  }
-  </style>
+}
+</style>

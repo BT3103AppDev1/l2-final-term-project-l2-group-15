@@ -58,8 +58,8 @@ export default {
   position: sticky;
   top: 0;
   left: 0;
-  right: 0;
-  z-index: 1; /* Ensure it's above other content */
+  right: 0; /* Ensure it's above other content */
+  z-index:1000;
 }
 
 /* Market Navbar */
@@ -69,7 +69,6 @@ export default {
   left: 0;
   width: 10px; 
   height: 100%;
-  z-index: 1; 
 }
 
 .container {
@@ -114,7 +113,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1050; /* ensure it's above other content */
 }
 
 .modal {

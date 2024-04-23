@@ -1,17 +1,20 @@
 <template>
   <div class="group-list-item" :class="{ 'popup-open': showPopup }">
+    <!-- Image on top -->
     <div class="group-image">
       <img :src="fileURL" alt="No Group Logo" />
     </div>
+    
+    <!-- Details -->
     <div class="group-details">
+      <!-- Item Name -->
       <h3>{{ item.Name }}</h3>
-      <p>Postal Code: {{ item.Location }}</p>
+      
+      <!-- Button -->
       <div v-if="isDealDone" class="done-deal">
-        <h3>Deal Done</h3>
         <button @click="emitMsg">View Contact Details</button>
       </div>
       <div v-else class="buy-request">
-        <h3>Deal Pending</h3>
         <button @click="goDealReq">View Buy Request</button>
       </div>
     </div>
@@ -88,13 +91,17 @@ export default {
 
 <style scoped>
 .group-list-item {
+  width: 100%; /* Set width to occupy about 40% of the page */
+  max-width: 260px; /* Set maximum width */
+  max-height: 300px;
+  margin: 0 auto; /* Center align the items horizontally */
+  margin-right: 30px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   background-color: #f5f4f4;
-  margin-left: 15px;
-  margin-right: 15px;
   border-radius: 10px;
-  margin-bottom: 1rem;
+  margin-bottom: 20px; /* Add margin between items */
   padding: 10px;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
@@ -105,48 +112,30 @@ export default {
 }
 
 .group-image {
-  flex: 1;
-  background-color: #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  max-width: 20%;
-}
-
-.group-image {
-  width: 150px; /* Adjust as needed */
-  height: 150px; /* Adjust as needed */
-  overflow: hidden;
-  margin: 20px;
+  width: 100%; /* Take up entire width */
+  max-height: 200px; /* Limit height */
+  overflow: hidden; /* Hide overflow */
   border-radius: 10px;
 }
 
 .group-image img {
   width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensures the image covers the entire space */
+  object-fit: cover; /* Cover the entire space */
 }
 
 .group-details {
-  flex: 4;
-  padding-left: 20px;
+  width: 100%; /* Take up entire width */
+  padding: 20px 0; /* Add padding */
+  text-align: center; /* Center text */
 }
 
 .group-details h3 {
   margin-top: 0;
 }
 
-.done-deal, .buy-request {
-  margin-top: 10px;
-}
-
-.done-deal h3, .buy-request h3 {
-  margin-top: 0;
-}
-
-.done-deal button, .buy-request button {
-  margin-top: 5px;
+.done-deal button,
+.buy-request button {
+  margin-top: 10px; /* Add margin to separate from item name */
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -155,7 +144,8 @@ export default {
   cursor: pointer;
 }
 
-.done-deal button:hover, .buy-request button:hover {
+.done-deal button:hover,
+.buy-request button:hover {
   background-color: #0056b3;
 }
 </style>

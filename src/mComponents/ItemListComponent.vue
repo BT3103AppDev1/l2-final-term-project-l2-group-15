@@ -22,13 +22,13 @@
       <!-- Button (moved to bottom right) -->
       <div class="button-container">
         <div v-if="isUserItem" class="deal-request-btn">
-          <button>My Item</button>
+          <p>My Item</p>
         </div>
         <div v-else-if="userSentRequest" class="my-item-btn">
           <button @click="sendDealRequest">Send Deal Request</button>
         </div>
         <div v-else class="sent-request-btn">
-          <button>Deal Request Sent</button>
+           <p> Deal Request Sent! </p>
         </div>
       </div>
     </div>
@@ -203,10 +203,8 @@ export default {
   right: 10px;
 }
 
-.deal-request-btn button,
-.my-item-btn button,
-.sent-request-btn button {
-  background-color: #007bff;
+.my-item-btn button {
+  background-color: rgb(33, 165, 33);
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -215,9 +213,13 @@ export default {
   margin-top: 10px;
 }
 
+.sent-request-btn,
+.deal-request-btn {
+  color: gray;
+}
+
 .deal-request-btn button:hover,
-.my-item-btn button:hover,
-.sent-request-btn button:hover {
+.my-item-btn button:hover{
   background-color: #0056b3;
 }
 

@@ -59,6 +59,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1200;
   }
   
   .popup-content {

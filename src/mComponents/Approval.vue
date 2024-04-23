@@ -3,7 +3,7 @@
         <div class="group-details">
             <h3>{{ user.username }}</h3>
             <button @click="approveReq()"> Approve </button>
-            <!--<button @click="rejectReq()" > Reject </button>-->
+            <button @click="rejectReq()" > Reject </button>
         </div>
     </div> 
   </template>
@@ -89,6 +89,34 @@
             this.updateSeller()
             alert('approved')
             this.$router.push({ name: 'MarketplaceDealReq'})
+        },
+
+        async rejectReq() {
+            const db = getFirestore(firebaseApp)
+            const currentUserDocRef = doc(db, 'users', this.currentUser)
+            const currentUserDocSnap = await getDoc(currentUserDocRef)
+            const currentUserData = currentUserDocSnap.data()
+            const currentReceived = currentUserData.receivedRequestforItem
+            const updatedReceived = currentReceived.filter(id => id !== this.itemID)
+            await updateDoc(currentUserDocRef, {receivedRequestforItem: updatedReceived})
+
+            const itemDocRef = doc(db, 'Items', this.itemID)
+            const itemDocSnap = await getDoc(itemDocRef)
+            const itemData = itemDocSnap.data()
+            const updatedListedItems = itemData.buyerID.filter(id => id !== this.fileID)
+
+            const userDocRef = doc(db, 'users', this.fileID)
+            const userDocSnap = await getDoc(userDocRef)
+            const userData = userDocSnap.data()
+            const updatedUserSentReq = userData.sentRequestforItem.filter(id => id !== this.itemID)
+            await updateDoc(userDocRef, {sentRequestforItem: updatedUserSentReq})
+            if (updatedListedItems.length === 0) {
+                await updateDoc(itemDocRef, { buyerID: [], hasBuyReq: false })
+            } else {
+                await updateDoc(itemDocRef, { buyerID: updatedListedItems })
+            }
+            console.log("rejected")
+            this.$router.push({ name: 'MarketplaceViewItems'})
         },
 
         async getImage(fileID) {

@@ -4,7 +4,7 @@ import ItemListComponent from '@/mComponents/ItemListComponent.vue';
 
 <template>
   <div>
-    <h1>All Items List </h1>
+    <h1> All Items List </h1>
     <br/>
     <div class="grid-container">
       <div v-for="item in Items" :key="item.id" class="group">

@@ -1,26 +1,35 @@
 <template>
-  <div class="group-list-item" :class="{ 'popup-open': showPopup }">
+  <div class="group-list-item">
+    <!-- Image on the left -->
     <div class="group-image">
       <img :src="fileURL" alt="No Group Logo" />
     </div>
+    
+    <!-- Details on the right -->
     <div class="group-details">
+      <!-- Item Name -->
       <h3>{{ item.Name }}</h3>
+      
+      <!-- Seller Name -->
+      <p>{{ this.sellerName }}</p>
+      
+      <!-- Location -->
       <p>Location: {{ item.Location }}</p>
-      <div v-if="isSoldtoYou" class="busy-div">
-        <h2>Approved</h2>
-        <button @click="emitMsg">View Contact Status</button>
-      </div>
-      <div v-else-if="isSold" class="busy-div">
-        <h2>Sold to another User</h2>
-        <button @click="deleteDealRequest">Delete Request</button>
-      </div>
-      <div v-else class="free-div">
-        <h2>Pending Approval</h2>
-        <button @click="deleteDealRequest">Delete Request</button>
+      
+      <!-- Price (moved to top right) -->
+      <p class="price">Price: {{ item.Price }}</p>
+      
+      <!-- Button (moved to bottom right) -->
+      <div class="button-container">
+        <button class='contact-button' v-if="isSoldtoYou" @click="emitMsg">View Contact Details</button>
+        <button class='delete-button' v-else-if="isSold" @click="deleteDealRequest">Delete Request</button>
+        <button class='delete-button' v-else @click="deleteDealRequest">Delete Request</button>
       </div>
     </div>
   </div>
 </template>
+
+
 
 <script>
 import { getAuth } from 'firebase/auth';
@@ -47,9 +56,18 @@ export default {
       fileID: this.item.id,
       isSoldtoYou: false,
       isSold: false,
+      sellerName: '',
     }
   },
   methods: {
+    async getSellerName() {
+      const db = getFirestore(firebaseApp)
+      const docRef = doc(db, 'users', this.item.sellerID)
+      const userSnapshot = await getDoc(docRef)
+      const userdata = userSnapshot.data()
+      this.sellerName = userdata.username
+    },
+
     async emitMsg() {
       const db = getFirestore(firebaseApp);
       const docRef = doc(db, 'Items', this.fileID)
@@ -113,105 +131,103 @@ export default {
   mounted() {
     this.getImage(this.fileID);
     this.checkSold();
+    this.getSellerName();
   }
 };
 </script>
 
+
 <style scoped>
 .group-list-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background-color: #f5f4f4;
-  margin-left: 15px;
-  margin-right: 15px;
-  border-radius: 10px;
   margin-bottom: 1rem;
+  border-radius: 10px;
   padding: 10px;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
+  position: relative;
 }
 
-.group-list-item:not(.popup-open):hover {
+.group-list-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 }
 
 .group-image {
   flex: 1;
-  background-color: #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  max-width: 20%; 
-}
-
-.group-image {
-  width: 150px; /* Adjust as needed */
-  height: 150px; /* Adjust as needed */
-  overflow: hidden;
-  margin: 20px;
-  border-radius: 10px;
+  max-width: 30%;
+  width: 100px; /* Fixed width for the image container */
 }
 
 .group-image img {
   width: 100%;
-  height: 100%;
-  object-fit: cover; /* Ensures the image covers the entire space */
+  height: 100px; /* Fixed height for the image */
+  object-fit: cover; /* Maintain aspect ratio */
+  border-radius: 10px;
 }
 
 .group-details {
-  flex: 4;
-  padding-left: 20px;
+  margin-left: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .group-details h3 {
   margin-top: 0;
+  font-size: 1.5rem;
 }
 
-.busy-div, .free-div {
-  margin-top: 10px;
+.group-details p {
+  margin: 5px 0;
 }
 
-.busy-div h2, .free-div h2 {
-  margin-top: 0;
+.price {
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
-.busy-div button, .free-div button {
-  margin-top: 5px;
+.button-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+
+.delete-button,
+.contact-button {
   background-color: #007bff;
   color: #fff;
   border: none;
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
+  margin-top: 10px;
 }
 
-.busy-div button:hover, .free-div button:hover {
+.delete-button {
+  background-color: red;
+}
+
+.contact-button {
+  background-color: rgb(21, 175, 21);
+}
+
+.deal-request-btn button:hover,
+.my-item-btn button:hover,
+.sent-request-btn button:hover {
   background-color: #0056b3;
 }
 
-.popup-open {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.popup-open .group-image img {
-  border-radius: 10px;
-}
-
-.popup-open .group-details {
-  padding-left: 30px;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .group-list-item {
-    margin-left: 0;
-    margin-right: 0;
-    border-radius: 0;
-  }
-
-  .group-details {
-    padding-left: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
 </style>

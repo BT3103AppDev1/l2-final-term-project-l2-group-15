@@ -7,11 +7,11 @@
   
       <div class = 'Members-content'>
         <ol class = "eachMember" v-for="member in membersNames">
-          <li>{{ member }}</li>
+          {{ member }}
         </ol>
       </div>
     </div>
-  </template>
+</template>
     
 <script>
 import firebaseApp from "../firebase.js"

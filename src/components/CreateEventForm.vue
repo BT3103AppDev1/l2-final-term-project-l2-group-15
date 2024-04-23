@@ -2,6 +2,21 @@
     <div class="container">
         <form id="myform" class="form-layout">
 
+            <!-- Image Upload or Preview Section -->
+            <div class="image-section">
+                <!-- If no Image -->
+                <div class="upload-box" @click="openFileInput" v-if="!imageUrl">
+                    <input type="file" accept="image/*" ref="fileInput" @change="handleImageChange" class="file-input"></input>
+                    <span>Upload Image</span>
+                </div>
+
+                <!-- Else -->
+                <div class="image-preview" v-else>
+                    <img :src="imageUrl" alt="Uploaded Image" />
+                    <button class="delete-button" @click="deleteImage">Delete Image</button>
+                </div>
+            </div>
+
             <div class="right-section">
                 <div class="form-event">
                     <label for="eventName">Event Name:</label>
@@ -41,6 +56,7 @@ import { getFirestore } from "firebase/firestore";
 import { setDoc, doc, addDoc, collection, updateDoc, arrayUnion} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 import { firestore} from "@/firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
 export default {
@@ -60,41 +76,61 @@ export default {
 
             showSuccess: false,
             message_passed: "createEvent",
+            imageUrl: '',
+            imageFile: null,
 
         };
     },
     
     methods: {
-        // openFileInput() {
-        //     this.$refs.fileInput.click(); 
-        // },
+        async uploadImage(file) {
+            console.log("Uploading Image...")
+            const storage = getStorage();
+            const storageRef = ref(storage, 'eventImages/' + file.name);
+            try {
+                await uploadBytes(storageRef, file);
+                console.log('Uploaded a blob or file!');
+                return await getDownloadURL(storageRef);
+            } catch (error) {
+                console.error('Upload failed:', error);
+                return null;
+            }
+        },
+        openFileInput() {
+            this.$refs.fileInput.click(); 
+        },
 
-        // handleImageChange(event) {
-        //     let file = event.target.files[0];
-        //     if (file) {
-        //         this.formData.image = file;
-        //         this.imageFile = file;
-        //         this.imageUrl = URL.createObjectURL(file); // For preview
-        //     }
-        // },
+        handleImageChange(event) {
+            let file = event.target.files[0];
+            if (file) {
+                this.formData.image = file;
+                this.imageFile = file;
+                this.imageUrl = URL.createObjectURL(file); // For preview
+            }
+        },
 
-        // deleteImage() {
-        //     if (this.imageUrl) {
-        //         console.log("deleting image...")
-        //         this.imageUrl = '';
-        //         this.imageFile = null;
-        //     }
-        // },
+        deleteImage() {
+            if (this.imageUrl) {
+                console.log("deleting image...")
+                this.imageUrl = '';
+                this.imageFile = null;
+            }
+        },
 
         async createEvent() {
-            console.log("called")
-            const db = getFirestore(firebaseApp)
+            console.log("Creating event...");
+            const db = getFirestore(firebaseApp);
             let eventID = await this.generateEventID();
-            let eventName = document.getElementById("eventName").value
-            let eventTime = document.getElementById("eventTime").value
-            let eventLocation = document.getElementById("eventLocation").value
-            let eventDescription = document.getElementById("eventDescription").value
-            
+            let eventName = document.getElementById("eventName").value;
+            let eventTime = document.getElementById("eventTime").value;
+            let eventLocation = document.getElementById("eventLocation").value;
+            let eventDescription = document.getElementById("eventDescription").value;
+            let imageUrl = '';
+
+            if (this.imageFile) {
+                imageUrl = await this.uploadImage(this.imageFile);
+            }
+
             const eventData = {
                 EventId: eventID,
                 EventName: eventName,
@@ -104,15 +140,17 @@ export default {
                 EventGroup: this.groupId,
                 CreatedBy: this.user,
                 EventParticipants: [this.user],
-            }
-        
+                ImageUrl: imageUrl, // Storing the image URL from Firebase Storage
+            };
+
             try {
                 const EventDocRef = doc(firestore, "Events", eventID);
                 await setDoc(EventDocRef, eventData);
-                document.getElementById('myform').reset()
-                this.$emit("added")
-            } catch(error) {
-                console.log("Error when adding Event: ", error)
+                document.getElementById('myform').reset();
+                this.$emit("added");
+                this.showSuccess = true;
+            } catch (error) {
+                console.log("Error when adding Event: ", error);
             }
 
             // Need to add event in user that created it as well

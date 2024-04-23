@@ -250,7 +250,7 @@ h1 {
   margin: 10% auto; /* 10% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 100%; /* Could be more or less, depending on screen size */
-  height: 130%; /* Adjust based on content */
+  width: 50%; /* Could be more or less, depending on screen size */
+  height: 100% auto; /* Adjust based on content */
 }
 </style>

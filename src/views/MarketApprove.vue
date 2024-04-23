@@ -101,12 +101,12 @@ export default {
   margin-left: 100px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distribute items evenly */
+  justify-content: space-between; 
 }
 
 /* List of items */
 .list {
-  width: 85%; /* Adjust the width as needed */
+  width: 85%; 
 }
 
 img {
@@ -115,10 +115,10 @@ img {
 }
 /* Market Navbar */
 .nav {
-  width: 15%; /* Adjust the width as needed */
+  width: 15%; 
   position: fixed;
   border-top: 66px;
-  overflow-y: auto; /* Allow scrolling if needed */
+  overflow-y: auto; 
 }
 
 /* Global Navbar */

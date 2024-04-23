@@ -204,7 +204,7 @@ export default {
 }
 
 .container {
-    position: relative; /* Set the container as the positioning context */
+    position: relative; 
     justify-content: center;
     align-items: center;
     padding: 4vh;
@@ -251,7 +251,7 @@ export default {
 .image-preview {
     width: 90%; 
     max-width: 450px;
-    position: relative; /* This makes it the positioning context for the delete button */
+    position: relative; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -269,15 +269,15 @@ export default {
     top: 0;
     right: 0;
     padding: 0.5rem;
-    background-color: orange; /* Light gray background */
-    color: #333; /* Dark text for contrast */
+    background-color: orange;
+    color: #333; 
     border: none;
     cursor: pointer;
-    border-radius: 0 0 0 5px; /* Rounded corner on the bottom left */
+    border-radius: 0 0 0 5px; 
 }
 
 .delete-button:hover {
-    background-color: #bbb; /* Slightly darker on hover */
+    background-color: #bbb; 
 }
 
 .form-group {

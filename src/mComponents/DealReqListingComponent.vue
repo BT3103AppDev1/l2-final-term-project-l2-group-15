@@ -91,17 +91,17 @@ export default {
 
 <style scoped>
 .group-list-item {
-  width: 100%; /* Set width to occupy about 40% of the page */
-  max-width: 260px; /* Set maximum width */
+  width: 100%; 
+  max-width: 260px; 
   max-height: 300px;
-  margin: 0 auto; /* Center align the items horizontally */
+  margin: 0 auto; 
   margin-right: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #f5f4f4;
   border-radius: 10px;
-  margin-bottom: 20px; /* Add margin between items */
+  margin-bottom: 20px; 
   padding: 10px;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
@@ -112,21 +112,21 @@ export default {
 }
 
 .group-image {
-  width: 100%; /* Take up entire width */
-  max-height: 200px; /* Limit height */
-  overflow: hidden; /* Hide overflow */
+  width: 100%; 
+  max-height: 200px; 
+  overflow: hidden;
   border-radius: 10px;
 }
 
 .group-image img {
   width: 100%;
-  object-fit: cover; /* Cover the entire space */
+  object-fit: cover; 
 }
 
 .group-details {
-  width: 100%; /* Take up entire width */
-  padding: 20px 0; /* Add padding */
-  text-align: center; /* Center text */
+  width: 100%; 
+  padding: 20px 0; 
+  text-align: center; 
 }
 
 .group-details h3 {
@@ -135,7 +135,7 @@ export default {
 
 .done-deal button,
 .buy-request button {
-  margin-top: 10px; /* Add margin to separate from item name */
+  margin-top: 10px; 
   background-color: #007bff;
   color: #fff;
   border: none;

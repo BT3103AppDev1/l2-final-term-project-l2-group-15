@@ -154,6 +154,7 @@ export default {
   padding: 10px;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   position: relative;
+  margin-left:10px;
 }
 
 .group-list-item:hover {

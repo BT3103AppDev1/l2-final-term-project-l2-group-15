@@ -67,7 +67,6 @@
             updateDoc(documentRef, {
                 dealFinishItem: arrayUnion(this.itemID),
                 listedItem: newListedItems,
-                //receivedRequestforItem: newReceivedRequestforItem
             })     
         },
 
@@ -170,8 +169,8 @@
   }
   
   .group-image {
-    width: 150px; /* Adjust as needed */
-    height: 150px; /* Adjust as needed */
+    width: 150px;
+    height: 150px; 
     overflow: hidden;
     margin: 20px;
     border-radius: 10px;
@@ -180,7 +179,7 @@
   .group-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the entire space */
+    object-fit: cover; 
   }
   
   .group-details {
@@ -191,9 +190,7 @@
   .group-details h3 {
     margin-top: 0;
   }
-  
-  
-  /* Responsive adjustments */
+
   @media (max-width: 768px) {
     .modal-content {
       margin: 20% auto;

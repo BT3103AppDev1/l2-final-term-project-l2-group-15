@@ -67,7 +67,7 @@
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    max-width: 400px; /* Limit the maximum width */
+    max-width: 400px; 
   }
   
   h2 {

@@ -81,7 +81,7 @@
                 this.unsubscribe();
             }
         },
-
+        
         methods: {
             viewEvent() {
                 console.log("show participants")

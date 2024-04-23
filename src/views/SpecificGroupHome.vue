@@ -104,7 +104,7 @@ hr {
 .events {
   text-align: left;
   border: 2px solid #ccc; /* Border style */
-  padding: 20px; /* Add padding to create space between content and border */
+  padding: 10px; /* Add padding to create space between content and border */
   width: 48%; 
   height: auto;
   box-sizing: border-box; /* Include padding and border in the width calculation */

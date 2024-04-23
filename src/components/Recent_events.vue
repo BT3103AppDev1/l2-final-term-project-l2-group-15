@@ -91,76 +91,76 @@
   }
   </script>
     
-  <style scoped>
-    h2 {
-      font-size: 24px;
-      margin-top: 0px;
-      margin-bottom: 5px;
-    }
-  
-    h3 {
-      margin-bottom: 10px;
-      margin-top: 0px;
-    }
-    hr {
-      margin-bottom: 20px;
-    }
+<style scoped>
+h2 {
+  font-size: 24px;
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-bottom: -5px;
+}
 
-    .event-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    .events-container {
-      width: 100%;
-      padding: 20px;
-    }
+h3 {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
 
-    .events-content {
-      display: flex;
-      flex-direction: column;
-    }
+hr {
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
 
-    .event-card {
-      display: flex;
-      align-items: center; /* Align items vertically in the center */
-      margin-bottom: 20px; /* Space between cards */
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      overflow: hidden; /* Ensures the image and details are contained within the card's border-radius */
-    }
-
-    .event-image-container {
-      flex: 0 0 150px; /* Fixed width for the image container */
-      height: 100px; /* Fixed height for the image container */
-      overflow: hidden; /* Hide overflow to maintain aspect ratio */
-    }
-
-    .event-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* Ensures the image fully covers the designated area */
-      border-radius: 10px; /* Rounds the corners of the image */
-      margin-left: 10px;
-      margin-right: 10px;
-    }
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
 
-    .event-details {
-      padding: 10px;
-      flex: 1; /* Takes the remaining space in the flex container */
-    }
+.events-content {
+  display: flex;
+  flex-direction: column;
+}
 
-    .event-date, .event-location {
-      margin-top: 5px;
-    }
+.event-card {
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
+  margin-bottom: 20px; /* Space between cards */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden; /* Ensures the image and details are contained within the card's border-radius */
+}
 
-    hr {
-      margin-top: 20px;
-      border: 0;
-      height: 1px;
-      background-color: #ccc;
-    }
-    </style>
+.event-image-container {
+  flex: 0 0 150px; /* Fixed width for the image container */
+  height: 100px; /* Fixed height for the image container */
+  overflow: hidden; /* Hide overflow to maintain aspect ratio */
+}
+
+.event-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image fully covers the designated area */
+  border-radius: 10px; /* Rounds the corners of the image */
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+
+.event-details {
+  padding: 10px;
+  flex: 1; /* Takes the remaining space in the flex container */
+}
+
+.event-date, .event-location {
+  margin-top: 5px;
+}
+
+hr {
+  margin-top: 20px;
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+}
+</style>
 
   

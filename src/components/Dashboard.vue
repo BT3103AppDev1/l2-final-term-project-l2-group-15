@@ -1,4 +1,3 @@
-
 <template>
   <div id="Dashboard">
     <h2>Dashboard</h2>
@@ -28,15 +27,17 @@ export default {
   methods: {
     goMarketPlace() {
       console.log("goMarketplace");
+      this.$router.push("/marketviewitems");
     },
     goGroups() {
       console.log("goGroups");
+      this.$router.push('/all_groups');
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 body {
   font-family: 'Open Sans', Arial, sans-serif;
   color: #333;

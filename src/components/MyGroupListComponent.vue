@@ -1,259 +1,250 @@
 <template>
-    <div class="group-list-item">
-        <div class="group-image">
-            <span>{{ group.GroupImage }}</span>
-        </div>
-        <div class="group-details">
-            <h3>{{ group.GroupName}}</h3>
-            <p>{{ group.GroupLocation }}</p>
-            <p>{{ group.GrouoDescription }}</p>
-            <button class="info-btn" @click="toggle">More Info</button>
-        </div>
+  <div class="group-list-item">
+    <div class="group-image">
+      <img :src='fileURL' alt="No Group Logo"/>
+    </div>
+    <div class="group-details">
+      <router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}">
+        <h3 id="groupName">{{ group.GroupName }}</h3>
+      </router-link>
+      <!-- <p id="groupLocation">{{ group.GroupLocation }}</p> -->
+      <p id="groupDescription">{{ group.GroupDescription }}</p>
+      <button class="leave-group-btn" @click="leaveGroup">Leave Group</button>
+      <button v-if="isAdmin" class="delete-group-btn" @click="deleteGroup">Delete Group</button>
+    </div>
+  </div>
 
-        <div v-if="showPopup" class="modal">
-            <div class="modal-content">
-                <span class="close" @click="toggle">&times;</span>
-                    <div class="modal-header">
-                        <div class="modal-image">
-                            <img :src="group.imageSrc" alt="Group Logo" />
-                        </div>
-                    <div class="modal-title">
-                        <h3>{{ group.GroupName }}</h3>
-                        <p class="distance">5km away from you</p> <!-- Add distance here -->
-                    </div>
-                </div>
-                <div class="modal-body">
-                    <p class="description">Group Description: {{ group.GroupDescription }}</p>
-                    <div class="group-stats">
-                        <p><strong>Total members:</strong> 20 </p>
-                        <p><strong>Last event:</strong> 12/5/2023</p>
-                        <p><strong>Admin:</strong> {{ group.GroupAdmin }}</p>
-                    </div>
-                </div>
-            </div>
+  <SuccessMessage v-if="showSuccess" :condition="message_passed" />
+  
+  <!-- old success message-->
+  <!-- <div v-if="showSuccess" class="modal"><div>
+    <div class="modal-content">
+        <span class="close" @click="toggleSuccess">&times;</span>
+            <div class="modal-header">
+        </div>
+        <div class="success-msg">
+          <h1>Success</h1>
         </div>
     </div>
-  </template>
+  </div> -->
+</template>
   
-  <script> 
-  import { getAuth } from 'firebase/auth';
-  import firebaseApp from '../firebase.js';
-  import { getFirestore } from "firebase/firestore";  
-  import { doc, updateDoc, getDoc, arrayUnion} from "firebase/firestore";
-  import { useRouter } from 'vue-router';
+<script> 
+import firebaseApp from '../firebase.js'; 
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from "firebase/firestore";
+import { doc, getDoc, updateDoc, deleteDoc, getDocs, collection } from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from 'firebase/storage';
+import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
-  export default {
-    props: {
-        group: {
-            type: Object,
-            required: true
-        },
-    },
+export default {
+  components: {
+    SuccessMessage
+  },
 
-    data() {
-        return {
-            showPopup: false,
-            user: getAuth().currentUser.uid,
-        }
-    },
+  props: {
+      group: {
+          type: String,
+          required: true
+      },
+  },
 
-    methods: {
-        toggle() {
-          this.showPopup = !this.showPopup
-        },
-
-        joinGroup() {
-          let group_id = this.group.id
-          let user_id = this.user
-          this.updateUserDBJoin(user_id, group_id)
-          this.updateGroupDBJoin(group_id, user_id)
-          this.$router.push('/my_groups')
-        },
-
-        async updateUserDBJoin(documentId, newGroupId) {
-          const db = getFirestore(firebaseApp)
-          try {
-            const documentRef = doc(db, 'users', documentId);
-            const documentSnapshot = await getDoc(documentRef);
-
-        
-            if (documentSnapshot.exists()) {
-                await updateDoc(documentRef, {
-                    groups: arrayUnion(newGroupId)
-                  });
-              } else {
-                console.log('Document does not exist.');
-                }
-            } catch (error) {
-                console.error('Error updating document: ', error);
-            }
-          },
-
-          async updateGroupDBJoin(documentId, newUserId) {
-          const db = getFirestore(firebaseApp)
-          try {
-            const documentRef = doc(db, 'group', documentId);
-            const documentSnapshot = await getDoc(documentRef);
-
-        
-            if (documentSnapshot.exists()) {
-                await updateDoc(documentRef, {
-                    GroupMembers: arrayUnion(newUserId),
-                  });
-              } else {
-                console.log('Document does not exist.');
-                }
-            } catch (error) {
-                console.error('Error updating document: ', error);
-            }
-          }
-        }
+  data() {
+      return {
+          user: getAuth().currentUser.uid,
+          showSuccess: false,
+          fileURL: null,
+          fileID: this.group.GroupId,
+          message_passed: "leaveGroup",
+          groupAdmin: '',
+          isAdmin: false,
       }
-  </script>
+  },
+
+  methods: {
+    async getImage(fileID) {
+          console.log(fileID)
+          let storage = getStorage()
+          let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
+          let fileRef = ref(storage, filePath)
+          let fileURL = await getDownloadURL(fileRef)
+          this.fileURL = fileURL
+          console.log("url is here", fileURL)
+    },
+
+    // toggleSuccess() {
+    //       this.showSuccess = false
+    //       this.$router.push("/all_groups")
+    // },
+
+    async deleteGroupFromUser(userID, groupID) { // search user via userID, delete GroupID from array
+      const db = getFirestore(firebaseApp)
+      let userDocRef = doc(db, 'users', userID)
+      let userDocSnap = await getDoc(userDocRef)
+      if (userDocSnap.exists()) {
+          let userData = userDocSnap.data()
+          let updatedGroups = userData.groups.filter(groupId => groupId !== groupID)
+          await updateDoc(userDocRef, {
+              groups: updatedGroups
+          });
+        }
+    },
+
+    async deleteUserFromGroup(userID, groupID) { // search group via groupID, delete UserID from array
+      const db = getFirestore(firebaseApp)
+      let groupDocRef = doc(db, 'group', groupID)
+      let groupDocSnap = await getDoc(groupDocRef)
+      if (groupDocSnap.exists()) {
+          let groupData = groupDocSnap.data();
+          let updatedUsers = groupData.GroupMembers.filter(userId => userId !== userID);
+          await updateDoc(groupDocRef, {
+              GroupMembers: updatedUsers
+          });
+        }
+    },
+
+    async deleteGroupFromFirestore(groupID) {
+      const db = getFirestore(firebaseApp)
+      const groupDocRef = doc(db, 'group', groupID)
+      await deleteDoc(groupDocRef)
+    },
+
+    async deleteMembersfromGroup(groupID) {
+      const db = getFirestore(firebaseApp)
+
+      // get GroupMembers array from Group
+      const groupDocRef = doc(db, 'group', groupID)
+      const groupDocSnapshot = await getDoc(groupDocRef)
+      const groupData = groupDocSnapshot.data()
+      const groupMembers = groupData.GroupMembers || []
+
+      // find each member and delete the group
+      for (const groupMemberID of groupMembers) {
+        await this.deleteGroupFromUser(groupMemberID, groupID)
+        //console.log("deleted", groupID, "from", groupMemberID)
+      }
+    },
+
+    leaveGroup() { // user group array must no longer contain current group + group user array must no longer contain user
+      let userID = this.user
+      let groupID = this.group.GroupId
+      this.deleteGroupFromUser(userID, groupID)
+      this.deleteUserFromGroup(userID, groupID)
+      this.showSuccess = true;  
+    },
+
+    deleteGroup() { // all users group array must no longer contain current group 
+      let groupID = this.group.GroupId
+      this.deleteMembersfromGroup(groupID)
+      this.deleteGroupFromFirestore(groupID)
+      this.showSuccess = true
+    },
+
+    async getGroupAdmin() {
+            const db = getFirestore(firebaseApp)
+            try {
+                const docs = await getDocs(collection(db, "group"));
+                docs.forEach((doc) => {
+                if (doc.data().GroupId == this.group.GroupId) {
+                    this.groupAdmin = doc.data().GroupAdmin[0];
+                    console.log("Group admin retrieved successfully:", this.groupAdmin);
+                }
+                })
+                if (this.groupAdmin == this.user) {
+                    this.isAdmin = true;
+                }
+            } catch (error) {
+                console.error("Error retrieving group admin:", error);
+            }
+        }
+  },
+
+  mounted() {
+    try {
+        this.getImage(this.group.GroupId)
+    } catch {
+        this.fileURL = null
+    }
+    this.getGroupAdmin();
+  }
+}
+</script>
   
-  <style scoped>
-  .group-list-item {
-  display: flex;
-  align-items: center;
+<style scoped>
+.group-list-item {
+  display: block;
+  width: 25%;
   background-color: #f5f5f5;
-  margin-bottom: 1rem;
+  height: 400px;
+  width: 350px;
+  border-radius: 5px;
   padding: 10px;
+  margin-bottom: 50px;
+  margin-left: 50px;
+  border: solid rgb(216, 216, 216);
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.group-list-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .group-image {
-  flex: 1;
-  background-color: #ccc;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  max-width: 20%; 
+  align-content: center;
+  width: 350px; /* Adjust as needed */
+  height: 200px; /* Adjust as needed */
+  text-align: center;
+  overflow: hidden;
+  border-radius: 10px;
+  margin-bottom: 25px;
+}
+
+.group-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the image covers the entire space */
 }
 
 .group-details {
-  flex: 4;
-  padding-left: 20px;
+  font-size: 20px;
 }
 
-.group-details h3 {
-  margin-top: 0;
+#groupDescription {
+  text-align: center;
+  font-size: 15px;
+  color: grey;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1; /* Limit to 3 lines in WebKit browsers */
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
 }
 
-.info-btn {
+#groupLocation {
+  font-size: auto;
+  color: grey;
+}
+
+.group-buttons {
   margin-top: 10px;
-  cursor: pointer;
+}
+
+.leave-group-btn,
+.delete-group-btn {
+  margin-right: 10px;
   padding: 5px 10px;
+  background-color: #ff0000; /* Example background color */
+  color: #fff;
   border: none;
+  cursor: pointer;
   border-radius: 5px;
 }
 
-.info-btn {
-  background-color: #008CBA;
+.success-msg {
+  font-size: 5vh;
+  color: rgb(24, 232, 24);
 }
 
-.modal {
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-/* Modal box styles */
-.modal-content {
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 20px;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-}
-
-/* Close button styles */
-.close {
-  float: right;
-  font-size: 1.5rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* Header styles */
-.modal-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-/* Image styles */
-.modal-image {
-  flex-shrink: 0;
-  background-color: #ccc; 
-  width: 150px; 
-  height: 120px; 
-  border-radius: 0%; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
-.modal-image img {
-  width: 100%;
-  height: auto;
-}
-
-.modal-title {
-  flex-grow: 1;
-  margin-left: 16px;
-}
-
-.modal-title h3 {
-  margin: 0;
-  color: #333;
-  font-size: 1.25rem;
-}
-
-.distance {
-  color: #666;
-  font-size: 0.875rem;
-}
-
-/* Body styles */
-.modal-body {
-  font-size: 0.875rem;
-}
-
-.description {
-  color: #333;
-  margin-bottom: 16px;
-}
-
-.group-stats p {
-  margin: 4px 0;
-}
-
-.join-btn {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  background-color:  #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .modal-content {
-    margin: 20% auto;
-    width: 95%;
-  }
-}
-  </style>
+</style>

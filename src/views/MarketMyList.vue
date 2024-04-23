@@ -24,6 +24,7 @@
         <br/>
         <CreateListing/>
       </div>
+
     </div>
 
     <!-- Main Content -->

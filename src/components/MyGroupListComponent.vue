@@ -1,21 +1,35 @@
 <template>
   <div class="group-list-item">
     <div class="group-image">
-      <img :src='fileURL' alt="No Group Logo"/>
+      <img :src="fileURL" alt="No Group Logo" />
     </div>
     <div class="group-details">
-      <router-link :to="{name : 'SpecificGroupHome', params:{group : group.GroupId, user : user}}">
+      <router-link
+        :to="{
+          name: 'SpecificGroupHome',
+          params: { group: group.GroupId, user: user },
+        }"
+      >
         <h3 id="groupName">{{ group.GroupName }}</h3>
       </router-link>
       <!-- <p id="groupLocation">{{ group.GroupLocation }}</p> -->
       <p id="groupDescription">{{ group.GroupDescription }}</p>
       <button class="leave-group-btn" @click="leaveGroup">Leave Group</button>
-      <button v-if="isAdmin" class="delete-group-btn" @click="deleteGroup">Delete Group</button>
+      <button v-if="isAdmin" class="delete-group-btn" @click="showWarning">
+        Delete Group
+      </button>
     </div>
   </div>
 
   <SuccessMessage v-if="showSuccess" :condition="message_passed" />
-  
+
+  <WarningMessage
+    v-if="showWarningMessage"
+    :condition="condition"
+    @confirm="deleteGroup"
+    @cancel="hideWarning"
+  />
+
   <!-- old success message-->
   <!-- <div v-if="showSuccess" class="modal"><div>
     <div class="modal-content">
@@ -28,48 +42,59 @@
     </div>
   </div> -->
 </template>
-  
-<script> 
-import firebaseApp from '../firebase.js'; 
-import { getAuth } from 'firebase/auth';
+
+<script>
+import firebaseApp from "../firebase.js";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { doc, getDoc, updateDoc, deleteDoc, getDocs, collection } from "firebase/firestore";
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
-import SuccessMessage from "@/components/SuccessMessage.vue"; 
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
+  getDocs,
+  collection,
+} from "firebase/firestore";
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import SuccessMessage from "@/components/SuccessMessage.vue";
+import WarningMessage from "./WarningMessage.vue";
 
 export default {
   components: {
-    SuccessMessage
+    SuccessMessage,
+    WarningMessage,
   },
 
   props: {
-      group: {
-          type: String,
-          required: true
-      },
+    group: {
+      type: String,
+      required: true,
+    },
   },
 
   data() {
-      return {
-          user: getAuth().currentUser.uid,
-          showSuccess: false,
-          fileURL: null,
-          fileID: this.group.GroupId,
-          message_passed: "leaveGroup",
-          groupAdmin: '',
-          isAdmin: false,
-      }
+    return {
+      user: getAuth().currentUser.uid,
+      showSuccess: false,
+      fileURL: null,
+      fileID: this.group.GroupId,
+      message_passed: "leaveGroup",
+      groupAdmin: "",
+      isAdmin: false,
+      showWarningMessage: false,
+      condition: "",
+    };
   },
 
   methods: {
     async getImage(fileID) {
-          console.log(fileID)
-          let storage = getStorage()
-          let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
-          let fileRef = ref(storage, filePath)
-          let fileURL = await getDownloadURL(fileRef)
-          this.fileURL = fileURL
-          console.log("url is here", fileURL)
+      console.log(fileID);
+      let storage = getStorage();
+      let filePath = "gs://connecthub-88e58.appspot.com/" + fileID;
+      let fileRef = ref(storage, filePath);
+      let fileURL = await getDownloadURL(fileRef);
+      this.fileURL = fileURL;
+      console.log("url is here", fileURL);
     },
 
     // toggleSuccess() {
@@ -77,99 +102,115 @@ export default {
     //       this.$router.push("/all_groups")
     // },
 
-    async deleteGroupFromUser(userID, groupID) { // search user via userID, delete GroupID from array
-      const db = getFirestore(firebaseApp)
-      let userDocRef = doc(db, 'users', userID)
-      let userDocSnap = await getDoc(userDocRef)
+    async deleteGroupFromUser(userID, groupID) {
+      // search user via userID, delete GroupID from array
+      const db = getFirestore(firebaseApp);
+      let userDocRef = doc(db, "users", userID);
+      let userDocSnap = await getDoc(userDocRef);
       if (userDocSnap.exists()) {
-          let userData = userDocSnap.data()
-          let updatedGroups = userData.groups.filter(groupId => groupId !== groupID)
-          await updateDoc(userDocRef, {
-              groups: updatedGroups
-          });
-        }
+        let userData = userDocSnap.data();
+        let updatedGroups = userData.groups.filter(
+          (groupId) => groupId !== groupID
+        );
+        await updateDoc(userDocRef, {
+          groups: updatedGroups,
+        });
+      }
     },
 
-    async deleteUserFromGroup(userID, groupID) { // search group via groupID, delete UserID from array
-      const db = getFirestore(firebaseApp)
-      let groupDocRef = doc(db, 'group', groupID)
-      let groupDocSnap = await getDoc(groupDocRef)
+    async deleteUserFromGroup(userID, groupID) {
+      // search group via groupID, delete UserID from array
+      const db = getFirestore(firebaseApp);
+      let groupDocRef = doc(db, "group", groupID);
+      let groupDocSnap = await getDoc(groupDocRef);
       if (groupDocSnap.exists()) {
-          let groupData = groupDocSnap.data();
-          let updatedUsers = groupData.GroupMembers.filter(userId => userId !== userID);
-          await updateDoc(groupDocRef, {
-              GroupMembers: updatedUsers
-          });
-        }
+        let groupData = groupDocSnap.data();
+        let updatedUsers = groupData.GroupMembers.filter(
+          (userId) => userId !== userID
+        );
+        await updateDoc(groupDocRef, {
+          GroupMembers: updatedUsers,
+        });
+      }
     },
 
     async deleteGroupFromFirestore(groupID) {
-      const db = getFirestore(firebaseApp)
-      const groupDocRef = doc(db, 'group', groupID)
-      await deleteDoc(groupDocRef)
+      const db = getFirestore(firebaseApp);
+      const groupDocRef = doc(db, "group", groupID);
+      await deleteDoc(groupDocRef);
     },
 
     async deleteMembersfromGroup(groupID) {
-      const db = getFirestore(firebaseApp)
+      const db = getFirestore(firebaseApp);
 
       // get GroupMembers array from Group
-      const groupDocRef = doc(db, 'group', groupID)
-      const groupDocSnapshot = await getDoc(groupDocRef)
-      const groupData = groupDocSnapshot.data()
-      const groupMembers = groupData.GroupMembers || []
+      const groupDocRef = doc(db, "group", groupID);
+      const groupDocSnapshot = await getDoc(groupDocRef);
+      const groupData = groupDocSnapshot.data();
+      const groupMembers = groupData.GroupMembers || [];
 
       // find each member and delete the group
       for (const groupMemberID of groupMembers) {
-        await this.deleteGroupFromUser(groupMemberID, groupID)
+        await this.deleteGroupFromUser(groupMemberID, groupID);
         //console.log("deleted", groupID, "from", groupMemberID)
       }
     },
 
-    leaveGroup() { // user group array must no longer contain current group + group user array must no longer contain user
-      let userID = this.user
-      let groupID = this.group.GroupId
-      this.deleteGroupFromUser(userID, groupID)
-      this.deleteUserFromGroup(userID, groupID)
-      this.showSuccess = true;  
+    leaveGroup() {
+      // user group array must no longer contain current group + group user array must no longer contain user
+      let userID = this.user;
+      let groupID = this.group.GroupId;
+      this.deleteGroupFromUser(userID, groupID);
+      this.deleteUserFromGroup(userID, groupID);
+      this.showSuccess = true;
     },
 
-    deleteGroup() { // all users group array must no longer contain current group 
-      let groupID = this.group.GroupId
-      this.deleteMembersfromGroup(groupID)
-      this.deleteGroupFromFirestore(groupID)
-      this.showSuccess = true
+    deleteGroup() {
+      // all users group array must no longer contain current group
+      let groupID = this.group.GroupId;
+      this.deleteMembersfromGroup(groupID);
+      this.deleteGroupFromFirestore(groupID);
+      this.hideWarning();
+      this.showSuccess = true;
     },
 
     async getGroupAdmin() {
-            const db = getFirestore(firebaseApp)
-            try {
-                const docs = await getDocs(collection(db, "group"));
-                docs.forEach((doc) => {
-                if (doc.data().GroupId == this.group.GroupId) {
-                    this.groupAdmin = doc.data().GroupAdmin[0];
-                    console.log("Group admin retrieved successfully:", this.groupAdmin);
-                }
-                })
-                if (this.groupAdmin == this.user) {
-                    this.isAdmin = true;
-                }
-            } catch (error) {
-                console.error("Error retrieving group admin:", error);
-            }
+      const db = getFirestore(firebaseApp);
+      try {
+        const docs = await getDocs(collection(db, "group"));
+        docs.forEach((doc) => {
+          if (doc.data().GroupId == this.group.GroupId) {
+            this.groupAdmin = doc.data().GroupAdmin[0];
+            console.log("Group admin retrieved successfully:", this.groupAdmin);
+          }
+        });
+        if (this.groupAdmin == this.user) {
+          this.isAdmin = true;
         }
+      } catch (error) {
+        console.error("Error retrieving group admin:", error);
+      }
+    },
+    showWarning() {
+      this.condition = "deleteGroup";
+      this.showWarningMessage = true;
+    },
+    hideWarning() {
+      this.showWarningMessage = false;
+    },
   },
 
   mounted() {
     try {
-        this.getImage(this.group.GroupId)
+      this.getImage(this.group.GroupId);
     } catch {
-        this.fileURL = null
+      this.fileURL = null;
     }
     this.getGroupAdmin();
-  }
-}
+  },
+};
 </script>
-  
+
 <style scoped>
 .group-list-item {
   display: block;
@@ -246,5 +287,4 @@ export default {
   font-size: 5vh;
   color: rgb(24, 232, 24);
 }
-
 </style>

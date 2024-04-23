@@ -12,8 +12,16 @@
           <label for="password">Password</label>
           <input type="password" placeholder="Password" v-model="password" />
         </p>
+
         <p>
-          <button class="login-btn" @click="login">Login with email</button>
+          <button class="login-btn" @click="login">
+            <img
+              src="@/assets/maillogo.png"
+              alt="Email Icon"
+              class="email-icon"
+            />
+            &nbsp;Login with email
+          </button>
         </p>
 
         <p>
@@ -22,23 +30,27 @@
             @click="loginWithGoogle"
             class="google-login-btn"
           >
+            <img
+              src="@/assets/googlelogo.png"
+              alt="Google Icon"
+              class="google-icon"
+            />
             Login with Google
           </button>
         </p>
 
-        <AuthPopup_login
-          :isVisible="loginStatus === 'success'"
-          @close="route_user"
-        >
-          <p class="success-message">Successfully logged in!</p>
-        </AuthPopup_login>
-
-        <AuthPopup_login
-          :isVisible="loginStatus === 'error'"
-          @close="loginStatus = ''"
-        >
-          <p class="error-message">Login failed: {{ errorMessage }}</p>
-        </AuthPopup_login>
+        <SuccessMessage
+          v-if="loginStatus === 'success'"
+          :condition="message_passed"
+          :user_id="user_id"
+        />
+        <ErrorMessage
+          v-if="showError"
+          :condition="message_passed"
+          :user_id="user_id"
+          :error="error"
+          @close="closeErrorMessage"
+        />
       </form>
     </div>
   </div>
@@ -53,22 +65,26 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
-import AuthPopup_login from "@/components/AuthPopup_login.vue";
 import { useRouter } from "vue-router";
+import SuccessMessage from "@/components/SuccessMessage.vue";
+import ErrorMessage from "@/components/ErrorMessage.vue";
 
 const email = ref("");
 const password = ref("");
 let loginStatus = ref("");
-const errorMessage = ref("");
 let user_id = ref("");
 
 const auth = getAuth();
 const router = useRouter();
 
+let message_passed = ref("");
+let error = ref("");
+let showError = ref("");
+
 const route_user = () => {
   loginStatus = "";
   console.log(user_id);
-  router.push({ name: "UserDashboard", params: { userId: user_id } });
+  router.push({ name: "UserDashboard", params: { user_id: user_id } });
 };
 
 // Email Login
@@ -78,11 +94,16 @@ const login = () => {
       console.log("Login Success");
       user_id = data.user.uid;
       loginStatus.value = "success";
+      message_passed = "loginSuccess";
     })
-    .catch((error) => {
-      console.log(error.code);
+    .catch((errorMessage) => {
+      console.log(errorMessage.code);
       loginStatus.value = "error";
-      errorMessage.value = error.message;
+      message_passed = "errorLogin";
+      email.value = "";
+      password.value = "";
+      error.value = errorMessage.code;
+      showError.value = true;
     });
 };
 
@@ -97,15 +118,23 @@ const loginWithGoogle = async (event) => {
     const user = result.user;
     user_id.value = user.uid;
     loginStatus.value = "success";
+    message_passed = "loginSuccess";
   } catch (error) {
-    console.error("Error during registration:", error);
     loginStatus.value = "error";
-    errorMessage.value = error.message;
+    message_passed = "errorLogin";
+    email.value = "";
+    password.value = "";
+    error.value = error.code;
+    showError.value = true;
   }
+};
+
+const closeErrorMessage = () => {
+  showError.value = false;
 };
 </script>
 
-<style>
+<style scoped>
 .login {
   text-align: center;
 }
@@ -165,5 +194,12 @@ const loginWithGoogle = async (event) => {
   background-color: white;
   color: black;
   border: 1px solid;
+}
+
+@media (max-width: 768px) {
+  .loginbox {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
 }
 </style>

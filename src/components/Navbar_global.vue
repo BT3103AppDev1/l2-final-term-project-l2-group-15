@@ -1,22 +1,24 @@
 <template>
-  <div class="topnav">
-    <ul>
-      <li @click="goUserDashboard"><span>Home</span></li>
-      <li @click="goMarketplace"><span>Marketplace</span></li>
-      <li class="dropdown" @mouseover="toggleDropdown" @mouseleave="hideDropdown">
-        <span>Groups</span>
-        <div v-if="showDropdown" class="dropdown-content">
-          <ul>
-            <li @click="goAllGroups">All Groups</li>
-            <li @click="goMyGroups">My Groups</li>
-          </ul>
-        </div>
-      </li>
-      <li @click="goUpdateProfile"><div class="profile-container">Profile<img id="user_logo" src="@/assets/user.png" alt="user logo"></div></li>
-      <li class="logout-text" @click="toggle"><span>Log Out</span></li>
-    </ul>
+  <div class="common-header-container">
+    <h1 class="header">ConnectHub</h1>
+    <div class="topnav">
+      <ul>
+        <li @click="goUserDashboard"><span>Home</span></li>
+        <li @click="goMarketplace"><span>Marketplace</span></li>
+        <li class="dropdown" @mouseover="toggleDropdown" @mouseleave="hideDropdown">
+          <span>Groups</span>
+          <div v-if="showDropdown" class="dropdown-content">
+            <ul>
+              <li @click="goAllGroups">All Groups</li>
+              <li @click="goMyGroups">My Groups</li>
+            </ul>
+          </div>
+        </li>
+        <li @click="goUpdateProfile"><div class="profile-container">Profile<img id="user_logo" src="@/assets/user.png" alt="user logo"></div></li>
+        <li class="logout-text" @click="toggle"><span>Log Out</span></li>
+      </ul>
+    </div>
   </div>
-
   <!-- code for pop up when sign out -->
     <div v-if="showPopup" class="modal">
         <div class="modal-content">
@@ -93,6 +95,23 @@ export default {
 </script>
 
 <style scoped>
+.common-header-container {
+  background-color: #000e90;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header {
+  color: white;
+  margin: 0px;
+  margin-left: 30px;
+  justify-self: center;
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;

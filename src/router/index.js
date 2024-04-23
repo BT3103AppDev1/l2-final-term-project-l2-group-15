@@ -39,7 +39,7 @@ const routes = [
     component: Register,
   },
   {
-    path: "/user_dashboard/:userId",
+    path: "/user_dashboard/:user_id",
     name: "UserDashboard",
     component: UserDashboard,
     meta: {requiresAuth: true},

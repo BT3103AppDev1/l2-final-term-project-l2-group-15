@@ -89,6 +89,7 @@
             this.updateSeller()
             alert('approved')
             this.$router.push({ name: 'MarketplaceDealReq'})
+
         },
 
         async rejectReq() {

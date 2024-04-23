@@ -143,7 +143,11 @@
       </form>
 
       <div v-if="showPopup" class="backdrop"></div>
-      <GoogleAdditionalInfoPopup v-if="showPopup" @submit="handlePopupSubmit" />
+      <GoogleAdditionalInfoPopup
+        v-if="showPopup"
+        @submit="handlePopupSubmit"
+        @close="cancelGoogleAuth"
+      />
     </div>
   </div>
 </template>
@@ -374,6 +378,16 @@ export default {
     iconSelected(iconPath) {
       this.selectedIcon = iconPath;
       console.log(this.selectedIcon);
+    },
+    async cancelGoogleAuth() {
+      try {
+        const user = this.auth.currentUser;
+        await user.delete();
+        console.log("User account deleted successfully");
+        this.showPopup = false;
+      } catch (error) {
+        console.error("Error deleting user account:", error);
+      }
     },
   },
   computed: {

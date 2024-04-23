@@ -1,5 +1,6 @@
 <template>
   <div class="popup">
+    <span class="close" @click="handleCancel">&times;</span>
     <h3>Complete Your Profile</h3>
     <form @submit.prevent="submit">
       <div class="profile-icon-container">
@@ -102,6 +103,9 @@ export default {
       this.selectedIcon = iconPath;
       console.log(this.selectedIcon);
     },
+    handleCancel() {
+      this.$emit("close");
+    },
   },
 };
 </script>
@@ -167,5 +171,13 @@ export default {
   display: block;
   width: auto;
   height: 50px;
+}
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
 }
 </style>

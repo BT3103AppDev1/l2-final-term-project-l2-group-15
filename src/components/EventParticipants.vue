@@ -1,14 +1,14 @@
 <template>
-    <div class="modal">
-      <div class="modal-content">
-        <span class="close" @click="close">&times;</span>
-        <h3>Participants</h3>
-        <ol>
-          <li v-for="participant in participants" :key="participant.id">{{ participant }}</li>
-        </ol>
-      </div>
+  <div class="modal">
+    <div class="modal-content">
+      <span class="close" @click="close">&times;</span>
+      <h3>Participants</h3>
+      <ol>
+        <li v-for="participant in participants" :key="participant.id">{{ participant }}</li>
+      </ol>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   export default {

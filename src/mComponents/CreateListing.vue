@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container-inner">
         <form id="myform" class="form-layout">
 
             <!-- Image Upload or Preview Section -->
@@ -165,12 +165,13 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.container-inner {
+    height: 100vh; /* Set height to full viewport height */
     padding: 2vh;
+    padding-left: 0px;
+    padding-right: 0px;
 }
+
 
 .form-layout {
     display: flex;
@@ -185,7 +186,6 @@ export default {
     opacity: 0;
     overflow: hidden;
     position: absolute;
-    z-index: -1;
 }
 
 .image-section, .fields-section {
@@ -210,7 +210,7 @@ export default {
     width: 90%; 
     max-width: 450px;
     height: 200px; 
-    position: relative; /* This makes it the positioning context for the delete button */
+    position: relative; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -228,15 +228,15 @@ export default {
     top: 0;
     right: 0;
     padding: 0.5rem;
-    background-color: orange; /* Light gray background */
-    color: #333; /* Dark text for contrast */
+    background-color: orange; 
+    color: #333; 
     border: none;
     cursor: pointer;
-    border-radius: 0 0 0 5px; /* Rounded corner on the bottom left */
+    border-radius: 0 0 0 5px; 
 }
 
 .delete-button:hover {
-    background-color: #bbb; /* Slightly darker on hover */
+    background-color: #bbb; 
 }
 
 .form-group {
@@ -279,4 +279,3 @@ export default {
 }
 
 </style>
-

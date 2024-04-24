@@ -6,29 +6,42 @@
 </script>
 
 <template>
-  <body>
-    <Navbar_global />
-    <div class="container">
-      <div class="nav">
-        <NavBar_market />
-      </div>
-      <div v-if="isOpen" class="overlay">
-        <div class="modal">
-            <button class="close-btn" @click="isOpen = false">Close</button>
-            <CreateListing/>
-        </div>
-      </div>
-      <div class="list">
-        <div class="list-header">
-          <h1>My Listings</h1>
-          <div class="create-btn-container">
-            <button class="create-group-btn" @click="isOpen = true">Create Listing</button>
-          </div>
-        </div>
-        <MyListing/>
-      </div>
+  <div>
+    <!-- Global Navbar -->
+    <div class="navbar-global">
+      <Navbar_global />
     </div>
-  </body>
+    <!-- Market Navbar -->
+    <div class="navbar-market">
+      <NavBar_market />
+    </div>
+
+    <!-- Modal -->
+    <div v-if="isOpen" class="modal-overlay">
+      <div class="modal">
+        <button class="close-btn" @click="isOpen = false">Close</button>
+        <br/>
+        <br/>
+        <CreateListing/>
+      </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <body>
+      <div class="container">
+        <div class="list">
+          <div class="list-header">
+            <h1>My Listings</h1>
+            <div class="create-btn-container">
+              <button class="create-group-btn" @click="isOpen = true">Create Listing</button>
+            </div>
+          </div>
+          <MyListing/>
+        </div>
+      </div>
+    </body>
+  </div>
 </template>
 
 <script>
@@ -40,18 +53,32 @@ export default {
   }
 }
 </script>
-
 <style scoped>
-.container {
-  padding: 0px;
-  margin: 0px;
-  display: grid;
-  grid-template-columns: 3fr 35fr;
+/* Global Navbar */
+.navbar-global {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0; /* Ensure it's above other content */
+  z-index:1000;
 }
 
-.nav{
-  margin-right: 0.5vh;
-  width: 50%;
+/* Market Navbar */
+.navbar-market {
+  position: fixed;
+  top: 65px; 
+  left: 0;
+  width: 10px; 
+  height: 100%;
+}
+
+.container {
+  padding-top: 0px; 
+  padding-left: 100px; 
+  padding-right: 20px; 
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
 }
 
 .list-header {
@@ -77,7 +104,6 @@ export default {
   background-color: #dc3545; /* Bootstrap danger */
 }
 
-
 .overlay {
   position: fixed;
   top: 0;
@@ -88,12 +114,10 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1050; /* ensure it's above other content */
 }
 
 .modal {
   position: relative;
-  width: 80%; /* adjustable based on your preference */
   max-width: 600px; /* max width for larger screens */
   background-color: white;
   padding: 20px;

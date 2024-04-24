@@ -4,7 +4,8 @@ import ItemListComponent from '@/mComponents/ItemListComponent.vue';
 
 <template>
   <div>
-    <h1>All Items List </h1>
+    <h1> All Items List </h1>
+    <br/>
     <div class="grid-container">
       <div v-for="item in Items" :key="item.id" class="group">
           <ItemListComponent :item="item"/>
@@ -40,10 +41,7 @@ export default {
     },
 
     created() {
-      this.fetchItems() // fetch all Items
-      //this.getGroup(); // 
-      //this.getUserPostalCode(); // get the user's postal code
-      //this.filterDistance(999999); // default show all groups (max range)
+      this.fetchItems()
     },
 
     methods: {
@@ -57,7 +55,7 @@ export default {
       },
 
 
-      async getGroup() { // get the group document
+      async getGroup() { 
         const userDocRef = doc(db, "users", this.user);
         const userDocSnapshot = await getDoc(userDocRef);
         this.group = userDocSnapshot;
@@ -155,16 +153,15 @@ export default {
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(40%, 40% )); /* Adjust column width as needed */
-  gap: 10px; /* Adjust gap between items as needed */
+  grid-template-columns: repeat(auto-fit, minmax(49%, 49% ));
 }
 
 .group {
-  width: 100%; /* Ensure each group takes up full width of the grid cell */
+  width: 100%; 
 }
 
 .item-list-component {
-  width: 100%; /* Ensure each ItemListComponent takes up full width of its parent */
+  width: 100%;
 }
 
 

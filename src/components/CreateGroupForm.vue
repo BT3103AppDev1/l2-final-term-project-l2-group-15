@@ -154,8 +154,7 @@ export default {
             console.log("Document written with ID:", groupID)
             this.updateUserDBJoin(this.user, groupID)
             document.getElementById('myform').reset()
-            this.$emit("added")
-            this.$router.push({ name: 'SpecificGroupHome', params: { group: groupID, user: this.user } })
+            this.$emit("added", { group: groupID, user: this.user });
         } catch(error) {
             console.log("Error when adding document: ", error)
         }
@@ -277,6 +276,4 @@ export default {
     background-color: green;
     color: white;
 }
-
 </style>
-

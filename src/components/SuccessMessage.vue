@@ -35,7 +35,7 @@ export default {
 
     user_id: {
       type: String,
-    }
+    },
   },
 
   mounted() {
@@ -56,6 +56,9 @@ export default {
       else if (this.condition === "joinGroup") {
         this.displayMessage = "You have successfully joined the group!";
       }
+      else if (this.condition === "createGroup") {
+        this.displayMessage = "You have successfully created the group!";
+      } 
       else if (this.condition === "joinEvent") {
         this.displayMessage = "You have successfully joined the event!";
       } 
@@ -85,6 +88,9 @@ export default {
       else if (this.condition === "joinGroup") {
         this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group, user: this.user } })
       } 
+      else if (this.condition === "createGroup") {
+        this.$router.push({ name: 'SpecificGroupHome', params: { group: this.group, user: this.user } })
+      } 
       else if (this.condition === "joinEvent") {
         // add code if need subsequent action
         this.$emit('close');
@@ -104,7 +110,8 @@ export default {
         this.$router.push("/login")
       } 
       else {
-        
+        // add code if need subsequent action
+        this.$emit('close');
       }
     }
   }

@@ -27,25 +27,30 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
     <div v-if="isOpen" class="modal">
         <div class="modal-content">
           <button class="close-btn" @click="isOpen = false">Close</button>
-          <CreateGroupForm/>
+          <CreateGroupForm @added="openSuccess"/>
         </div>
     </div>
         <div v-for="(group, index) in filteredGroups" :key="group.id" class="group">
           <GroupListComponent :group="group" :distance="groupDistances[index].toFixed(2)"/>
         </div>
   </div>
+
+  <SuccessMessage v-if="showSuccess" :condition="message_passed" :user="user" :group="group"/>
 </template>
+
 <script>
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
 import { getDoc, doc, onSnapshot, collection} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
+import SuccessMessage from './SuccessMessage.vue';
 
 const db = getFirestore(firebaseApp)
 
 export default {
     components: {
         GroupListComponent,
+        SuccessMessage,
     },
 
     data() {
@@ -57,12 +62,15 @@ export default {
             groupDistances: [],
             postalCode: '',
             isDropdownOpen: false,
+
+            showSuccess: false,
+            message_passed: "createGroup",
+            group: "",
         };
     },
 
     mounted() {
       this.fetchGroups(); // fetch all groups possible
-      this.getGroup(); // get the group id
       this.getUserPostalCode(); // get the user's postal code
       this.filterDistance(999999); // default show all groups (max range)
     },
@@ -76,13 +84,7 @@ export default {
         }));
         });
       },
-
-      async getGroup() { // get the group document
-        const userDocRef = doc(db, "users", this.user);
-        const userDocSnapshot = await getDoc(userDocRef);
-        this.group = userDocSnapshot;
-      },
-
+      
       async getUserPostalCode() { // get the user's postal code
         const userDocRef = doc(db, "users", this.user);
         const userDocSnapshot = await getDoc(userDocRef);
@@ -166,24 +168,14 @@ export default {
       // helper
       degreesToRadians(degrees) {
         return degrees * (Math.PI / 180);
-      }
+      },
 
-      // function to compute distance using routing from api
-      // async calculateDistance(lat1, lon1, lat2, lon2) {
-      //   const url = `https://www.onemap.gov.sg/api/public/routingsvc/route?start=${lat1}%2C${lon1}&end=${lat2}%2C${lon2}&routeType=walk`;
-      //   try {
-      //     const response = await fetch(url);
-      //     const data = await response.json();
-      //     if (data.status_message == "Found route between points") {
-      //       console.log("managed to find route BBBBBBBBBRRRRRRROOOOOOOOOOO")
-      //       return data.route_summary.total_distance
-      //     } else {
-      //       return 999999;
-      //     }
-      //   } catch(error) {
-      //     throw new Error("Error fetching data: " + error.message);
-      //   }
-      // }
+      openSuccess(groupData){
+        this.user = groupData.user
+        this.group = groupData.group
+        this.isOpen = false;
+        this.showSuccess = true;
+      }
   }
 
   };
@@ -230,12 +222,7 @@ h1 {
 }
 
 .close-btn {
-  background-color: #dc3545; 
-  position: absolute; 
-  right: 0; 
-  top: 0;
-  margin-top: 5px;
-  margin-right: 5px;
+  background-color: #dc3545; /* Bootstrap danger */
 }
 
 .modal {
@@ -250,7 +237,6 @@ h1 {
 }
 
 .modal-content {
-  position: relative;
   background-color: white;
   margin: 10% auto; /* 10% from the top and centered */
   padding: 20px;

@@ -84,7 +84,7 @@
         } else if (this.condition === "errorRegistration") {
           this.$emit("close")
         } else {
-
+          this.$emit("close")
         }
       }
     }

@@ -3,6 +3,8 @@
   import NavBar_market from '@/mComponents/Navbar_market.vue'
   import CreateListing from '@/mComponents/CreateListing.vue'
   import MyListing from '@/mComponents/MyListing.vue'
+  import MarketSuccess from '@/mComponents/MarketSuccess.vue'
+  
 </script>
 
 <template>
@@ -22,13 +24,16 @@
         <button class="close-btn" @click="isOpen = false">Close</button>
         <br/>
         <br/>
-        <CreateListing/>
+        <CreateListing @open="toggleSuccess"/>
       </div>
-
     </div>
-
     <!-- Main Content -->
     <body>
+              <!-- Success Message -->
+      <div v-if="showSuccess" class="success">
+        <MarketSuccess :message="message" @close="toggleSuccessClose"/>
+      </div>
+
       <div class="container">
         <div class="list">
           <div class="list-header">
@@ -46,11 +51,33 @@
 
 <script>
 export default {
+  components: {
+    Navbar_global,
+    NavBar_market,
+    CreateListing,
+    MyListing,
+    MarketSuccess,
+    },
+
   data() {
     return {
       isOpen:false,
+      message: 'Item Created',
+      showSuccess: false
     }
-  }
+  },
+
+  methods: {
+      toggleSuccessClose() {
+        this.showSuccess = !this.showSuccess
+        this.$router.push({ name: 'MarketplaceViewItems'})
+      },
+
+      toggleSuccess() {
+        this.isOpen = false
+        this.showSuccess = !this.showSuccess
+      },
+    }
 }
 </script>
 <style scoped>
@@ -130,6 +157,10 @@ export default {
 .modal-content {
   position: relative;
   overflow-y: auto; /* ensure scrollability of content within modal if needed */
+}
+
+.success {
+  background-color: #dc3545;
 }
 
 </style>

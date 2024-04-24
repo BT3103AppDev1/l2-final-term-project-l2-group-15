@@ -86,9 +86,7 @@
             this.updateBuyer()
             this.updateItem()
             this.updateSeller()
-            alert('approved')
-            this.$router.push({ name: 'MarketplaceDealReq'})
-
+            this.$emit('open')
         },
 
         async rejectReq() {
@@ -115,8 +113,7 @@
             } else {
                 await updateDoc(itemDocRef, { buyerID: updatedListedItems })
             }
-            console.log("rejected")
-            this.$router.push({ name: 'MarketplaceViewItems'})
+            this.$emit('rejected')
         },
 
         async getImage(fileID) {

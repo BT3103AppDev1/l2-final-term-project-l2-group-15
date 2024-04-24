@@ -73,65 +73,65 @@ export default {
       const docRef = doc(db, 'Items', this.fileID)
       const itemSnapshot = await getDoc(docRef)
       const itemdata = itemSnapshot.data()
-      const buyerID = itemdata.sellerID;
+      const buyerID = itemdata.sellerID
       this.$emit('openPopup', buyerID)
     },
     async getImage(fileID) {
       try {
         let storage = getStorage();
-        let filePath = `gs://connecthub-88e58.appspot.com/${fileID}`;
-        let fileRef = ref(storage, filePath);
-        let fileURL = await getDownloadURL(fileRef);
-        this.fileURL = fileURL;
+        let filePath = `gs://connecthub-88e58.appspot.com/${fileID}`
+        let fileRef = ref(storage, filePath)
+        let fileURL = await getDownloadURL(fileRef)
+        this.fileURL = fileURL
       } catch (error) {
-        console.log("No Image Found");
+        console.log("No Image Found")
       }
     },
     async deleteFromItem(itemID) {
-      const db = getFirestore(firebaseApp);
-      const docRef = doc(db, 'Items', itemID);
+      const db = getFirestore(firebaseApp)
+      const docRef = doc(db, 'Items', itemID)
       await updateDoc(docRef, {
         hasBuyRequest: false,
         buyerID: "",
-      });
-      const itemSnapshot = await getDoc(docRef);
-      const itemdata = itemSnapshot.data();
-      const sellerID = itemdata.sellerID;
-      const sellerDocRef = doc(db, 'users', sellerID);
-      const sellerDocSnap = await getDoc(sellerDocRef);
-      const sellerData = sellerDocSnap.data();
-      const updatedSentRequest = sellerData.receivedRequestforItem.filter(id => id !== itemID);
+      })
+      const itemSnapshot = await getDoc(docRef)
+      const itemdata = itemSnapshot.data()
+      const sellerID = itemdata.sellerID
+      const sellerDocRef = doc(db, 'users', sellerID)
+      const sellerDocSnap = await getDoc(sellerDocRef)
+      const sellerData = sellerDocSnap.data()
+      const updatedSentRequest = sellerData.receivedRequestforItem.filter(id => id !== itemID)
       await updateDoc(sellerDocRef, {
         receivedRequestforItem: updatedSentRequest,
       });
     },
     async deletefromUser(itemID, userID) {
       const db = getFirestore(firebaseApp);
-      const docRef = doc(db, 'users', userID);
+      const docRef = doc(db, 'users', userID)
       await updateDoc(docRef, {
         sentRequestforItem: arrayRemove(itemID)
       });
     },
     async deleteDealRequest() {
       await this.deleteFromItem(this.fileID);
-      await this.deletefromUser(this.fileID, this.user);
-      this.$router.push({ name: 'MarketplaceViewItems' });
+      await this.deletefromUser(this.fileID, this.user)
+      this.$emit('open')
     },
     async checkSold() {
       const db = getFirestore(firebaseApp);
-      const itemDocRef = doc(db, 'Items', this.fileID);
-      const itemDocSnap = await getDoc(itemDocRef);
-      const itemData = itemDocSnap.data();
-      this.isSold = itemData.sold;
+      const itemDocRef = doc(db, 'Items', this.fileID)
+      const itemDocSnap = await getDoc(itemDocRef)
+      const itemData = itemDocSnap.data()
+      this.isSold = itemData.sold
       if (itemData.soldTo === this.user) {
-        this.isSoldtoYou = true;
+        this.isSoldtoYou = true
       }
     }
   },
   mounted() {
-    this.getImage(this.fileID);
-    this.checkSold();
-    this.getSellerName();
+    this.getImage(this.fileID)
+    this.checkSold()
+    this.getSellerName()
   }
 };
 </script>

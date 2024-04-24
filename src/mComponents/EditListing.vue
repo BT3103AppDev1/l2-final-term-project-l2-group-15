@@ -172,7 +172,7 @@ export default {
             await updateDoc(doc(db, "Items", ItemID), ItemData)
             document.getElementById('myform').reset()
             this.$emit("added")
-            this.$router.push({ name: 'MarketplaceViewItems'})
+            this.$emit('open')
         } catch(error) {
             console.log("Error when adding document: ", error)
         }

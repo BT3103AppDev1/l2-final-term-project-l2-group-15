@@ -106,10 +106,11 @@ export default {
     async sendDealRequest() {
       const itemID = this.fileID;
       const userID = this.user;
-      this.updateItemDB(itemID, userID);
-      this.updateUserDB(itemID, userID);
-      this.$router.push({ name: 'MarketplaceSentReq' });
+      this.updateItemDB(itemID, userID)
+      this.updateUserDB(itemID, userID)
+      this.$emit('open')
     },
+
     async updateItemDB(itemID, userID) {
       const db = getFirestore(firebaseApp);
       const docRef = doc(db, 'Items', itemID);

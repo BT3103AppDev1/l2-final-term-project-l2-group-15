@@ -2,8 +2,8 @@
     <div class="group-list-item">
         <div class="group-details">
             <h3>{{ user.username }}</h3>
-            <button @click="approveReq()"> Approve </button>
-            <button @click="rejectReq()" > Reject </button>
+            <button @click="approveReq()" class="approve-btn"> Approve </button>
+            <button @click="rejectReq()" class="reject-btn"> Reject </button>
         </div>
     </div> 
   </template>
@@ -139,62 +139,103 @@
     }
     }
   </script>
-  
-  <style scoped>
-  .group-list-item {
-    display: flex;
-    align-items: center;
-    background-color: #f5f4f4;
-    margin-left: 15px;
-    margin-right: 15px;
-    border-radius: 10px;
-    margin-bottom: 1rem;
-    padding: 10px;
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-  }
-  
-  .group-list-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-  }
-  
-  .group-image {
-    flex: 1;
-    background-color: #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    max-width: 20%; 
-  }
-  
-  .group-image {
-    width: 150px;
-    height: 150px; 
-    overflow: hidden;
-    margin: 20px;
-    border-radius: 10px;
-  }
-  
-  .group-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-  }
-  
-  .group-details {
-    flex: 4;
-    padding-left: 20px;
-  }
-  
-  .group-details h3 {
-    margin-top: 0;
-  }
 
-  @media (max-width: 768px) {
-    .modal-content {
-      margin: 20% auto;
-      width: 95%;
-    }
+<style scoped>
+.group-list-item {
+  display: flex;
+  align-items: center;
+  background-color: #f5f4f4;
+  margin-left: 15px;
+  margin-right: 15px;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  padding: 10px;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.group-list-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+.group-image {
+  flex: 1;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  max-width: 20%; 
+}
+
+.group-image {
+  width: 150px;
+  height: 150px; 
+  overflow: hidden;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.group-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+}
+
+.group-details {
+  flex: 4;
+  padding-left: 20px;
+  display: flex; 
+  align-items: center; 
+}
+
+.group-details h3 {
+  margin-top: 0;
+  flex-grow: 1; 
+}
+
+.approve-btn {
+  margin-left: 10px; 
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.reject-btn {
+  margin-left: 10px; 
+  background-color: red; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.approve-btn:hover {
+  background-color: #3e8e41; /* Darker Green */
+}
+
+.reject-btn:hover {
+  background-color: rgb(159, 7, 7); /* Darker Red */
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 20% auto;
+    width: 95%;
   }
-  </style>
+}
+</style>

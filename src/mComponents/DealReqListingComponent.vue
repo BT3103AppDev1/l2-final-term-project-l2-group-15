@@ -53,7 +53,7 @@ export default {
       const docRef = doc(db, 'Items', this.fileID);
       const itemSnapshot = await getDoc(docRef);
       const itemdata = itemSnapshot.data();
-      const sellerID = itemdata.sellerID;
+      const sellerID = itemdata.soldTo;
       this.$emit('openPopup', sellerID);
     },
     async goDealReq() {
@@ -92,8 +92,8 @@ export default {
 <style scoped>
 .group-list-item {
   width: 100%; 
-  max-width: 260px; 
-  max-height: 300px;
+  width: 260px; 
+  height: 300px;
   margin: 0 auto; 
   margin-right: 30px;
   display: flex;
@@ -113,7 +113,7 @@ export default {
 
 .group-image {
   width: 100%; 
-  max-height: 200px; 
+  height: 150px; 
   overflow: hidden;
   border-radius: 10px;
 }

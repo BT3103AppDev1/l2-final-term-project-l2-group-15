@@ -73,7 +73,7 @@ export default {
       const docRef = doc(db, 'Items', this.fileID)
       const itemSnapshot = await getDoc(docRef)
       const itemdata = itemSnapshot.data()
-      const buyerID = itemdata.soldTo;
+      const buyerID = itemdata.sellerID;
       this.$emit('openPopup', buyerID)
     },
     async getImage(fileID) {

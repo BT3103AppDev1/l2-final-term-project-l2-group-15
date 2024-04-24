@@ -37,6 +37,7 @@ export default {
             item_list: [],
             showPopup: false,
             current_item: null,
+            current_user: null
         };
     },
 

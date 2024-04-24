@@ -52,7 +52,7 @@ export default {
 
         async fetchItems() {
             const db = getFirestore(firebaseApp)
-            const userDocRef = doc(db, 'users', this.user); 
+            const userDocRef = doc(db, 'users', this.user)
             const docSnap = await getDoc(userDocRef);
             let item_listid = docSnap.data().sentRequestforItem
             this.fetchItemObject(item_listid)
@@ -61,10 +61,12 @@ export default {
         async fetchItemObject(item_listid) {
             for (const itemId of item_listid) {
                 const db = getFirestore(firebaseApp)
-                const ItemDocRef = doc(db, 'Items', itemId);
-                const docSnap = await getDoc(ItemDocRef);
-            if (docSnap.exists()) {
-                this.item_list.push(docSnap.data());
+                const ItemDocRef = doc(db, 'Items', itemId)
+                const docSnap = await getDoc(ItemDocRef)
+                const docData = docSnap.data()
+                if (docData.sold === true && docData.soldTo != this.user) {
+                } else {
+                  this.item_list.push(docSnap.data())
                 }
             }
         }

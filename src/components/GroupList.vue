@@ -35,6 +35,7 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
         </div>
   </div>
 </template>
+
 <script>
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
@@ -230,12 +231,7 @@ h1 {
 }
 
 .close-btn {
-  background-color: #dc3545; 
-  position: absolute; 
-  right: 0; 
-  top: 0;
-  margin-top: 5px;
-  margin-right: 5px;
+  background-color: #dc3545; /* Bootstrap danger */
 }
 
 .modal {
@@ -250,7 +246,6 @@ h1 {
 }
 
 .modal-content {
-  position: relative;
   background-color: white;
   margin: 10% auto; /* 10% from the top and centered */
   padding: 20px;

@@ -60,7 +60,7 @@ export default {
         };
     },
 
-    created() {
+    mounted() {
       this.fetchGroups(); // fetch all groups possible
       this.getGroup(); // get the group id
       this.getUserPostalCode(); // get the user's postal code

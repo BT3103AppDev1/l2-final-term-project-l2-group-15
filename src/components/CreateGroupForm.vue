@@ -2,10 +2,11 @@
     <div class="container">
         <form id="myform" class="form-layout">
 
-            <div class="left-section">
+            <!-- Image Upload or Preview Section -->
+            <div class="image-section">
                 <!-- If no Image -->
                 <div class="upload-box" @click="openFileInput" v-if="!imageUrl">
-                    <input type="file" accept="image/*" ref="fileInput" @change="handleImageChange"></input>
+                    <input type="file" accept="image/*" ref="fileInput" @change="handleImageChange" class="file-input"></input>
                     <span>Upload Image</span>
                 </div>
 
@@ -16,24 +17,26 @@
                 </div>
             </div>
 
-            <div class="right-section">
+            <!-- Input Fields Section -->
+            <div class="fields-section">
                 <div class="form-group">
                     <label for="groupName">Group Name:</label>
-                    <input class="textHolder" type="text" id="groupName" required placeholder="Enter Group Name">
+                    <textarea class="textHolder" id="groupName" required placeholder="Enter Group Name"></textarea>
                 </div>
                 
                 <div class="form-group">
                     <label for="groupLocation">Group Location:</label>
-                    <input class="textHolder" type="text" id="groupLocation" required placeholder="Enter Group Location">
+                    <textarea class="textHolder" id="groupLocation" required placeholder="Enter Group Location"></textarea>
                 </div>
                 
                 <div class="form-group">
                     <label for="groupDescription">Group Description:</label>
-                    <input class="textHolder" type="text" id="groupDescription" required placeholder="Enter Group Description">
+                    <textarea class="textHolder" id="groupDescription" required placeholder="Enter Group Description"></textarea>
                 </div>
                 
+                <!-- Create Group Button -->
                 <div class="save">
-                    <button id="savebutton" type="button" @click="createGroup"> Create Group </button>
+                    <button id="savebutton" type="button" @click="createGroup">Create Group</button>
                 </div>
             </div>
         </form>
@@ -41,12 +44,14 @@
 </template>
 
 
+
 <script>
 
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
-import { addDoc, collection} from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc, arrayUnion} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
+import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 export default {
 
@@ -60,25 +65,60 @@ export default {
     },
     
     methods: {
+
+        generateGroupID() {
+              const charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+              let randomString = '';
+              for (let i = 0; i < 10; i++) {
+                  const randomIndex = Math.floor(Math.random() * charset.length)
+                  randomString += charset[randomIndex]
+              }
+              return "GRP" + randomString
+        },
+
         openFileInput() {
-            this.$refs.fileInput.click(); 
+            this.$refs.fileInput.click()
         },
 
         handleImageChange(event) {
-            let file = event.target.files[0];
+            let file = event.target.files[0]
             if (file) {
-                this.formData.image = file;
-                this.imageFile = file;
-                this.imageUrl = URL.createObjectURL(file); // For preview
+                this.formData.image = file
+                this.imageFile = file
+                this.imageUrl = URL.createObjectURL(file) // For preview
             }
         },
 
         deleteImage() {
             if (this.imageUrl) {
                 console.log("deleting image...")
-                this.imageUrl = '';
-                this.imageFile = null;
+                this.imageUrl = ''
+                this.imageFile = null
             }
+        },
+
+        async updateUserDBJoin(documentId, newGroupId) {
+          const db = getFirestore(firebaseApp)
+          try { // there no catch error
+            const documentRef = doc(db, 'users', documentId)
+            const documentSnapshot = await getDoc(documentRef)
+
+            if (documentSnapshot.exists()) {
+                await updateDoc(documentRef, {
+                    groups: arrayUnion(newGroupId)
+                  });
+              } else {
+                console.log('Document does not exist.')
+                }
+            } catch (error) {
+                console.error('Error updating document: ', error)
+            }
+        },
+
+        async addPic(file, picID) {
+            let storage = getStorage()
+            let storageRef = ref(storage, picID);
+            await uploadBytes(storageRef, file);
         },
 
         async createGroup() {
@@ -89,25 +129,33 @@ export default {
             let groupDescription = document.getElementById("groupDescription").value
             // Need to solve Firebase Cloud Storage Issue
             // let groupImage = this.imageFile
-            let groupImage = "Random First"
-
+            let groupImage = "Check firebase storage"
+            let groupID = this.generateGroupID()
+            if (!this.imageFile || !groupName || !groupLocation || !groupDescription) {
+                alert('Please ensure all forms are filled');
+                return;
+            }
             // Need to add User ID to GroupAdmin and GroupMembers
             const groupData = {
                 GroupName: groupName,
                 GroupLocation: groupLocation,
                 GroupDescription: groupDescription,
                 GroupImage: groupImage,
-                GroupMembers: [],
-                GroupAdmin: [], 
+                GroupMembers: [this.user],
+                GroupAdmin: [this.user], 
                 GroupEvents: [],
                 GroupDiscussion: [],
+                GroupId: groupID
             }
-        
+            console.log(groupID)
         try {
-            const newGroupRef = await addDoc(collection(db, "group"), groupData);
-            console.log("Document written with ID:", newGroupRef.id);
+            this.addPic(this.imageFile, groupID)
+            await setDoc(doc(db, "group", groupID), groupData)
+            console.log("Document written with ID:", groupID)
+            this.updateUserDBJoin(this.user, groupID)
             document.getElementById('myform').reset()
             this.$emit("added")
+            this.$router.push({ name: 'SpecificGroupHome', params: { group: groupID, user: this.user } })
         } catch(error) {
             console.log("Error when adding document: ", error)
         }
@@ -117,99 +165,108 @@ export default {
 </script>
 
 <style scoped>
-
 .container {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
+    align-items: center;
+    padding: 2vh;
 }
 
 .form-layout {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    width: 90vw; 
+    max-width: 500px; 
 }
 
-.left-section, .right-section {
+.file-input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.image-section, .fields-section {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
-.left-section {
-    margin-right: 20px;
-}
-
-.upload-box, .image-preview img {
-    width: 300px;
-    height: 300px;
+.upload-box, .image-preview {
+    width: 90%; 
+    max-width: 450px;
+    height: 200px; 
     background-color: #ccc;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    position: relative;
-}
-
-.upload-box span, .image-preview button {
-    position: absolute;
-    bottom: 10px;
+    margin-bottom: 2vh;
 }
 
 .image-preview {
-    width: 300px;
-    height: 300px;
-    position: relative; /* Add this line */
+    width: 90%; 
+    max-width: 450px;
+    height: 200px; 
+    position: relative; /* This makes it the positioning context for the delete button */
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 2vh;
 }
 
 .image-preview img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* This ensures the image covers the area nicely */
+    object-fit: cover;
 }
 
 .delete-button {
     position: absolute;
-    bottom: 10px; /* Adjust this value as needed */
-    left: 50%;
-    transform: translateX(-50%); /* Centers the button horizontally */
-    padding: 5px 10px;
-    background-color: red;
-    color: white;
+    top: 0;
+    right: 0;
+    padding: 0.5rem;
+    background-color: orange; /* Light gray background */
+    color: #333; /* Dark text for contrast */
     border: none;
-    border-radius: 4px;
     cursor: pointer;
+    border-radius: 0 0 0 5px; /* Rounded corner on the bottom left */
 }
 
 .delete-button:hover {
-    background-color: darkred;
+    background-color: #bbb; /* Slightly darker on hover */
 }
 
-
 .form-group {
-    margin-bottom: 20px;
+    width: 90%; 
+    margin-bottom: 2vh;
 }
 
 .textHolder {
-    width: 100%;
-    padding: 8px;
+    width: 100%; 
+    height: 100px; 
+    padding: 1vh;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box;
+    resize: vertical; 
+    font-size: 1rem;
 }
 
-input:hover {
-    box-shadow: 0 0 8px #719ECE;
+.textHolder:hover {
+    box-shadow: 0 0 1vh #719ECE;
 }
 
 .save {
+    width: 90%;
     text-align: center;
+    margin-top: 2vh;
 }
 
 .save button {
-    padding: 10px 20px;
+    padding: 2vh 4vw;
+    width: 100%; 
     background-color: lightgreen;
     border: none;
     border-radius: 4px;
@@ -222,3 +279,4 @@ input:hover {
 }
 
 </style>
+

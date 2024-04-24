@@ -11,10 +11,15 @@
 export default {
   props: {
     isVisible: Boolean,
+    userId: String,
+    registrationStatus: String,
   },
   methods: {
     close() {
       this.$emit("close");
+      if (this.registrationStatus === "success") {
+        this.$router.push(`/user_dashboard/${this.userId}`);
+      }
     },
   },
 };
@@ -31,6 +36,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
@@ -38,5 +44,4 @@ export default {
   padding: 50px;
   border-radius: 5px;
 }
-
 </style>

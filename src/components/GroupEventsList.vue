@@ -13,7 +13,7 @@ import CreateEventForm from '@/components/CreateEventForm.vue';
       <div v-if="isOpen" class="modal">
         <div class="modal-content">
           <button class="close-btn" @click="isOpen = false">Close</button>
-          <CreateEventForm @eventCreated="closeModal"/>
+          <CreateEventForm @added="closeModal"/>
         </div>
       </div>
       <!-- need to include event -->
@@ -21,6 +21,8 @@ import CreateEventForm from '@/components/CreateEventForm.vue';
         <GroupEventListComponent :event="event" :group="groupId"/>
       </div>
     </div>
+
+    <SuccessMessage v-if="showSuccess" :condition="message_passed" @close="closeSuccess"/>
   </template>
 
 <script>
@@ -28,6 +30,8 @@ import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
 import { doc, getDocs, onSnapshot, collection} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
+import SuccessMessage from './SuccessMessage.vue';
+
 
 const db = getFirestore(firebaseApp);
 
@@ -46,7 +50,9 @@ export default {
             user: getAuth().currentUser.uid,
             isOpen: false,
             isAdmin: false,
-            groupAdmin: ""
+            groupAdmin: "",
+            showSuccess: false,
+            message_passed: "createEvent",
         };
     },
     methods: {
@@ -82,6 +88,11 @@ export default {
       },
       closeModal() {
         this.isOpen = false;
+        this.showSuccess = true;
+      },
+
+      closeSuccess(){
+        this.showSuccess = false;
       }
     }
   };

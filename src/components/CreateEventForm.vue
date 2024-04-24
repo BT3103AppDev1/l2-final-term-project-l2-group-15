@@ -44,8 +44,6 @@
             </div>
         </form>
     </div>
-
-    <SuccessMessage v-if="showSuccess" :condition="message_passed" @close="closeSuccessMessage"/>
 </template>
 
 
@@ -57,13 +55,8 @@ import { setDoc, doc, addDoc, collection, updateDoc, arrayUnion} from "firebase/
 import { getAuth } from 'firebase/auth';
 import { firestore} from "@/firebase";
 import { getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
-import SuccessMessage from "@/components/SuccessMessage.vue"; 
 
 export default {
-    components: {
-        SuccessMessage
-    },
-
     data() {
         return {
         //   imageUrl: '',
@@ -147,8 +140,7 @@ export default {
                 const EventDocRef = doc(firestore, "Events", eventID);
                 await setDoc(EventDocRef, eventData);
                 document.getElementById('myform').reset();
-                this.$emit("added");
-                this.showSuccess = true;
+                this.$emit("added")
             } catch (error) {
                 console.log("Error when adding Event: ", error);
             }

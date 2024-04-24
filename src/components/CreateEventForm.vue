@@ -179,6 +179,8 @@ export default {
             } catch (error) {
                 console.error("Error adding event to group: ", error);
             }
+
+            this.$emit("eventCreated");
         },
 
         async generateEventID() {

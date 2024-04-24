@@ -7,18 +7,18 @@ import CreateEventForm from '@/components/CreateEventForm.vue';
     <div>
       <div class="event-header">
         <h1>Events</h1>
-        <button class="create-event-btn" @click="isOpen = true">Create Event</button>
+        <button v-if="isAdmin" class="create-event-btn" @click="isOpen = true">Create Event</button>
       </div>
       <br>
       <div v-if="isOpen" class="modal">
         <div class="modal-content">
           <button class="close-btn" @click="isOpen = false">Close</button>
-          <CreateEventForm/>
+          <CreateEventForm @eventCreated="closeModal"/>
         </div>
       </div>
       <!-- need to include event -->
       <div v-for="event in this.events" :key="this.events" class="group">
-        <GroupEventListComponent :event="event"/>
+        <GroupEventListComponent :event="event" :group="groupId"/>
       </div>
     </div>
   </template>
@@ -45,11 +45,14 @@ export default {
             groupId: this.$route.params.group,
             user: getAuth().currentUser.uid,
             isOpen: false,
+            isAdmin: false,
+            groupAdmin: ""
         };
     },
     methods: {
       fetchEvents() {
         const groupDocument = doc(db, "group", this.groupId);
+        this.getGroupAdmin();
         const unsubscribe = onSnapshot(groupDocument, (documentSnapshot) => {
           if (documentSnapshot.exists()) {
             this.events = documentSnapshot.data()["GroupEvents"]; 
@@ -60,9 +63,27 @@ export default {
         }, (error) => {
           console.error("Error fetching document:", error);
         });
+      },
+      async getGroupAdmin() {
+        try {
+          const docs = await getDocs(collection(db, "group"));
+          docs.forEach((doc) => {
+            if (doc.data().GroupId == this.groupId) {
+              this.groupAdmin = doc.data().GroupAdmin[0];
+              console.log("Group admin retrieved successfully:", this.groupAdmin);
+            }
+          });
+          if (this.groupAdmin == this.user) {
+            this.isAdmin = true;
+          }
+        } catch (error) {
+          console.error("Error retrieving group admin:", error);
+        }
+      },
+      closeModal() {
+        this.isOpen = false;
       }
     }
-
   };
 </script>
 
@@ -105,6 +126,11 @@ h1 {
 
 .close-btn {
   background-color: #dc3545; /* Danger red */
+  position: absolute; 
+  right: 0; 
+  top: 0;
+  margin-top: 5px;
+  margin-right: 5px;
 }
 
 .close-btn:hover {
@@ -126,13 +152,14 @@ h1 {
 }
 
 .modal-content {
+  position: relative;
   background-color: #fff;
-  margin: auto; /* Centered in viewport */
-  padding: 40px; /* Increased padding for more space around content */
-  border-radius: 8px; /* Rounded corners for modern appearance */
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Soft shadow for depth */
-  width: 50%; /* Adjusted width for better use of space */
-  max-width: 500px; /* Maximum width to ensure content is readable */
-  overflow-y: auto; /* Allow scrolling within the modal if content is long */
+  margin: auto; 
+  padding: 40px; 
+  border-radius: 8px; 
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+  width: 50%; 
+  max-width: 500px; 
+  overflow-y: auto; 
 }
 </style>

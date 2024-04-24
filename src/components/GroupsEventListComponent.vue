@@ -20,24 +20,27 @@
           <p class="event-location">Location: {{ eventobj.EventLocation }}</p>
 
           <div v-if="!isMember">
+            <button v-if="isAdmin" class="view-btn-default" @click="viewEvent">
+              View Participants
+            </button>
             <button
               class="join-btn-default"
               @click="joinEvent(eventobj.EventId)"
             >
               Join Event
             </button>
-            <button class="delete-event-btn" @click="showWarning">
+            <button v-if="isAdmin" class="delete-event-btn" @click="showWarning">
               Delete Event
             </button>
           </div>
           <div v-else>
-            <button class="view-btn-default" @click="viewEvent">
+            <button v-if="isAdmin" class="view-btn-default" @click="viewEvent">
               View Participants
             </button>
             <button class="leave-event-btn" @click="leaveEvent">
               Leave Event
             </button>
-            <button class="delete-event-btn" @click="showWarning">
+            <button v-if="isAdmin" class="delete-event-btn" @click="showWarning">
               Delete Event
             </button>
           </div>
@@ -99,6 +102,8 @@ export default {
       participants: [],
       showWarningMessage: false,
       condition: "",
+      groupAdmin: "",
+      isAdmin: false
     };
   },
 
@@ -110,11 +115,13 @@ export default {
 
   props: {
     event: String,
+    group: String
   },
 
   mounted() {
     this.unsubscribe = this.fetchEvent(this.event);
     this.checkMember(this.event);
+    this.getGroupAdmin();
   },
 
   beforeDestroy() {
@@ -204,6 +211,23 @@ export default {
 
       // Return the unsubscribe function so you can stop listening to changes when necessary
       return unsubscribeEvent;
+    },
+    async getGroupAdmin() {
+      const db = getFirestore(firebaseApp);
+      try {
+        const docs = await getDocs(collection(db, "group"));
+        docs.forEach((doc) => {
+          if (doc.data().GroupId == this.group) {
+            this.groupAdmin = doc.data().GroupAdmin[0];
+            console.log("Group admin retrieved successfully:", this.groupAdmin);
+          }
+        });
+        if (this.groupAdmin == this.user) {
+          this.isAdmin = true;
+        }
+      } catch (error) {
+        console.error("Error retrieving group admin:", error);
+      }
     },
 
     // async fetchEvent(event) {

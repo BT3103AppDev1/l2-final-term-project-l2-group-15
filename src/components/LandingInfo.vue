@@ -59,12 +59,28 @@
   margin: 20px 0;
   
 }
-
+/*
 .feature {
   flex-basis: 48%;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: box-shadow 0.3s ease-in-out;
+}
+*/
+
+.feature {
+  flex-basis: 48%;
+  text-align: center;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease-in-out;
+  margin-right: 10px;
+}
+
+.feature:hover {
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .feature img {

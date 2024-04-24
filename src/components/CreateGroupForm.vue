@@ -176,7 +176,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 90vw; 
-    max-width: 500px; 
+    max-width: 400px; 
 }
 
 .file-input {

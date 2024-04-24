@@ -141,12 +141,16 @@ const loginWithGoogle = async (event) => {
       }
     }
   } catch (error) {
-    loginStatus.value = "error";
-    message_passed = "errorLogin";
-    email.value = "";
-    password.value = "";
-    error.value = error.code;
-    showError.value = true;
+    if (error.code === "auth/popup-closed-by-user") {
+      console.log("Popup closed by user");
+    } else {
+      loginStatus.value = "error";
+      message_passed = "errorLogin";
+      email.value = "";
+      password.value = "";
+      error.value = error.code;
+      showError.value = true;
+    }
   }
 };
 

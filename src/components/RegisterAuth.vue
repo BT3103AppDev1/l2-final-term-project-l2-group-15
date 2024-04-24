@@ -350,13 +350,17 @@ export default {
         // Set user info into firebase
         await setDoc(userDocRef, userData);
       } catch (error) {
-        console.error("Error during registration:", error);
-        this.registrationStatus = "error";
-        this.errorMessage = error.message;
-        this.showError = true;
-        this.showPopup = false;
-        this.message_passed = "errorRegistration";
-        console.log("hereeee -->", this.errorMessage, "lol");
+        if (error.code === "auth/popup-closed-by-user") {
+          console.log("Popup closed by user");
+        } else {
+          console.error("Error during registration:", error);
+          this.registrationStatus = "error";
+          this.errorMessage = error.message;
+          this.showError = true;
+          this.showPopup = false;
+          this.message_passed = "errorRegistration";
+          console.log("hereeee -->", this.errorMessage, "lol");
+        }
       }
     },
 

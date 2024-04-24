@@ -31,7 +31,7 @@ import CreateGroupForm from '@/components/CreateGroupForm.vue';
         </div>
     </div>
         <div v-for="(group, index) in filteredGroups" :key="group.id" class="group">
-          <GroupListComponent :group="group" :distance="this.groupDistances[index].toFixed(2)"/>
+          <GroupListComponent :group="group" :distance="groupDistances[index].toFixed(2)"/>
         </div>
   </div>
 </template>

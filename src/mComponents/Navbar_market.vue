@@ -1,12 +1,12 @@
 <template>
     <ul class="vertnav">
-        <li><router-link :to="{name: 'MarketplaceViewItems'}"><img src="@/assets/buy_icon.png" alt="football icon"></router-link></li>
-        <li><router-link :to="{name: 'MarketplaceSentReq'}"><img src="@/assets/shopping_cart.png" alt="Discussions"></router-link></li>
-        <li><router-link :to="{name: 'MarketplaceMyList'}"><img src="@/assets/sell_icon.png" alt="Calender"></router-link></li>
-        <li><router-link :to="{name: 'MarketplaceDealReq'}"><img src="@/assets/approve.png" alt="Setting"></router-link></li>
+        <li><img @click="goTo('MarketplaceViewItems')" src="@/assets/buy_icon.png" alt="Buy"></li>
+        <li><img @click="goTo('MarketplaceSentReq')" src="@/assets/shopping_cart.png" alt="Shopping Cart"></li>
+        <li><img @click="goTo('MarketplaceMyList')" src="@/assets/sell_icon.png" alt="Sell"></li>
+        <li><img @click="goTo('MarketplaceDealReq')"src="@/assets/approve.png" alt="Listings"></li>
     </ul>
 </template>
-    
+
 <script>
 import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
@@ -16,15 +16,20 @@ import { getAuth } from 'firebase/auth';
 export default {
     name: "Navbar_groups",
 
+    methods: {
+        goTo(routeName) {
+            this.$router.push({ name: routeName });
+        }
+    },
+
     data() {
         return {
             user: getAuth().currentUser.uid,
         }
     }
-
-
 }
 </script>
+
     
 <style scoped>
     body {
@@ -45,9 +50,10 @@ export default {
     li {
         display: block;
         color: #000;
-        padding: 20px 16px;
         text-decoration: none;
+        margin-bottom: 12px;
         text-align: center;
+        /* margin-top: 10px; */
     }
     
         /* li a.active {
@@ -61,7 +67,10 @@ export default {
     }
     
     img {
-        height: 40px;
-        width: 40px;
+        height: 50px;
+        width: 50px;
+        /* border: 2px solid black; */
+        padding: 15px;
+        margin: 0px;
     }
 </style>

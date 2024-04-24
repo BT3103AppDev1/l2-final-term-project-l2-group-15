@@ -17,7 +17,7 @@ import CreateEventForm from '@/components/CreateEventForm.vue';
         </div>
       </div>
       <!-- need to include event -->
-      <div v-for="event in this.events" :key="this.events" class="group">
+      <div v-for="event in this.events" :key="events" class="group">
         <GroupEventListComponent :event="event" :group="groupId"/>
       </div>
     </div>

@@ -1,96 +1,120 @@
 <template>
-    <div class="modal">
-        <div class = "model-flexbox">
-            <span class="close" @click="toggleError">&times;</span>
-            <img id="errorImg" src="@/assets/close.png" alt="ErrorCross">
-            <p id = 'errorMessage'>Oops!</p>
-            <span id = "message">{{ displayMessage }}</span>
-        </div>
+  <div class="modal">
+    <div class="model-flexbox">
+      <span class="close" @click="toggleError">&times;</span>
+      <img id="errorImg" src="@/assets/close.png" alt="ErrorCross" />
+      <p id="errorMessage">Oops!</p>
+      <span id="message">{{ displayMessage }}</span>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "ErrorMessage",
-  
-    data() {
-      return {
-        displayMessage: ""
-      };
-    },
-  
-    props: {
-      condition: {
-        type: String,
-        required: true
-      }, 
+  </div>
+</template>
 
-      user_id: {
-        type: String,
-      },
+<script>
+export default {
+  name: "ErrorMessage",
 
-      error: {
-        type: String,
-      }
+  data() {
+    return {
+      displayMessage: "",
+    };
+  },
+
+  props: {
+    condition: {
+      type: String,
+      required: true,
     },
-  
-    mounted() {
+
+    user_id: {
+      type: String,
+    },
+
+    error: {
+      type: String,
+    },
+  },
+
+  mounted() {
+    this.getMessage();
+  },
+
+  watch: {
+    condition: function (newCondition) {
       this.getMessage();
     },
-    
-    watch: {
-      condition: function(newCondition) {
-        this.getMessage();
+  },
+
+  methods: {
+    getMessage() {
+      // login errors
+      if (
+        this.condition === "errorLogin" &&
+        this.error == "auth/invalid-email"
+      ) {
+        this.displayMessage = "You entered an invalid email! Please try again";
+      } else if (
+        this.condition === "errorLogin" &&
+        this.error == "auth/invalid-credential"
+      ) {
+        this.displayMessage = "Incorrect password or email! Please try again";
+      }
+      // registration errors
+      else if (
+        this.condition === "errorRegistration" &&
+        this.error == "Firebase: Error (auth/email-already-in-use)."
+      ) {
+        this.displayMessage = "The email you entered is already in use";
+      } else if (
+        this.condition === "errorRegistration" &&
+        this.error == "Postal code invalid. Please try again."
+      ) {
+        this.displayMessage = "Invalid postal code! Please try again.";
+      } else if (
+        this.condition === "errorRegistration" &&
+        this.error == "Firebase: Error (auth/invalid-email)."
+      ) {
+        this.displayMessage = "The email entered is invalid! Please try again.";
+      } else if (
+        this.condition === "errorRegistration" &&
+        this.error == "Firebase: Error (auth/missing-password)."
+      ) {
+        this.displayMessage = "You forgot to provide a password!";
+      } else if (
+        this.condition === "errorRegistration" &&
+        this.error == "Please make sure all fields are filled."
+      ) {
+        this.displayMessage =
+          "You missed out some fields! Please fill them in.";
+      }
+      // google registration errors
+      else if (
+        this.condition === "errorRegistration" &&
+        this.error == "Account already exists."
+      ) {
+        this.displayMessage = "The email you entered is already in use";
+      } else if (
+        this.condition === "errorLoginNotRegisteredGoogle" &&
+        this.error == "Login but not registered with google"
+      ) {
+        this.displayMessage = "This google account is not registered.";
+      } else {
+        this.displayMessage = "Something went wrong! Please try again";
       }
     },
-  
-    methods: {
-      getMessage() {
-        // login errors
-        if (this.condition === "errorLogin" && this.error == "auth/invalid-email") {
-          this.displayMessage = "You entered an invalid email! Please try again";
-        } 
-        else if (this.condition === "errorLogin" && this.error == "auth/invalid-credential") {
-          this.displayMessage = "Incorrect password or email! Please try again";
-        }
-        // registration errors
-        else if (this.condition === "errorRegistration" && this.error == "Firebase: Error (auth/email-already-in-use).") {
-          this.displayMessage = "The email you entered is already in use";
-        }
-        else if (this.condition === "errorRegistration" && this.error == "Postal code invalid. Please try again.") {
-          this.displayMessage = "Invalid postal code! Please try again.";
-        }
-        else if (this.condition === "errorRegistration" && this.error == "Firebase: Error (auth/invalid-email).") {
-          this.displayMessage = "The email entered is invalid! Please try again.";
-        }
-        else if (this.condition === "errorRegistration" && this.error == "Firebase: Error (auth/missing-password).") {
-          this.displayMessage = "You forgot to provide a password!";
-        }
-        else if (this.condition === "errorRegistration" && this.error == "Please make sure all fields are filled.") {
-          this.displayMessage = "You missed out some fields! Please fill them in.";
-        }
-        // google registration errors
-        else if (this.condition === "errorRegistration" && this.error == "Account already exists.") {
-          this.displayMessage = "The email you entered is already in use";
-        }
-        else {
-          this.displayMessage = "Something went wrong! Please try again";
-        }
-      },
 
-      toggleError() {
-        if (this.condition === "errorLogin") {
-          this.$emit("close")
-        } else if (this.condition === "errorRegistration") {
-          this.$emit("close")
-        } else {
-          this.$emit("close")
-        }
+    toggleError() {
+      if (this.condition === "errorLogin") {
+        this.$emit("close");
+      } else if (this.condition === "errorRegistration") {
+        this.$emit("close");
+      } else {
+        this.$emit("close");
       }
-    }
-  };
-  </script>
-  
+    },
+  },
+};
+</script>
+
 <style scoped>
 .modal {
   text-align: center;
@@ -141,6 +165,4 @@ img {
   font-size: 20px;
   margin-bottom: 0px;
 }
-
 </style>
-  

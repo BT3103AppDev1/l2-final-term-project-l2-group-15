@@ -58,13 +58,14 @@
 
 <script setup>
 import { ref } from "vue";
-import firebaseApp from "@/firebase";
+import firebaseApp, { firestore } from "@/firebase";
 import {
   getAuth,
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
+import { getDoc, doc } from "firebase/firestore";
 import { useRouter } from "vue-router";
 import SuccessMessage from "@/components/SuccessMessage.vue";
 import ErrorMessage from "@/components/ErrorMessage.vue";
@@ -116,9 +117,29 @@ const loginWithGoogle = async (event) => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    user_id.value = user.uid;
-    loginStatus.value = "success";
-    message_passed = "loginSuccess";
+    const userDocRef = doc(firestore, "users", user.uid);
+
+    // Get the document
+    const userDocSnap = await getDoc(userDocRef);
+    console.log("hi");
+    // Check if the document exists
+    if (userDocSnap.exists()) {
+      // Document exists, proceed with login
+      user_id.value = user.uid;
+      loginStatus.value = "success";
+      message_passed = "loginSuccess";
+    } else {
+      loginStatus.value = "error";
+      message_passed = "errorLoginNotRegisteredGoogle";
+      error.value = "Login but not registered with google";
+      showError.value = true;
+      try {
+        await user.delete();
+        console.log("User account deleted successfully");
+      } catch (error) {
+        console.error("Error deleting user account:", error);
+      }
+    }
   } catch (error) {
     loginStatus.value = "error";
     message_passed = "errorLogin";

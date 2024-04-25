@@ -14,7 +14,7 @@
       </router-link>
       <!-- <p id="groupLocation">{{ group.GroupLocation }}</p> -->
       <p id="groupDescription">{{ group.GroupDescription }}</p>
-      <button class="leave-group-btn" @click="leaveGroup">Leave Group</button>
+      <button v-if="!isAdmin" class="leave-group-btn" @click="leaveGroup">Leave Group</button>
       <button v-if="isAdmin" class="delete-group-btn" @click="showWarning">
         Delete Group
       </button>

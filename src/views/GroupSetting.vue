@@ -88,8 +88,7 @@ h1 {
     margin-top: 110px;
     margin-right: 5px;
     max-height: calc(100vh - 120px/* Height of the header + any additional space */);
-    width: 100%;
-    max-width: 1350px;
+    width: 95%;
     overflow-y: auto; 
     box-sizing: border-box; 
     position: relative; 

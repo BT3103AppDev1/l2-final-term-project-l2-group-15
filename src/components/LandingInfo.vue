@@ -9,7 +9,7 @@
     </section>
     <div class="features">
       <div class="feature">
-        <h3>marketplace</h3>
+        <h3>Marketplace</h3>
         <img
           src="../assets/marketplace.png"
           alt="Placeholder Image"

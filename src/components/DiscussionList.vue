@@ -218,6 +218,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  z-index: -99;
   /* border: 2px solid black; */
 }
 
@@ -296,7 +297,26 @@ export default {
   background-color: darkgrey; /* Background color on hover */
 }
 
+
+.delete-discussion-button {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  margin-left: 20px; /* Adjust as needed */
+  background-color: #f44336;
+  color: black;
+  border: 0.5px gray solid;
+  cursor: pointer;
+  border: 0.5px solid grey;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+.view-discussion-button:hover {
+  background-color: darkgrey; /* Background color on hover */
+}
+
 .discussion-item .delete-discussion-button:hover {
-  background-color: #f44336; /* Background color on hover for delete button */
+  background-color: rgb(189, 2, 2); /* Background color on hover for delete button */
 }
 </style>

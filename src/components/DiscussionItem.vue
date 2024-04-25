@@ -43,13 +43,7 @@
       <button class="post-reply-button" @click="submitReply">Post Reply</button>
     </div>
     <!--Warning Message for Delete Discussion Reply-->
-    <WarningMessage
-      v-if="showWarningMessage"
-      :condition="condition"
-      :replyid="selectedReplyId"
-      @confirm="deleteReply"
-      @cancel="hideWarning"
-    />
+    
   </div>
 </template>
 
@@ -329,7 +323,21 @@ export default {
   background-color: #0056b3; /* Darker button color on hover */
 }
 
+.delete-reply-button{
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  margin-left: 20px; /* Adjust as needed */
+  background-color: lightgrey;
+  color: black;
+  border: 0.5px gray solid;
+  cursor: pointer;
+  border: 0.5px solid grey;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
 .delete-reply-button:hover {
-  background-color: red;
+  background-color: #f44336;
 }
 </style>

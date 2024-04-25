@@ -148,21 +148,24 @@ export default {
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  font-weight: 350;
+  color: black;
 }
 .buy-request button,
 .done-deal button{
-  background-color: rgb(20, 163, 20);
+  background-color: rgb(46, 192, 46);
   margin-top: 50px;
   margin-bottom: 0px;
 }
 .buy-request button:hover {
-  background-color: green;
+  background-color: rgb(29, 162, 29);
 }
 .done-deal button {
-  background-color: #007bff;
+  background-color: rgb(190, 182, 182)
 }
 
 .done-deal button:hover{
-  background-color: #0056b3;
+  background-color: darkgrey;
 }
 </style>

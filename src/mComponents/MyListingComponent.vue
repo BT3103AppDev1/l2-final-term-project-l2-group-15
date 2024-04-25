@@ -140,92 +140,103 @@
     }
   </script>
  
-<style scoped>
-.group-list-item {
-  display: flex;
-  align-items: flex-start;
-  background-color: #f5f4f4;
-  border: 2px solid rgba(211, 211, 211, 0.441);
-  margin-bottom: 1rem;
-  border-radius: 15px;
-  padding: 10px;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-  position: relative;
-}
-
-.group-list-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-}
-
-.group-image {
-  flex: 1;
-  max-width: 30%;
-  width: 100px; /* Fixed width for the image container */
-}
-
-.group-image img {
-  width: 200px;
-  margin-left: -200px;
-  height: 200px; /* Fixed height for the image */
-  object-fit: cover; /* Maintain aspect ratio */
-  border-radius: 15px;
-  /* border: 1px solid gray; */
-}
-
-.group-details {
-  margin-left: -180px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-
-.group-details h3 {
-  margin-top: 0;
-  font-size: 30px;
-}
-
-.group-details p {
-  margin: 5px 0;
-  font-size: 20px;
-}
-
-.edit-button {
-  font-weight: bold;
-  position: absolute;
-  top: 3px;
-  right: 10px;
-}
-
-.button-container {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
-.remove-button,
-.edit-button {
-  border: none;
-  padding: 8px 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.remove-button {
-  background-color: lightcoral;
-}
-
-.edit-button {
-  background-color: lightgray;
-}
-
-@media (max-width: 768px) {
-  .group-list-item {
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-}
-</style>
+ <style scoped>
+ .group-list-item {
+   display: flex;
+   align-items: flex-start;
+   background-color: #f5f4f4;
+   border: 2px solid rgba(211, 211, 211, 0.441);
+   margin-bottom: 1rem;
+   border-radius: 15px;
+   padding: 10px;
+   transition: transform 0.1s ease, box-shadow 0.1s ease;
+   position: relative;
+ }
+ 
+ .group-list-item:hover {
+   transform: translateY(-2px);
+   box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+ }
+ 
+ .group-image {
+   flex: 1;
+   max-width: 30%;
+   width: 100px; /* Fixed width for the image container */
+ }
+ 
+ .group-image img {
+   width: 200px;
+   margin-left: -200px;
+   height: 200px; /* Fixed height for the image */
+   object-fit: cover; /* Maintain aspect ratio */
+   border-radius: 15px;
+   /* border: 1px solid gray; */
+ }
+ 
+ .group-details {
+   margin-left: -180px;
+   display: flex;
+   flex-direction: column;
+   justify-content: flex-start;
+   align-items: flex-start;
+ }
+ 
+ .group-details h3 {
+   margin-top: 0;
+   font-size: 30px;
+ }
+ 
+ .group-details p {
+   margin: 5px 0;
+   font-size: 20px;
+ }
+ 
+ .edit-button {
+   font-weight: bold;
+   position: absolute;
+   top: 3px;
+   right: 10px;
+ }
+ 
+ .button-container {
+   display: flex;
+   flex-direction: column;
+   position: absolute;
+   bottom: 10px;
+   right: 10px;
+ }
+ .remove-button,
+ .edit-button {
+   border: none;
+   padding: 8px 16px;
+   border-radius: 5px;
+   cursor: pointer;
+   margin-top: 10px;
+   font-family: "Roboto", sans-serif;
+   font-weight: 400;
+   color: black;
+ }
+ 
+ .remove-button {
+   background-color: rgb(208, 86, 86);
+ }
+ 
+ .edit-button {
+   background-color: darkgray;
+ }
+ 
+ .edit-button:hover {
+   background-color: rgb(110, 110, 110);
+ }
+ 
+ .remove-button:hover {
+   background-color: rgb(184, 0, 0);
+ }
+ 
+ @media (max-width: 768px) {
+   .group-list-item {
+     margin-left: 10px;
+     margin-right: 10px;
+   }
+ }
+ </style>

@@ -204,6 +204,8 @@
   transition-duration: 0.4s;
   cursor: pointer;
   border-radius: 8px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 350;
 }
 
 .reject-btn {
@@ -219,10 +221,12 @@
   transition-duration: 0.4s;
   cursor: pointer;
   border-radius: 8px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 350;
 }
 
 .approve-btn:hover {
-  background-color: #3e8e41; /* Darker Green */
+  background-color: #2b7b2d; /* Darker Green */
 }
 
 .reject-btn:hover {

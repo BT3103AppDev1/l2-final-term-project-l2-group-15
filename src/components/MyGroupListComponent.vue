@@ -1,9 +1,9 @@
 <template>
-  <div class="group-list-item">
+  <div class="group-list-item" @click = "navigateToGroup">
     <div class="group-image">
       <img :src="fileURL" alt="No Group Logo" />
     </div>
-    <div class="group-details" @click = "navigateToGroup">
+    <div class="group-details">
         <h3 id="groupName">{{ group.GroupName }}</h3>
       <!-- <p id="groupLocation">{{ group.GroupLocation }}</p> -->
       <p id="groupDescription">{{ group.GroupDescription }}</p>

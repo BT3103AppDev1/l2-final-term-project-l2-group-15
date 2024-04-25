@@ -218,16 +218,22 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  /* border: 2px solid black; */
 }
 
 .discussionList {
   width: 100%;
   max-width: 1300px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  /* border: 2px black solid; */
 }
 
 #addDiscussionPopup {
   margin-bottom: 20px;
+  /* border: 2px black solid; */
+  float: right;
 }
 
 .discussion-item {
@@ -238,11 +244,12 @@ export default {
   padding: 10px;
   margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .discussion-item img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   margin-right: 10px;
 }
@@ -272,6 +279,12 @@ export default {
   background-color: #d7d2d2;
   color: black;
   border: 0.5px gray solid;
+  cursor: pointer;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
 }
 
 .view-discussion-button:hover {

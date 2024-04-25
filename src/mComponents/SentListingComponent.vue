@@ -216,20 +216,24 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 350;
 }
 
 .delete-button {
-  background-color: red;
+  background-color: red;  
 }
 
 .contact-button {
   background-color: rgb(21, 175, 21);
 }
 
-.deal-request-btn button:hover,
-.my-item-btn button:hover,
-.sent-request-btn button:hover {
-  background-color: #0056b3;
+.contact-button:hover {
+  background-color: darkgreen;
+}
+
+.delete-button:hover {
+  background-color: darkred;
 }
 
 @media (max-width: 768px) {

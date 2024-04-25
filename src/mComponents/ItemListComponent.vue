@@ -216,6 +216,9 @@ export default {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 350;
+  font-size: 14px;
 }
 
 .sent-request-btn,
@@ -223,11 +226,15 @@ export default {
   color: gray;
 }
 
+
 .deal-request-btn button:hover,
 .my-item-btn button:hover{
-  background-color: #0056b3;
+  background-color: darkgreen
 }
 
+.price {
+  font-size: 18px;
+}
 @media (max-width: 768px) {
   .group-list-item {
     margin-left: 10px;

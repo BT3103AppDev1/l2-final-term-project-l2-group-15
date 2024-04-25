@@ -264,6 +264,7 @@ export default {
 
 .group-details h3 {
   margin-top: 0;
+  font-size: 25px;
 }
 
 .success-msg {
@@ -298,11 +299,15 @@ export default {
 }
 
 .info-btn:hover {
-  background-color: darkblue;
+  background-color: rgb(0, 0, 192);
 }
 
 .view-btn-default {
   background-color: rgb(109, 181, 253);
+}
+
+.view-btn-default:hover {
+  background-color: rgb(0, 0, 192);
 }
 
 .modal {

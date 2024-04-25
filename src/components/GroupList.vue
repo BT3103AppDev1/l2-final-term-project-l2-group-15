@@ -206,7 +206,7 @@ h1 {
   background-color: #2ea24f; /* Bootstrap primary */
   margin-right: 20px; /* Adjust as needed */
   font-weight: 400;
-
+  border: 1px solid grey;
 }
 
 .filter-distance-btn {
@@ -226,10 +226,9 @@ h1 {
   background-color: darkgreen;
 }
 
-
 .dropdown-menu {
   position: absolute;
-  margin-left: 26.5px;
+  margin-left: 23.5px;
   display: grid;
   background-color: #e4e4e493; /* Match the color palette */
   width: 120px;

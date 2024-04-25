@@ -69,11 +69,13 @@ export default {
         };
     },
 
+    created() {
+      this.getUserPostalCode();
+    },
+
     mounted() {// default show all groups (max range)
       this.fetchGroups(); // fetch all groups possible
-      this.getUserPostalCode(); // get the user's postal code
-      this.filterDistance(999999); // default show all groups (max range)
-      this.filterDistance(10); 
+      this.getUserPostalCode().then(this.filterDistance(99999)); // get the user's postal code
     },
 
     methods: {
@@ -89,7 +91,7 @@ export default {
       async getUserPostalCode() { // get the user's postal code
         const userDocRef = doc(db, "users", this.user);
         const userDocSnapshot = await getDoc(userDocRef);
-        
+        this.postalCode = userDocSnapshot.data().postalCode
         if (userDocSnapshot.exists()) {
             this.postalCode = userDocSnapshot.data().postalCode;
         } else {
@@ -110,8 +112,10 @@ export default {
         this.filteredGroups = []; // Clear previous filtered groups
         this.groupDistances = [];
         var distance = 0
-        console.log(this.postalCode)
-        const userLoc = await this.convertPostalcode(this.postalCode)
+        const userDocRef = doc(db, "users", this.user);
+        const userDocSnapshot = await getDoc(userDocRef);
+        const userPostal = userDocSnapshot.data().postalCode
+        const userLoc = await this.convertPostalcode(userPostal)
         const lat1 = userLoc.latitude
         const long1 = userLoc.longitude
         for (const g of this.groups) {
@@ -123,7 +127,6 @@ export default {
           } else {
             distance = this.calculateDistance(lat1, long1, lat2, long2);
           }
-          console.log(distance)
           if (distance <= dist) {
             this.filteredGroups.push(g);
             this.groupDistances.push(distance);

@@ -5,7 +5,7 @@
       </div>
       <div class="group-details">
           <h3>{{ group.GroupName }}</h3>
-          <p>Distance from you: {{ distance }}</p>
+          <p>Distance from you: {{ distance }}km</p>
           <div v-if="!isMember">
             <button class="join-btn-default" @click="joinGroup">Join Group</button>
             <button class="info-btn" @click="toggle">More Info</button>
@@ -226,6 +226,7 @@ export default {
   margin-bottom: 1rem;
   padding: 10px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid lightgrey;
 }
 
 .group-list-item:hover {

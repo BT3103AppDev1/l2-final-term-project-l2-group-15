@@ -1,12 +1,12 @@
 <template>
-  <div class="group-list-item" @click = "navigateToGroup">
-    <div class="group-image">
+  <div class="group-list-item">
+    <div class="group-image" @click = "navigateToGroup">
       <img :src="fileURL" alt="No Group Logo" />
     </div>
     <div class="group-details">
-        <h3 id="groupName">{{ group.GroupName }}</h3>
+        <h3 id="groupName" @click = "navigateToGroup">{{ group.GroupName }}</h3>
       <!-- <p id="groupLocation">{{ group.GroupLocation }}</p> -->
-      <p id="groupDescription">{{ group.GroupDescription }}</p>
+      <p id="groupDescription" @click = "navigateToGroup">{{ group.GroupDescription }}</p>
       <button v-if="!isAdmin" class="leave-group-btn" @click="leaveGroup">Leave Group</button>
       <button v-if="isAdmin" class="delete-group-btn" @click="showWarning">
         Delete Group
@@ -276,12 +276,20 @@ export default {
 .leave-group-btn,
 .delete-group-btn {
   margin-right: 10px;
-  padding: 5px 10px;
+  padding: 8px 10px;
   background-color: #ff0000; /* Example background color */
   color: #fff;
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  margin-top: 40px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+.leave-group-btn:hover,
+.delete-group-btn:hover {
+  background-color: rgb(189, 19, 19);
 }
 
 .success-msg {

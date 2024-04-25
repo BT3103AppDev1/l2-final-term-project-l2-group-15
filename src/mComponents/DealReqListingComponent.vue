@@ -112,10 +112,11 @@ export default {
 }
 
 .group-image {
-  width: 100%; 
+  width: 150px; 
   height: 150px; 
   overflow: hidden;
   border-radius: 10px;
+  border: 1px solid lightgray;
 }
 
 .group-image img {

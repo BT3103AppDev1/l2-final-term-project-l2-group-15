@@ -96,7 +96,7 @@ export default {
 
 <style scoped>
 .common-header-container {
-  background-color: #000e90;
+  background-color: #1E0342;
   margin: 0;
   padding: 0;
   display: flex;
@@ -118,7 +118,7 @@ body {
 }
 
 .topnav {
-  background-color: #000e90;
+  background-color: #1E0342;
   height: 65px;
   margin: 0px;
   display: flex;

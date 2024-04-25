@@ -504,12 +504,14 @@ export default {
   width: 150px;
   padding: 3px;
   border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
 .registerbox select {
   width: 160px;
   padding: 3px;
   border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .registerbox button:hover {
@@ -534,6 +536,20 @@ export default {
   margin-top: 40px;
 }
 
+.email-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.google-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
 .register-btn {
   background-color: rgb(227, 47, 47);
   color: white;
@@ -545,6 +561,7 @@ export default {
   width: 40%;
   box-sizing: border-box;
   margin-bottom: 1px;
+  border-radius: 6px;
 }
 
 .google-login-btn {
@@ -558,6 +575,7 @@ export default {
   width: 40%;
   box-sizing: border-box;
   margin-bottom: 1px;
+  border-radius: 6px;
 }
 
 .iconbutton {
@@ -615,159 +633,13 @@ export default {
   cursor: pointer;
   font-size: 13px;
 }
-</style>
-=======
-<style>
-.register {
-  text-align: center;
-}
-
-.registerbox {
-  margin-top: 5%;
-  margin-left: 25%;
-  margin-right: 25%;
-  border: 1px solid;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
-}
-
-.registerbox p {
-  font-size: 11px;
-  font-weight: bold;
-}
-
-.registerbox label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.registerbox input {
-  width: 150px;
-  padding: 3px;
-  border: 1px solid #ccc;
-}
-
-.registerbox select {
-  width: 160px;
-  padding: 3px;
-  border: 1px solid #ccc;
-}
-
-.registerbox button:hover {
-  opacity: 0.9;
-}
-
-.form {
-  display: flex;
-  justify-content: space-between;
-  margin-inline: 40px;
-}
-
-.formcol {
-  padding: 0 30px;
-}
-
-.emailpwgroup {
-  margin-top: 50px;
-}
-
-.profile-icon-container {
-  margin-top: 40px;
-}
-
-.email-icon {
-  height: 20px;
-  width: auto;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-
-.google-icon {
-  height: 20px;
-  width: auto;
-  vertical-align: middle;
-  margin-right: 4px;
-}
-
-.register-btn {
-  background-color: rgb(227, 47, 47);
-  color: white;
-  border: 1px solid black;
-  font-size: 11px;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-top: 1px;
-  width: 40%;
-  box-sizing: border-box;
-  margin-bottom: 1px;
-}
-
-.google-login-btn {
-  background-color: white;
-  color: black;
-  border: 1px solid;
-  font-size: 11px;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-top: 1px;
-  width: 40%;
-  box-sizing: border-box;
-  margin-bottom: 1px;
-}
-
-.iconbutton {
-  padding: 5px 10px;
-  font-size: 11px;
-  cursor: pointer;
-  margin-top: 10px;
-  display: block;
-  width: 75%;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-}
-
-.backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-}
-
-.image-placeholder {
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  margin: auto;
-}
-
-.image-placeholder img {
-  width: 50%;
-  height: 50%;
-  padding-left: 8px;
-  object-fit: cover;
-}
-
-.selected-icon img {
-  width: 100px;
-  height: 100px;
-  object-fit: contain;
-}
 
 @media (max-width: 768px) {
   .registerbox {
     margin-left: 10%;
     margin-right: 10%;
+    max-height: 600px;
+    overflow-y: auto;
   }
 
   .registerbox input,
@@ -788,9 +660,12 @@ export default {
   }
 
   .register-btn,
-  .google-login-btn,
-  .iconbutton {
+  .google-login-btn {
     width: 70%;
+  }
+
+  .iconbutton {
+    width: 100%;
   }
 
   .profile-icon-container {

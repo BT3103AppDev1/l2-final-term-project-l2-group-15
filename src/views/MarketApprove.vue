@@ -14,13 +14,20 @@
     </div>
     <div class="container">
       <!-- List of Approval Items -->
-      <div class="list">
-        <div class="list-header">
-        <h1> Deal Requests </h1>
-          <div class="group-image">
+      <div class="info-header">
+        <div class="group-image">
                 <img :src='fileURL' alt="No Image Logo"/>
-            </div>
-          <h1>Item Name: {{ itemName }}</h1>
+        </div>
+        <div class="item-deets">
+          <h1> Name: {{ itemName }} </h1> 
+          <h2> Description: {{ itemdescription }}</h2> 
+          <h2> Price: ${{ price }} </h2>
+        </div>
+      </div>
+      <div class="list">
+        <hr>
+
+        <div class="list-header"> 
         </div>
         <div class="approval-items">
           <div v-for="user in buyerList" :key="user.id" class="user-item">
@@ -59,7 +66,9 @@ export default {
       fileURL: null,
       buyerList: [],
       message: 'Approved Successfully',
-      showSuccess: false
+      showSuccess: false,
+      itemdescription: '',
+      price: null,
     }
   },
 
@@ -97,6 +106,8 @@ export default {
       const itemDocSnap = await getDoc(itemDocRef)
       const itemData = itemDocSnap.data()
       this.itemName = itemData.Name
+      this.itemdescription = itemData.Description
+      this.price = itemData.Price
       const buyerIDList = itemData.buyerID
 
       for (const id of buyerIDList) {
@@ -116,14 +127,13 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 .container {
   padding: 0;
   margin-left: 100px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; 
+  justify-content: space-between;
 }
 
 /* List of items */
@@ -132,8 +142,9 @@ export default {
 }
 
 img {
-  padding-top: 25px;
-  max-width: 100px;
+  width: 300px;
+  height: 300px;
+  margin-top: 20px;
 }
 /* Market Navbar */
 .nav {
@@ -150,4 +161,26 @@ img {
   left: 0;
   right: 0;
 }
+
+.info-header {
+  display: flex;
+}
+
+.info-header h1 {
+  margin-left: 35px; /* Adjust this as needed */
+  font-size: 40px;
+  margin-bottom: 10px; /* Add some space between each element */
+}
+
+.info-header h2 {
+  margin-left: 35px; /* Adjust this as needed */
+  font-size: 25px;
+  margin-bottom: 10px; /* Add some space between each element */
+}
+
+hr {  
+  border: 1px solid rgb(148, 148, 148);
+  width: 100%
+}
+
 </style>

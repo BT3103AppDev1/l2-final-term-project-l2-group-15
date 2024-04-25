@@ -219,7 +219,7 @@ export default {
 .group-list-item {
   display: flex;
   align-items: center;
-  background-color: #f5f4f4;
+  background-color: #ffffff;
   margin-left: 15px;
   margin-right: 15px;
   border-radius: 10px;

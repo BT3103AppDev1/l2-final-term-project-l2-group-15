@@ -80,6 +80,7 @@ export default {
                 const ItemDocRef = doc(db, 'Items', itemId)
                 const docSnap = await getDoc(ItemDocRef)
                 const docData = docSnap.data()
+                console.log(docData)
                 if (docData.sold === true && docData.soldTo != this.user) {
                 } else {
                   this.item_list.push(docSnap.data())
@@ -97,7 +98,7 @@ export default {
 
 <style scoped>
 h1 {
-  background-color: white;
+  background-color: none;
   margin-left: 30px;
 }
 

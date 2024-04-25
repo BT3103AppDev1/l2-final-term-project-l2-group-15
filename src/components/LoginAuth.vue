@@ -1,6 +1,8 @@
 <template>
   <div class="login">
-    <h2>Welcome Back To ConnectHub!</h2>
+    <div class="landing-div">
+      <h2 class="landing-text">Welcome Back To ConnectHub!</h2>
+    </div>
     <div class="loginbox">
       <h3>Login</h3>
       <form @submit.prevent="login">
@@ -160,6 +162,29 @@ const closeErrorMessage = () => {
 </script>
 
 <style scoped>
+.landing-div {
+  max-width: 30%;
+  margin: 0 auto;
+}
+
+.landing-text {
+  text-align: center; /* Center align the text */
+  overflow: hidden; /* Ensures the text is initially hidden */
+  white-space: nowrap; /* Prevents wrapping */
+  animation: typewriter 3s steps(40); /* Typing animation with slower speed */
+}
+
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+
+
 .login {
   text-align: center;
 }
@@ -168,13 +193,14 @@ const closeErrorMessage = () => {
   margin-top: 5%;
   margin-left: 35%;
   margin-right: 35%;
-  border: 1px solid;
+  border: 2px grey;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 15px;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
 
 .loginbox p {
@@ -185,12 +211,15 @@ const closeErrorMessage = () => {
 .loginbox label {
   display: block;
   margin-bottom: 5px;
+  font-size: larger;
+  text-align: left;
 }
 
 .loginbox input {
   width: 150px;
   padding: 3px;
   border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 .loginbox button {
@@ -213,12 +242,14 @@ const closeErrorMessage = () => {
   background-color: rgb(227, 47, 47);
   color: white;
   border: 1px solid black;
+  border-radius: 8px;
 }
 
 .google-login-btn {
   background-color: white;
   color: black;
   border: 1px solid;
+  border-radius: 8px;
 }
 
 @media (max-width: 768px) {
@@ -226,5 +257,19 @@ const closeErrorMessage = () => {
     margin-left: 10%;
     margin-right: 10%;
   }
+}
+
+.email-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.google-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 4px;
 }
 </style>

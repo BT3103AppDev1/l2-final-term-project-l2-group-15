@@ -1,16 +1,22 @@
 <template>
   <div id="Dashboard">
-    <h2>Dashboard</h2>
+    <h2>Welcome back, <strong>{{ username }}</strong>!</h2>
     <div class="features">
       <div id="Marketplace" @click="goMarketPlace" class="feature">
-        <img src="../assets/marketplace.png" alt="Marketplace" />
-        <p>Discover and support local businesses, services, and events, enhancing the neighborhood's economic ecosystem.</p>
+        <img src="../assets/marketplace.png" 
+        width="82%"
+        height="82%"
+        alt="Marketplace" />
+        <p>Discover and support local businesses in your neighbourhood!</p>
         <h3>Marketplace</h3>
       </div>
 
       <div id="Groups" @click="goGroups" class="feature">
-        <img src="../assets/groups.png" alt="Groups" />
-        <p>Explore and join various groups within your neighborhood, each offering a unique blend of interests and activities where like-minded people can connect.</p>
+        <img src="../assets/groups.png" 
+        alt="Groups"
+        width="86%"
+        height="86%" />
+        <p>Explore and join various groups within your neighborhood!</p>
         <h3>Groups and Events</h3>
       </div>
     </div>
@@ -18,13 +24,28 @@
 </template>
 
 <script>
+
+import { getAuth } from 'firebase/auth';
+import firebaseApp from '../firebase.js';
+import { getFirestore } from "firebase/firestore";  
+import { doc, getDoc} from "firebase/firestore";
+
 export default {
   data() {
     return {
-      // Your data properties
+      username: "",
+      user: getAuth().currentUser.uid,
     };
   },
   methods: {
+    async getUsername() {
+      const db = getFirestore(firebaseApp)
+      const userDocRef = doc(db, 'users', this.user)
+      const userDocSnap = await getDoc(userDocRef)
+      const userData = userDocSnap.data()
+      this.username = userData.username
+    },
+
     goMarketPlace() {
       console.log("goMarketplace");
       this.$router.push("/marketviewitems");
@@ -34,6 +55,10 @@ export default {
       this.$router.push('/all_groups');
     },
   },
+
+  mounted() {
+    this.getUsername()
+  }
 };
 </script>
 
@@ -51,10 +76,27 @@ body {
   padding: 20px;
 }
 
+#Dashboard h2 {
+  font-family: "Inconsolata", monospace;
+  text-align: left;
+  font-weight: 500;
+  font-size: 30px;  
+  margin-top: 0;
+  margin-left: 15px;
+}
+
 .features {
   display: flex;
   justify-content: space-around;
   margin-top: 20px;
+}
+
+.features p {
+  font-family: "Poppins", sans-serif;
+  font-weight: 370;
+  font-style: italic;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 .feature {
@@ -67,10 +109,9 @@ body {
 }
 
 .feature img {
-  width: 80%;
+  max-width: 100%;
   height: auto;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  border-radius: 10px;
 }
 
 .feature:hover {
@@ -78,13 +119,12 @@ body {
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-h2 {
-  margin-bottom: 20px;
-  color: #005792;
-}
-
 h3 {
-  color: #00b2ca;
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 25px;
+  color: #005792;
 }
 
 p {
@@ -105,92 +145,3 @@ p {
   }
 }
 </style>
-<!-- 
-
-<template>
-    
-    <div id = "Dashboard">
-        <h2>Dashboard</h2><hr>
-        <div id = "Marketplace" @click="goMarketPlace">
-            <img
-            src="../assets/marketplace.png"
-            alt="Placeholder Image"
-            width="40%"
-            height="40%"
-            />
-            <p>
-            Discover and support local businesses, services, and events, enhancing
-            the neighborhood's economic ecosystem.
-            </p>
-            <h3>Marketplace</h3>
-        </div>
-
-        <div id = "Groups" @click="goGroups">
-            <img
-            src="../assets/groups.png"
-            alt="Placeholder Image"
-            width="40%"
-            height="40%"
-            />
-            <p>
-            Explore and join various groups within your neighborhood, each
-            offering a unique blend of interests and activities where like-minded
-            people can connect.
-            </p>
-            <h3>Groups and Events</h3>
-
-        </div>
-    </div>
-</template>
-
-<script>
-    export default {
-        data() {
-            return {
-
-            }
-        },
-
-        methods: {
-            goMarketPlace() {
-                console.log("goMarketplace")
-            },
-
-            goGroups() {
-                console.log("goGroups")
-            }
-        }
-
-    }
-</script>
-
-
-<style>
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.hero {
-  text-align: center;
-  padding: 10px 0;
-}
-
-.features {
-  display: flex;
-  justify-content: space-between;
-  margin: 20px 0;
-}
-
-.feature {
-  flex-basis: 48%;
-  text-align: center;
-}
-
-.feature img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-</style> -->

@@ -164,14 +164,16 @@
 }
 
 .group-image img {
-  width: 100%;
-  height: 100px; /* Fixed height for the image */
+  width: 200px;
+  margin-left: -200px;
+  height: 200px; /* Fixed height for the image */
   object-fit: cover; /* Maintain aspect ratio */
-  border-radius: 10px;
+  border-radius: 0px;
+  border: 1px solid gray;
 }
 
 .group-details {
-  margin-left: 25px;
+  margin-left: -180px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

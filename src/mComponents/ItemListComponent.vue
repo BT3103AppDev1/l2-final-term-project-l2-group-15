@@ -171,9 +171,11 @@ export default {
 
 .group-image img {
   width: 100%;
-  height: 100px; /* Fixed height for the image */
+  height: 120px;
+  width: 120px;
   object-fit: cover; /* Maintain aspect ratio */
   border-radius: 10px;
+  border: 1px solid lightgrey;
 }
 
 .group-details {

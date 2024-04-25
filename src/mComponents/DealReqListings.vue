@@ -80,7 +80,7 @@ export default {
 
 <style scoped>
 h1 {
-  background-color: white;
+  background-color: none;
   margin-left: 30px;
 }
 

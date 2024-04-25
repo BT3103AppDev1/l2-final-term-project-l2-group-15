@@ -55,7 +55,7 @@ import firebaseApp from '../firebase.js';
 import { getFirestore } from "firebase/firestore";
 import { doc, getDoc, updateDoc, setDoc, arrayUnion} from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
-import { getStorage, ref, uploadBytes, deleteObject } from "firebase/storage";
+import { getStorage, ref, uploadBytes, deleteObject, getDownloadURL } from "firebase/storage";
 
 export default {
     props: {
@@ -107,6 +107,18 @@ export default {
                 this.imageUrl = ''
                 this.imageFile = null
             }
+        },
+
+        async getImage(fileID) {
+          try {
+            let storage = getStorage()
+            let filePath ="gs://connecthub-88e58.appspot.com/" + fileID
+            let fileRef = ref(storage, filePath)
+            let fileURL = await getDownloadURL(fileRef)
+            this.imageUrl    = fileURL
+          } catch (error) {
+            console.log(error)
+          }
         },
 
         async updateUserDBItem(documentId, newItemId) {
@@ -180,6 +192,7 @@ export default {
 },
     mounted() {
         this.fetchItemData()
+        this.getImage(this.itemID)
     }
 }
 </script>

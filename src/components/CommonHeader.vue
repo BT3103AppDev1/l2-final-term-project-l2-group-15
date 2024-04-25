@@ -33,7 +33,7 @@ export default {
 
 <style scoped>
 .common-header-container {
-  background-color: #000e90;
+  background-color: #1E0342;
   margin: 0;
   padding: 0;
   display: flex;
@@ -50,7 +50,7 @@ export default {
 }
 
 .common-header {
-  background-color: #000e90;
+  background-color: #1E0342;
   display: flex;
   justify-content: flex-end;
 }

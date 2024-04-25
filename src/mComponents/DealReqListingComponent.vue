@@ -143,13 +143,12 @@ export default {
 .buy-request button {
   margin-top: 10px; 
   background-color: #007bff;
-  color: #fff;
   border: none;
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
   font-family: "Roboto", sans-serif;
-  font-weight: 350;
+  font-weight: 400;
   color: black;
 }
 .buy-request button,

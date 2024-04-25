@@ -5,7 +5,11 @@
       <ul>
         <li @click="goUserDashboard"><span>Home</span></li>
         <li @click="goMarketplace"><span>Marketplace</span></li>
-        <li class="dropdown" @mouseover="toggleDropdown" @mouseleave="hideDropdown">
+        <li
+          class="dropdown"
+          @mouseover="toggleDropdown"
+          @mouseleave="hideDropdown"
+        >
           <span>Groups</span>
           <div v-if="showDropdown" class="dropdown-content">
             <ul>
@@ -14,23 +18,31 @@
             </ul>
           </div>
         </li>
-        <li @click="goUpdateProfile"><div class="profile-container">Profile<img id="user_logo" src="@/assets/user.png" alt="user logo"></div></li>
+        <li @click="goUpdateProfile">
+          <div class="profile-container">
+            Profile<img
+              id="user_logo"
+              src="@/assets/user.png"
+              alt="user logo"
+            />
+          </div>
+        </li>
         <li class="logout-text" @click="toggle"><span>Log Out</span></li>
       </ul>
     </div>
   </div>
   <!-- code for pop up when sign out -->
-    <div v-if="showPopup" class="modal">
-        <div class="modal-content">
-            <span class="close" @click="toggle">&times;</span><br>
-            <div class="modal-header">
-                <div class="modal-title">
-                    <h3>Are you sure you want to log out?</h3>
-                </div>
-            </div>
-            <button class="sign-out-button" @click="signOut">Log Out</button>
+  <div v-if="showPopup" class="modal">
+    <div class="modal-content">
+      <span class="close" @click="toggle">&times;</span><br />
+      <div class="modal-header">
+        <div class="modal-title">
+          <h3>Are you sure you want to log out?</h3>
         </div>
+      </div>
+      <button class="sign-out-button" @click="signOut">Log Out</button>
     </div>
+  </div>
 </template>
 
 <script>
@@ -43,8 +55,8 @@ export default {
     return {
       showPopup: false,
       user: String,
-      showDropdown: false
-    }
+      showDropdown: false,
+    };
   },
 
   methods: {
@@ -89,9 +101,9 @@ export default {
     },
     hideDropdown() {
       this.showDropdown = false;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -190,7 +202,7 @@ body {
   color: white;
 }
 
-#user_logo{
+#user_logo {
   height: 30px;
   width: 30px;
   padding-left: 5px;
@@ -233,7 +245,7 @@ body {
   font-size: 2rem;
   font-weight: bold;
   cursor: pointer;
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
 /* Header styles */
@@ -257,7 +269,7 @@ body {
   text-align: center;
 }
 
-.sign-out-button{
+.sign-out-button {
   cursor: pointer;
   padding: 10px 20px;
   margin-top: 20px;
@@ -270,7 +282,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease; /* Adding transition effect */
 }
 
-.sign-out-button:hover{
+.sign-out-button:hover {
   background-color: #0056b3; /* Change color on hover */
 }
 </style>

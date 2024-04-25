@@ -1,4 +1,4 @@
-<template> 
+`<template> 
   <div class="headingContainer">
     <h1>My Profile</h1>
   </div>
@@ -44,8 +44,10 @@
   
   <div v-if="isOpen" class="modal">
     <div class="registerbox">
-      <button class="close-btn" @click="isOpen = false">Close</button>
-      <h2>Update Profile Page</h2>
+      <div class="heading">
+        <button class="close-btn" @click="isOpen = false">Close</button>
+        <h2>Update Profile Page</h2>
+      </div>
       <div class="registerbox-content">
         <label for="username">Username</label>
         <input type="text" placeholder="Username" v-model="formData.username" /><br>
@@ -214,16 +216,23 @@ h1 {
   margin-bottom: -10px;
 }
 
-.editProfileButton, .close-btn {
+.editProfileButton, .close-btn   {
   cursor: pointer;
-  padding: 15px 25px;
+  padding: 10px 15px;
   border: none;
   border-radius: 5px;
-  color: white;
+  color: black;
+  border: 0.5px solid gray;
   font-weight: bold;
-  background-color: #007bff; /* Bootstrap primary */
+  background-color: lightgray; /* Bootstrap primary */
   margin-left: auto;
   margin-top: -5px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+
+.editProfileButton:hover {
+  background-color: darkgray;
 }
 
 img {
@@ -300,18 +309,20 @@ img {
   background-color: white;
   width: 50%; /* Set width to 100% of modal */
   align-items: center;
+  padding-left: 20px;
 }
 
 .registerbox h2 {
   align-self: center;
   font-weight: bold;
-  margin-top: 0px;
+  margin-top: 10px;
+  margin-left: 25%;
 }
 
 .registerbox-content{
   /* border: 2px solid black; */
   width: 80%;
-  margin-left: 1%;
+  margin-left: 9%;
 }
 
 .registerbox-content label {
@@ -344,16 +355,34 @@ img {
   border-radius: 5px;
   color: white;
   font-weight: bold;
-  background-color: #007bff; /* Bootstrap primary */
-  justify-self: flex-end;
+  background-color: rgb(38, 171, 38); /* Bootstrap primary */
   margin-bottom: 10px;
+  margin-left: 9% ;
+  width: 82%;
+}
+
+.registerButton:hover {
+  background-color: green;
 }
 
 .close-btn {
   background-color: #dc3545; /* Bootstrap danger */
-  margin-top: 0px;
+  margin-top: 5px;
+  margin-right: 900px;
   margin-bottom: 0px;
   padding-top: 10px;
   padding-bottom: 10px;
+  /* display: flex;
+  justify-content: flex-start; */
 }
+
+.close-btn:hover {
+  background-color: #8d1521;
+}
+
+.heading {
+  display: grid;
+  padding: 5px;
+}
+
 </style>

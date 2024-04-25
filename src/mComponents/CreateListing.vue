@@ -155,7 +155,7 @@ export default {
             this.updateUserDBItem(this.user, ItemID)
             document.getElementById('myform').reset()
             this.$emit("added")
-            this.$router.push({ name: 'MarketplaceViewItems'})
+            this.$emit("open")
         } catch(error) {
             console.log("Error when adding document: ", error)
         }

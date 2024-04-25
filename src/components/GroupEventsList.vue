@@ -17,6 +17,9 @@ import CreateEventForm from '@/components/CreateEventForm.vue';
         </div>
       </div>
       <!-- need to include event -->
+      <div v-if="noEvents">
+        <p>There is currently no event.</p>
+      </div>
       <div v-for="event in events" class="group">
         <GroupEventListComponent :event="event" :group="groupId"/>
       </div>
@@ -53,6 +56,7 @@ export default {
             groupAdmin: "",
             showSuccess: false,
             message_passed: "createEvent",
+            noEvents: false
         };
     },
     methods: {
@@ -63,6 +67,9 @@ export default {
           if (documentSnapshot.exists()) {
             this.events = documentSnapshot.data()["GroupEvents"]; 
             console.log(this.events);
+            if (this.events.length == 0) {
+              this.noEvents = true;
+            }
           } else {
             console.log("No such document!");
           }

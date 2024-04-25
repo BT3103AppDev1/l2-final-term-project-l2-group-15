@@ -143,9 +143,14 @@ export default {
   border-radius: 5px;
   cursor: pointer;
 }
-
-.done-deal button:hover,
+.buy-request button {
+  background-color: rgb(20, 163, 20);
+}
 .buy-request button:hover {
+  background-color: green;
+}
+
+.done-deal button:hover{
   background-color: #0056b3;
 }
 </style>

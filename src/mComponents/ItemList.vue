@@ -1,14 +1,18 @@
 <script setup>
 import ItemListComponent from '@/mComponents/ItemListComponent.vue';
+import MarketSuccess from '@/mComponents/MarketSuccess.vue';
 </script>
 
 <template>
   <div>
+    <div v-if="showSuccess">
+      <MarketSuccess :message="message" @close="toggleSuccessClose"/>
+    </div>
     <h1> All Items List </h1>
     <br/>
     <div class="grid-container">
       <div v-for="item in Items" :key="item.id" class="group">
-          <ItemListComponent :item="item"/>
+          <ItemListComponent :item="item" @open="toggleSuccess"/>
       </div>
     </div>
   </div>
@@ -25,6 +29,7 @@ const db = getFirestore(firebaseApp)
 export default {
     components: {
         ItemListComponent,
+        MarketSuccess,
     },
 
     data() {
@@ -37,6 +42,8 @@ export default {
             groupDistances: [],
             postalCode: '',
             isDropdownOpen: false,
+            message: 'Deal Request Sent',
+            showSuccess: false,
         };
     },
 
@@ -45,6 +52,15 @@ export default {
     },
 
     methods: {
+      toggleSuccessClose() {
+        this.showSuccess = !this.showSuccess
+        this.$router.push({ name: 'MarketplaceSentReq' })
+      },
+
+      toggleSuccess() {
+        this.showSuccess = !this.showSuccess
+      },
+
       async fetchItems() { 
         const db = getFirestore();
         const q = query(collection(db, 'Items'), where('sold', '==', false));

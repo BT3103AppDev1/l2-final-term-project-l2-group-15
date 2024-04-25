@@ -1,10 +1,14 @@
 <script setup>
 import SentListingComponent from '@/mComponents/SentListingComponent.vue';
 import ContactPopup from './ContactPopup.vue';
+import MarketSuccess from '@/mComponents/MarketSuccess.vue';
 </script>
 
 <template>
   <div>
+    <div v-if="showSuccess">
+      <MarketSuccess :message="message" @close="toggleSuccessClose"/>
+    </div>
     <br/>
       <ContactPopup :userId="current_user" v-if="showPopup" @closePopup="runClose"/>
       <div class = "groupFlexbox">
@@ -12,7 +16,7 @@ import ContactPopup from './ContactPopup.vue';
             <h1> No Sent Req </h1>
         </div>
         <div v-for="item in item_list" :key="item.id" class="group">
-          <SentListingComponent :item="item" @openPopup="runOpen" :showPopup="showPopup" />
+          <SentListingComponent :item="item" @openPopup="runOpen" :showPopup="showPopup" @open="toggleSuccess"/>
         </div>
       </div>
     </div>
@@ -28,6 +32,7 @@ export default {
     components: {
         SentListingComponent,
         ContactPopup,
+        MarketSuccess
     },
     data() {
         return {
@@ -37,26 +42,37 @@ export default {
             item_list: [],
             showPopup: false,
             current_item: null,
+            message: 'Deal Request Deleted',
+            showSuccess: false,
         };
     },
 
     methods: {
-        runClose() {
-          this.showPopup = false
-        },
+      toggleSuccessClose() {
+        this.showSuccess = !this.showSuccess
+        this.$router.push({ name: 'MarketplaceViewItems' })
+      },
 
-        runOpen(item) {
-          this.current_user = item
-          this.showPopup = true
-        },
+      toggleSuccess() {
+        this.showSuccess = !this.showSuccess
+      },
 
-        async fetchItems() {
-            const db = getFirestore(firebaseApp)
-            const userDocRef = doc(db, 'users', this.user)
-            const docSnap = await getDoc(userDocRef);
-            let item_listid = docSnap.data().sentRequestforItem
-            this.fetchItemObject(item_listid)
-            },
+      runClose() {
+        this.showPopup = false
+      },
+
+      runOpen(item) {
+        this.current_user = item
+        this.showPopup = true
+      },
+
+      async fetchItems() {
+          const db = getFirestore(firebaseApp)
+          const userDocRef = doc(db, 'users', this.user)
+          const docSnap = await getDoc(userDocRef);
+          let item_listid = docSnap.data().sentRequestforItem
+          this.fetchItemObject(item_listid)
+        },
 
         async fetchItemObject(item_listid) {
             for (const itemId of item_listid) {

@@ -9,6 +9,9 @@
         <NavBar_market />
     </div>
 
+    <div v-if="showSuccess">
+      <MarketSuccess :message="message" @close="toggleSuccessClose"/>
+    </div>
     <div class="container">
       <!-- List of Approval Items -->
       <div class="list">
@@ -21,7 +24,7 @@
         </div>
         <div class="approval-items">
           <div v-for="user in buyerList" :key="user.id" class="user-item">
-            <Approval :user="user" :itemID="itemID" />
+            <Approval :user="user" :itemID="itemID" @open="toggleSuccess" @rejected="toggleSuccessReject"/>
           </div>
         </div>
       </div>
@@ -38,12 +41,14 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import Navbar_global from '@/components/Navbar_global.vue'
 import NavBar_market from '@/mComponents/Navbar_market.vue'
 import Approval from '@/mComponents/Approval.vue'
+import MarketSuccess from '@/mComponents/MarketSuccess.vue'
 
 export default {
   components: {
     Navbar_global,
     NavBar_market,
-    Approval
+    Approval,
+    MarketSuccess
   },
   data() {
     return {
@@ -53,10 +58,27 @@ export default {
       user: getAuth().currentUser.uid,
       fileURL: null,
       buyerList: [],
+      message: 'Approved Successfully',
+      showSuccess: false
     }
   },
 
   methods: {
+
+    toggleSuccessClose() {
+      this.showSuccess = !this.showSuccess
+      this.$router.push({ name: 'MarketplaceDealReq'})
+    },
+
+    toggleSuccessReject() {
+      this.message = 'Rejected Successfully'
+      this.showSuccess = !this.showSuccess
+    },
+
+    toggleSuccess() {
+      this.showSuccess = !this.showSuccess
+    },
+
     async getImage(fileID) {
       try {
           let storage = getStorage()

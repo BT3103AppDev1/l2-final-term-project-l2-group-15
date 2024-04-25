@@ -82,7 +82,7 @@
           const updatedListedItems = userData.listedItem.filter(id => id !== this.fileID)
           await updateDoc(userDocRef, { listedItem: updatedListedItems })
           await deleteDoc(itemDocRef)
-          this.$router.push({ name: 'MarketplaceViewItems'})
+          this.$emit('open')
         },
   
         async updateUserDBJoin(documentId, newGroupId) {

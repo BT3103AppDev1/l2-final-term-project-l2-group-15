@@ -21,7 +21,7 @@
         <div class="item-deets">
           <h1> Name: {{ itemName }} </h1> 
           <h2> Description: {{ itemdescription }}</h2> 
-          <h2> Price: ${{ price }} </h2>
+          <h2> Price: {{ price }} </h2>
         </div>
       </div>
       <div class="list">

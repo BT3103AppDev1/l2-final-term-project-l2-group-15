@@ -95,8 +95,7 @@
             const currentUserDocSnap = await getDoc(currentUserDocRef)
             const currentUserData = currentUserDocSnap.data()
             const currentReceived = currentUserData.receivedRequestforItem
-            const updatedReceived = currentReceived.filter(id => id !== this.itemID)
-            await updateDoc(currentUserDocRef, {receivedRequestforItem: updatedReceived})
+            const updatedReceived = currentReceived.filter(id => id !== this.itemID)  
 
             const itemDocRef = doc(db, 'Items', this.itemID)
             const itemDocSnap = await getDoc(itemDocRef)
@@ -109,6 +108,7 @@
             const updatedUserSentReq = userData.sentRequestforItem.filter(id => id !== this.itemID)
             await updateDoc(userDocRef, {sentRequestforItem: updatedUserSentReq})
             if (updatedListedItems.length === 0) {
+                await updateDoc(currentUserDocRef, {receivedRequestforItem: updatedReceived}) 
                 await updateDoc(itemDocRef, { buyerID: [], hasBuyReq: false })
             } else {
                 await updateDoc(itemDocRef, { buyerID: updatedListedItems })

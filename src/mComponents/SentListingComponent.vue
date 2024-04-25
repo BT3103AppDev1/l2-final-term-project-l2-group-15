@@ -17,7 +17,7 @@
       <p>Location: {{ item.Location }}</p>
       
       <!-- Price (moved to top right) -->
-      <p class="price">Price: ${{ item.Price }}</p>
+      <p class="price">Price: {{ item.Price }}</p>
       
       <!-- Button (moved to bottom right) -->
       <div class="button-container">
@@ -142,6 +142,7 @@ export default {
   display: flex;
   align-items: flex-start;
   background-color: #f5f4f4;
+  border: 1px solid lightgrey;
   margin-bottom: 1rem;
   border-radius: 10px;
   padding: 10px;
@@ -163,14 +164,15 @@ export default {
 .group-image img {
   width: 200px;
   height: 200px; 
-  margin-left: -75px;/* Fixed height for the image */
+  margin-left: -125px;/* Fixed height for the image */
   object-fit: cover; /* Maintain aspect ratio */
   border-radius: 10px;
-  border: 1px solid gray;
+  /* border: 1px solid gray; */
+  margin-right: 20px;
 }
 
 .group-details {
-  margin-left: -50px;
+  margin-left: -110px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -180,14 +182,18 @@ export default {
 .group-details h3 {
   margin-top: 0;
   font-size: 1.5rem;
+  font-size: 30px;
+
 }
 
 .group-details p {
   margin: 5px 0;
+  font-size: 20px;
 }
 
 .price {
   font-weight: bold;
+  font-size: 30px;
   position: absolute;
   top: 10px;
   right: 25px;

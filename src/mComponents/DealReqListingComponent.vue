@@ -100,6 +100,7 @@ export default {
   flex-direction: column;
   align-items: center;
   background-color: #f5f4f4;
+  border: 2px solid rgba(211, 211, 211, 0.441);
   border-radius: 10px;
   margin-bottom: 20px; 
   padding: 10px;
@@ -116,7 +117,7 @@ export default {
   height: 150px; 
   overflow: hidden;
   border-radius: 10px;
-  border: 1px solid lightgray;
+  /* border: 1px solid lightgray; */
 }
 
 .group-image img {
@@ -132,6 +133,10 @@ export default {
 
 .group-details h3 {
   margin-top: 0;
+  font-size: 25px;
+  margin-bottom: -10px;
+  padding: 0px;
+  /* border: 2px solid black; */
 }
 
 .done-deal button,
@@ -144,11 +149,17 @@ export default {
   border-radius: 5px;
   cursor: pointer;
 }
-.buy-request button {
+.buy-request button,
+.done-deal button{
   background-color: rgb(20, 163, 20);
+  margin-top: 50px;
+  margin-bottom: 0px;
 }
 .buy-request button:hover {
   background-color: green;
+}
+.done-deal button {
+  background-color: #007bff;
 }
 
 .done-deal button:hover{

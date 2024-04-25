@@ -150,6 +150,7 @@ export default {
   display: flex;
   align-items: flex-start;
   background-color: #f5f4f4;
+  border: 2px solid rgba(211, 211, 211, 0.441);
   margin-bottom: 1rem;
   border-radius: 10px;
   padding: 10px;
@@ -175,7 +176,7 @@ export default {
   width: 120px;
   object-fit: cover; /* Maintain aspect ratio */
   border-radius: 10px;
-  border: 1px solid lightgrey;
+  /* border: 1px solid lightgrey; */
 }
 
 .group-details {

@@ -266,7 +266,12 @@ export default {
 }
 
 .view-discussion-button {
-  margin-right: 5px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  margin-left: 20px; /* Adjust as needed */
+  background-color: #d7d2d2;
+  color: black;
+  border: 0.5px gray solid;
 }
 
 .view-discussion-button:hover {

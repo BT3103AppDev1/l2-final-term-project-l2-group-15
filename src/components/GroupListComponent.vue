@@ -5,7 +5,7 @@
       </div>
       <div class="group-details">
           <h3>{{ group.GroupName }}</h3>
-          <p>Postal Code: {{ group.GroupLocation }}</p>
+          <p>Distance from you: {{ distance }}</p>
           <div v-if="!isMember">
             <button class="join-btn-default" @click="joinGroup">Join Group</button>
             <button class="info-btn" @click="toggle">More Info</button>
@@ -279,14 +279,26 @@ export default {
   border: none;
   border-radius: 5px;
   margin-right: 10px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  border: 1px gray solid;
+  color: white;
 }
 
 .join-btn-default {
   background-color: #4CAF50; 
 }
 
+.join-btn-default:hover {
+  background-color: rgb(18, 150, 18);
+}
+
 .info-btn {
   background-color: #008CBA;
+}
+
+.info-btn:hover {
+  background-color: darkblue;
 }
 
 .view-btn-default {

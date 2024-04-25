@@ -279,6 +279,7 @@ export default {
           receivedRequestforItem: [],
           sentRequestforItem: [],
           listedItem: [],
+          dealFinishItem: [],
         };
 
         this.user_Id = user.uid;
@@ -417,6 +418,7 @@ export default {
             receivedRequestforItem: [],
             sentRequestforItem: [],
             listedItem: [],
+            dealFinishItem: [],
           },
           { merge: true }
         );

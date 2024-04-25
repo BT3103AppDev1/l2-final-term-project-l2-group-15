@@ -69,10 +69,11 @@ export default {
         };
     },
 
-    mounted() {
+    mounted() {// default show all groups (max range)
       this.fetchGroups(); // fetch all groups possible
       this.getUserPostalCode(); // get the user's postal code
       this.filterDistance(999999); // default show all groups (max range)
+      this.filterDistance(10); 
     },
 
     methods: {
@@ -202,14 +203,29 @@ h1 {
 }
 
 .create-group-btn {
-  background-color: #007bff; /* Bootstrap primary */
+  background-color: #2ea24f; /* Bootstrap primary */
   margin-right: 20px; /* Adjust as needed */
+  font-weight: 400;
+
 }
 
 .filter-distance-btn {
-  background-color: #007bff; /* Bootstrap primary */
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
   margin-left: 20px; /* Adjust as needed */
+  background-color: #d7d2d2;
+  color: black;
+  border: 0.5px gray solid;
 }
+
+.filter-distance-btn:hover {
+  background-color: darkgray;
+}
+
+.create-group-btn:hover {
+  background-color: darkgreen;
+}
+
 
 .dropdown-menu {
   position: absolute;
@@ -244,4 +260,5 @@ h1 {
   width: 50%; /* Could be more or less, depending on screen size */
   height: 100% auto; /* Adjust based on content */
 }
+
 </style>

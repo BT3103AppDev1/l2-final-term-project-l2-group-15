@@ -246,6 +246,7 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover; /* Ensures the image covers the entire space */
+  border: 1px solid lightgrey;
 }
 
 .group-details {

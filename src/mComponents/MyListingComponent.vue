@@ -145,8 +145,9 @@
   display: flex;
   align-items: flex-start;
   background-color: #f5f4f4;
+  border: 2px solid rgba(211, 211, 211, 0.441);
   margin-bottom: 1rem;
-  border-radius: 10px;
+  border-radius: 15px;
   padding: 10px;
   transition: transform 0.1s ease, box-shadow 0.1s ease;
   position: relative;
@@ -168,8 +169,8 @@
   margin-left: -200px;
   height: 200px; /* Fixed height for the image */
   object-fit: cover; /* Maintain aspect ratio */
-  border-radius: 0px;
-  border: 1px solid gray;
+  border-radius: 15px;
+  /* border: 1px solid gray; */
 }
 
 .group-details {
@@ -182,11 +183,12 @@
 
 .group-details h3 {
   margin-top: 0;
-  font-size: 1.5rem;
+  font-size: 30px;
 }
 
 .group-details p {
   margin: 5px 0;
+  font-size: 20px;
 }
 
 .edit-button {

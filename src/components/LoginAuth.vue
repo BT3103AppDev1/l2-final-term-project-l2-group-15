@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div class="landing-div">
-      <h2 class="landing-text">Welcome Back To ConnectHub!</h2>
+      <h2 class="landing-text">Welcome back to <span>ConnectHub</span>!</h2>
     </div>
     <div class="loginbox">
       <h3>Login</h3>
@@ -120,7 +120,6 @@ const loginWithGoogle = async (event) => {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     const userDocRef = doc(firestore, "users", user.uid);
-
     // Get the document
     const userDocSnap = await getDoc(userDocRef);
     console.log("hi");
@@ -167,10 +166,23 @@ const closeErrorMessage = () => {
 }
 
 .landing-text {
-  text-align: center; /* Center align the text */
-  overflow: hidden; /* Ensures the text is initially hidden */
-  white-space: nowrap; /* Prevents wrapping */
-  animation: typewriter 3s steps(40); /* Typing animation with slower speed */
+  font-family: "Inconsolata", monospace;
+  font-weight: 500;
+  margin-top: 0;
+  margin-left: 15px;
+  text-align: center; 
+  overflow: hidden; 
+  white-space: nowrap; 
+  animation: typewriter 3s steps(40); 
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.landing-text span {
+  color: #ed7117;
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
 }
 
 @keyframes typewriter {
@@ -189,7 +201,7 @@ const closeErrorMessage = () => {
 }
 
 .loginbox {
-  margin-top: 2%;
+  margin-top: 0.5%;
   margin-left: 35%;
   margin-right: 35%;
   border: 2px grey;

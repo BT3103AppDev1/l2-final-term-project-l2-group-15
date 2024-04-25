@@ -3,15 +3,8 @@
     <div class="group-image">
       <img :src="fileURL" alt="No Group Logo" />
     </div>
-    <div class="group-details">
-      <router-link
-        :to="{
-          name: 'SpecificGroupHome',
-          params: { group: group.GroupId, user: user },
-        }"
-      >
+    <div class="group-details" @click = "navigateToGroup">
         <h3 id="groupName">{{ group.GroupName }}</h3>
-      </router-link>
       <!-- <p id="groupLocation">{{ group.GroupLocation }}</p> -->
       <p id="groupDescription">{{ group.GroupDescription }}</p>
       <button class="leave-group-btn" @click="leaveGroup">Leave Group</button>
@@ -95,6 +88,13 @@ export default {
       let fileURL = await getDownloadURL(fileRef);
       this.fileURL = fileURL;
       console.log("url is here", fileURL);
+    },
+
+    navigateToGroup() {
+      this.$router.push({
+        name: 'SpecificGroupHome',
+        params: { group: this.group.GroupId, user: this.user },
+      });
     },
 
     // toggleSuccess() {

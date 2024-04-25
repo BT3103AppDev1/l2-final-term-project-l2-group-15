@@ -262,6 +262,7 @@ export default {
     width: 90%;
     text-align: center;
     margin-top: 2vh;
+    margin-bottom: 2vh;
 }
 
 .save button {

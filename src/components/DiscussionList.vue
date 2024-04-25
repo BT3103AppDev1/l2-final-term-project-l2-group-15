@@ -237,15 +237,21 @@ export default {
 }
 
 .discussion-item {
-  background-color: #f8f8f8;
-  border-radius: 8px;
+  background-color: #f8f8f8; /* Light grey background */
+  border-radius: 8px; /* Rounded corners */
   display: flex;
   align-items: center;
   padding: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
+  margin-bottom: 10px; /* Space between panels */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+.discussion-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 
 .discussion-item img {
   width: 80px;
@@ -280,15 +286,14 @@ export default {
   color: black;
   border: 0.5px gray solid;
   cursor: pointer;
-  padding: 10px 20px;
-  border: none;
+  border: 0.5px solid grey;
   border-radius: 5px;
-  color: white;
-  font-weight: bold;
+  font-size: 12px;
+  padding: 5px 10px;
 }
 
 .view-discussion-button:hover {
-  background-color: #83e97c; /* Background color on hover */
+  background-color: darkgrey; /* Background color on hover */
 }
 
 .discussion-item .delete-discussion-button:hover {

@@ -298,7 +298,7 @@ img {
   border: 1px solid;
   border-radius: 12px;
   background-color: white;
-  width: 100%; /* Set width to 100% of modal */
+  width: 50%; /* Set width to 100% of modal */
   align-items: center;
 }
 

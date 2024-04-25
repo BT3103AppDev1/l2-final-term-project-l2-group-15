@@ -125,10 +125,29 @@ export default {
   border: none;
   color:white;
   border-radius: 5px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  background-color: rgb(21, 175, 21);
+}
+
+.create-group-btn:hover {
+  background-color: darkgreen;
 }
 
 .close-btn {
-  background-color: #dc3545; /* Bootstrap danger */
+  background-color: rgb(192, 22, 22);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  font-weight: 350;
+  color: white;
+}
+
+.close-btn:hover{
+  background-color: rgb(135, 40, 40);
 }
 
 .overlay {

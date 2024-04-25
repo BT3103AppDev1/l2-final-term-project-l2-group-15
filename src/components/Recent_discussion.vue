@@ -18,7 +18,7 @@
       </div>
   </template>
     
-  <script>
+<script>
 import firebaseApp from '../firebase.js'
 import { getFirestore } from 'firebase/firestore'
 import { collection, query, getDocs, onSnapshot, orderBy, where, limit} from 'firebase/firestore'
@@ -158,5 +158,23 @@ hr {
 
 .discussion-info > div {
   margin-bottom: 3px; 
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  margin-left: 20px; /* Adjust as needed */
+  background-color: #d7d2d2;
+  color: black;
+  border: 0.5px gray solid;
+  cursor: pointer;
+  border: 0.5px solid grey;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+button:hover {
+  background-color: darkgrey; /* Background color on hover */
 }
 </style>

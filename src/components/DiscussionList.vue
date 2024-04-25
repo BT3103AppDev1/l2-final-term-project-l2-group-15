@@ -302,7 +302,7 @@ export default {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
   margin-left: 20px; /* Adjust as needed */
-  background-color: #f44336;
+  background-color: salmon;
   color: black;
   border: 0.5px gray solid;
   cursor: pointer;

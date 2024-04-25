@@ -110,7 +110,7 @@
             class="google-login-btn"
           >
             <img
-              src="@/assets/googlelogo.png"
+              src="@/assets/google_logo.png"
               alt="Google Icon"
               class="google-icon"
             />
@@ -490,6 +490,7 @@ export default {
   flex-direction: column;
   align-items: center;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
 
 .registerbox p {
@@ -553,8 +554,8 @@ export default {
 }
 
 .register-btn {
-  background-color: rgb(227, 47, 47);
-  color: white;
+  background-color: white;
+  color: black;
   border: 1px solid black;
   font-size: 11px;
   padding: 5px 10px;
@@ -564,6 +565,10 @@ export default {
   box-sizing: border-box;
   margin-bottom: 1px;
   border-radius: 6px;
+}
+
+.register-btn:hover {
+  background-color: lightgrey;
 }
 
 .google-login-btn {
@@ -580,15 +585,19 @@ export default {
   border-radius: 6px;
 }
 
+.google-login-btn:hover {
+  background-color: lightgrey;
+}
+
 .iconbutton {
-  padding: 5px 10px;
-  font-size: 11px;
-  cursor: pointer;
-  margin-top: 10px;
+  width: 100%;
+  padding: 5px 5px;
   display: block;
-  width: 75%;
-  box-sizing: border-box;
-  margin-bottom: 10px;
+  color: darkblue;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  font-size: 13px;
 }
 
 .backdrop {
@@ -623,17 +632,6 @@ export default {
   width: 100px;
   height: 100px;
   object-fit: contain;
-}
-
-.iconbutton {
-  width: 100%;
-  padding: 5px 5px;
-  display: block;
-  color: darkblue;
-  border: none;
-  background-color: white;
-  cursor: pointer;
-  font-size: 13px;
 }
 
 @media (max-width: 768px) {

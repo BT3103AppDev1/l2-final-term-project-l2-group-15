@@ -33,7 +33,7 @@
             class="google-login-btn"
           >
             <img
-              src="@/assets/googlelogo.png"
+              src="@/assets/google_logo.png"
               alt="Google Icon"
               class="google-icon"
             />
@@ -158,6 +158,7 @@ const loginWithGoogle = async (event) => {
 const closeErrorMessage = () => {
   showError.value = false;
 };
+
 </script>
 <style scoped>
 .landing-div {
@@ -193,8 +194,6 @@ const closeErrorMessage = () => {
     width: 100%;
   }
 }
-
-
 
 .login {
   text-align: center;
@@ -264,10 +263,14 @@ const closeErrorMessage = () => {
 }
 
 .login-btn {
-  background-color: rgb(227, 47, 47);
-  color: white;
+  background-color: rgb(255, 255, 255);
+  color: black;
   border: 1px solid black;
   border-radius: 6px;
+}
+
+.login-btn:hover {
+  background-color: lightgrey;
 }
 
 .google-login-btn {
@@ -275,6 +278,10 @@ const closeErrorMessage = () => {
   color: black;
   border: 1px solid;
   border-radius: 8px;
+}
+
+.google-login-btn:hover{
+  background-color: lightgrey;
 }
 
 @media (max-width: 768px) {
@@ -292,7 +299,9 @@ const closeErrorMessage = () => {
 }
 
 .google-icon {
-  height: 20px;
+  height: 21px;
+  padding: 0px;
+  margin: 0px;
   width: auto;
   vertical-align: middle;
   margin-right: 4px;

@@ -59,7 +59,7 @@
           class="member-item"
         >
           {{ member.name }}
-          <button @click="showWarning(member.id)" class="kick-btn">
+          <button @click="showWarningKick(member.id)" class="kick-btn">
             Kick Out
           </button>
         </li>
@@ -68,11 +68,11 @@
 
     <!--Warning Message for Delete Member-->
     <WarningMessage
-      v-if="showWarningMessage"
+      v-if="showWarningMessageKick"
       :condition="condition"
       :memberid="selectedMemberId"
       @confirm="removeMemberFromGroup"
-      @cancel="hideWarning"
+      @cancel="hideWarningKick"
     />
 
     <!--Warning Message for Delete Group-->
@@ -134,6 +134,7 @@ export default {
       imageUrl: "",
       selectedFile: null,
       showWarningMessage: false,
+      showWarningMessageKick: false,
       selectedMemberId: "",
       condition: "",
     };
@@ -202,7 +203,7 @@ export default {
 
         // remove the group from user doc as well
         await this.removeGroupFromUser(memberID);
-        this.showWarningMessage = false;
+        this.showWarningMessageKick = false;
         this.selectedMemberId = "";
       } catch (error) {
         console.log("Error in kicking member out", error);
@@ -314,17 +315,22 @@ export default {
       this.$router.push({ name: "MyGroups" });
     },
 
-    showWarning(memberId = null) {
-      if (memberId instanceof Event) {
-        this.condition = "deleteGroup";
-      } else {
-        this.selectedMemberId = memberId;
-        this.condition = "deleteMemberFromGroup";
-      }
+    showWarning() {
+      this.condition = "deleteGroup";
       this.showWarningMessage = true;
     },
+
     hideWarning() {
       this.showWarningMessage = false;
+    },
+
+    showWarningKick(memberId) {
+        this.selectedMemberId = memberId;
+        this.condition = "deleteMemberFromGroup";
+      this.showWarningMessageKick = true;
+    },
+    hideWarningKick() {
+      this.showWarningMessageKick = false;
     },
   },
   created() {

@@ -43,7 +43,13 @@
       <button class="post-reply-button" @click="submitReply">Post Reply</button>
     </div>
     <!--Warning Message for Delete Discussion Reply-->
-    
+    <WarningMessage
+      v-if="showWarningMessage"
+      :condition="condition"
+      :replyid="selectedReplyId"
+      @confirm="deleteReply"
+      @cancel="hideWarning"
+    />
   </div>
 </template>
 

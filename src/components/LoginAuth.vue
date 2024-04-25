@@ -160,7 +160,6 @@ const closeErrorMessage = () => {
   showError.value = false;
 };
 </script>
-
 <style scoped>
 .landing-div {
   max-width: 30%;
@@ -190,7 +189,7 @@ const closeErrorMessage = () => {
 }
 
 .loginbox {
-  margin-top: 5%;
+  margin-top: 2%;
   margin-left: 35%;
   margin-right: 35%;
   border: 2px grey;
@@ -219,7 +218,7 @@ const closeErrorMessage = () => {
   width: 150px;
   padding: 3px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .loginbox button {
@@ -238,11 +237,25 @@ const closeErrorMessage = () => {
   opacity: 0.9;
 }
 
+.email-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.google-icon {
+  height: 20px;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
 .login-btn {
   background-color: rgb(227, 47, 47);
   color: white;
   border: 1px solid black;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .google-login-btn {

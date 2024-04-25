@@ -214,7 +214,7 @@
    margin-top: 10px;
    font-family: "Roboto", sans-serif;
    font-weight: 400;
-   color: black;
+   color: white;
  }
  
  .remove-button {

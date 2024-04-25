@@ -149,7 +149,7 @@ export default {
   cursor: pointer;
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  color: black;
+  color: white;
 }
 .buy-request button,
 .done-deal button{

@@ -97,11 +97,6 @@ export default {
       });
     },
 
-    // toggleSuccess() {
-    //       this.showSuccess = false
-    //       this.$router.push("/all_groups")
-    // },
-
     async deleteGroupFromUser(userID, groupID) {
       // search user via userID, delete GroupID from array
       const db = getFirestore(firebaseApp);
@@ -234,8 +229,8 @@ export default {
 
 .group-image {
   align-content: center;
-  width: 350px; /* Adjust as needed */
-  height: 200px; /* Adjust as needed */
+  width: 350px; 
+  height: 200px; 
   text-align: center;
   overflow: hidden;
   border-radius: 10px;
@@ -245,7 +240,7 @@ export default {
 .group-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image covers the entire space */
+  object-fit: cover;
   border: 1px solid lightgrey;
 }
 
@@ -259,7 +254,7 @@ export default {
   color: grey;
   overflow: hidden;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 1; /* Limit to 3 lines in WebKit browsers */
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   display: -webkit-box;
 }
@@ -277,7 +272,7 @@ export default {
 .delete-group-btn {
   margin-right: 10px;
   padding: 8px 10px;
-  background-color: #ff0000; /* Example background color */
+  background-color: #ff0000;
   color: #fff;
   border: none;
   cursor: pointer;

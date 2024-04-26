@@ -157,15 +157,15 @@ body {
   height: 65px;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Adding transition effect */
-  display: flex; /* Use flexbox */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .topnav ul li:hover {
-  color: white; /* Change text color on hover */
-  background-color: #0066ff; /* Change background color on hover */
+  color: white; 
+  background-color: #0066ff;
 }
 
 .dropdown:hover .dropdown-content {
@@ -177,10 +177,10 @@ body {
   display: none;
   position: absolute;
   background-color: #f9f9f9;
-  min-width: 100px; /* Adjust width to match "Groups" menu item */
+  min-width: 100px; 
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
-  margin-top: 195px; /* Adjust vertical position */
+  margin-top: 195px;
 }
 
 .dropdown-content ul {
@@ -210,9 +210,9 @@ body {
 }
 
 .profile-container {
-  display: flex; /* Make elements behave as flex items */
+  display: flex;
   justify-content: center;
-  align-items: center; /* Align items vertically */
+  align-items: center; 
 }
 
 .modal {
@@ -226,7 +226,6 @@ body {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Modal box styles */
 .modal-content {
   background-color: #fff;
   margin: 10% auto;
@@ -239,7 +238,6 @@ body {
   max-width: 500px;
 }
 
-/* Close button styles */
 .close {
   float: right;
   font-size: 2rem;
@@ -248,7 +246,6 @@ body {
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
 }
 
-/* Header styles */
 .modal-header {
   display: flex;
   align-items: center;
@@ -279,10 +276,10 @@ body {
   font-weight: bold;
   background-color: #007bff;
   float: right;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Adding transition effect */
+  transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 .sign-out-button:hover {
-  background-color: #0056b3; /* Change color on hover */
+  background-color: #0056b3;
 }
 </style>

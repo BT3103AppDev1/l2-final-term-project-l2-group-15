@@ -120,13 +120,13 @@ hr {
 }
 
 .discussion-item {
-  background-color: #f8f8f8; /* Light grey background */
-  border-radius: 8px; /* Rounded corners */
+  background-color: #f8f8f8;
+  border-radius: 8px; 
   display: flex;
   align-items: center;
   padding: 10px;
-  margin-bottom: 10px; /* Space between panels */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -138,7 +138,7 @@ hr {
 .discussion-item img {
   width: 60px; 
   height: 60px;
-  border-radius: 50%; /* Circular avatar */
+  border-radius: 50%; 
   margin-right: 10px;
 }
 
@@ -163,7 +163,7 @@ hr {
 button {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  margin-left: 20px; /* Adjust as needed */
+  margin-left: 20px; 
   background-color: #d7d2d2;
   color: black;
   border: 0.5px gray solid;
@@ -175,6 +175,6 @@ button {
 }
 
 button:hover {
-  background-color: darkgrey; /* Background color on hover */
+  background-color: darkgrey;
 }
 </style>

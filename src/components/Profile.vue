@@ -3,7 +3,6 @@
         <h1>Profile</h1><hr>
         
         <div id = "profile_pic">
-            <!-- insert image here -->
         </div>
 
         <div id = "profile_overview">

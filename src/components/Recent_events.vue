@@ -122,25 +122,25 @@ hr {
 
 .event-card {
   display: flex;
-  align-items: center; /* Align items vertically in the center */
-  margin-bottom: 20px; /* Space between cards */
+  align-items: center; 
+  margin-bottom: 20px; 
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden; /* Ensures the image and details are contained within the card's border-radius */
+  overflow: hidden; 
 }
 
 .event-image-container {
-  flex: 0 0 150px; /* Fixed width for the image container */
-  height: 100px; /* Fixed height for the image container */
-  overflow: hidden; /* Hide overflow to maintain aspect ratio */
+  flex: 0 0 150px; 
+  height: 100px; 
+  overflow: hidden;
 }
 
 .event-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image fully covers the designated area */
-  border-radius: 10px; /* Rounds the corners of the image */
+  object-fit: cover;
+  border-radius: 10px;
   margin-left: 10px;
   margin-right: 10px;
 }
@@ -148,7 +148,7 @@ hr {
 
 .event-details {
   padding: 10px;
-  flex: 1; /* Takes the remaining space in the flex container */
+  flex: 1; 
 }
 
 .event-date, .event-location {

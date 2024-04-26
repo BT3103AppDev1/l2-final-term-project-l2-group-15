@@ -118,6 +118,6 @@ export default {
         width: 50px;
         margin: 0px;
         padding: 0px;
-        border: 1px solid #555; /* Add border */
+        border: 1px solid #555;
     }
 </style>

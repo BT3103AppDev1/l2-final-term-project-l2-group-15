@@ -149,17 +149,6 @@ export default {
       }
     },
 
-    // async getUserImage() {
-    //   let userRef = doc(db, "users", this.user);
-    //   try {
-    //     let userData = await getDoc(userRef);
-    //     console.log(userData.data().selectedIcon);
-    //     this.imgURL = userData.data().selectedIcon;
-    //   } catch (error) {
-    //     console.error("Potentially, attribute does not exist for this user account");
-    //   }
-    // },
-
     getPic(url) {
       console.log("@/assets/" + url)
       return "@/assets/" + url
@@ -224,7 +213,7 @@ h1 {
   color: black;
   border: 0.5px solid gray;
   font-weight: bold;
-  background-color: lightgray; /* Bootstrap primary */
+  background-color: lightgray; 
   margin-left: auto;
   margin-top: -5px;
   font-family: "Roboto", sans-serif;
@@ -242,7 +231,6 @@ img {
 
 .displayProfile {
   margin-top: 8px;
-  /* border: grey 2px solid; */
   border-radius: 15px;
   padding: 10px;
   text-align: center;
@@ -256,7 +244,7 @@ img {
 }
 
 .username {
-  font-size: 30px; /* Adjust as needed */
+  font-size: 30px; 
   margin-top: 0px;
   margin-bottom: 0px;
 }
@@ -295,10 +283,10 @@ img {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  display: flex; /* Make modal a flex container */
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
+  background-color: rgba(0, 0, 0, 0.4); 
+  display: flex;
+  justify-content: center; 
+  align-items: center;
 }
 
 .registerbox {
@@ -307,7 +295,7 @@ img {
   border: 1px solid;
   border-radius: 12px;
   background-color: white;
-  width: 50%; /* Set width to 100% of modal */
+  width: 50%; 
   align-items: center;
   padding-left: 20px;
 }
@@ -355,7 +343,7 @@ img {
   border-radius: 5px;
   color: white;
   font-weight: bold;
-  background-color: rgb(38, 171, 38); /* Bootstrap primary */
+  background-color: rgb(38, 171, 38); 
   margin-bottom: 10px;
   margin-left: 9% ;
   width: 82%;
@@ -366,7 +354,7 @@ img {
 }
 
 .close-btn {
-  background-color: #dc3545; /* Bootstrap danger */
+  background-color: #dc3545;
   margin-top: 5px;
   margin-right: 900px;
   margin-bottom: 0px;

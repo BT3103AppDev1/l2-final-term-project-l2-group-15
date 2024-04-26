@@ -200,8 +200,8 @@ export default {
 <style scoped>
 .close-button {
     position: absolute;
-    top: 0; /* Position at the top */
-    left: 0; /* Position at the left */
+    top: 0; 
+    left: 0;
     margin-top: 1vh;
     margin-left: 1vh;
     padding: 0.5rem;

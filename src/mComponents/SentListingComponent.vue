@@ -1,25 +1,18 @@
 <template>
   <div class="group-list-item">
-    <!-- Image on the left -->
     <div class="group-image">
       <img :src="fileURL" alt="No Group Logo" />
     </div>
     
-    <!-- Details on the right -->
     <div class="group-details">
-      <!-- Item Name -->
       <h3>{{ item.Name }}</h3>
       
-      <!-- Seller Name -->
       <p>{{ this.sellerName }}</p>
       
-      <!-- Location -->
       <p>Location: {{ item.Location }}</p>
       
-      <!-- Price (moved to top right) -->
       <p class="price">Price: {{ item.Price }}</p>
       
-      <!-- Button (moved to bottom right) -->
       <div class="button-container">
         <button class='contact-button' v-if="isSoldtoYou" @click="emitMsg">View Contact Details</button>
         <button class='delete-button' v-else-if="isSold" @click="deleteDealRequest">Delete Request</button>
@@ -158,14 +151,14 @@ export default {
 .group-image {
   flex: 1;
   max-width: 30%;
-  width: 100px; /* Fixed width for the image container */
+  width: 100px; 
 }
 
 .group-image img {
   width: 200px;
   height: 200px; 
-  margin-left: -125px;/* Fixed height for the image */
-  object-fit: cover; /* Maintain aspect ratio */
+  margin-left: -125px;
+  object-fit: cover; 
   border-radius: 10px;
   /* border: 1px solid gray; */
   margin-right: 20px;

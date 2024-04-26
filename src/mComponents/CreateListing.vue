@@ -166,7 +166,7 @@ export default {
 
 <style scoped>
 .container-inner {
-    height: 100vh; /* Set height to full viewport height */
+    height: 100vh; 
     padding: 2vh;
     padding-left: 0px;
     padding-right: 0px;

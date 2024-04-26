@@ -5,7 +5,6 @@
         <p><strong>User ID:</strong> {{ name }}</p>
         <p><strong>Telegram Handle:</strong> {{ telegram }}</p>
         <p><strong>Location:</strong> {{ address }}</p>
-        <!-- Add other contact information or functionality here -->
         <button @click="$emit('closePopup')">Close</button>
       </div>
     </div>

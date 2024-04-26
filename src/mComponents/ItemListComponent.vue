@@ -1,25 +1,18 @@
 <template>
   <div class="group-list-item">
-    <!-- Image on the left -->
     <div class="group-image">
       <img :src="fileURL" alt="No Group Logo" />
     </div>
     
-    <!-- Details on the right -->
     <div class="group-details">
-      <!-- Item Name -->
       <h3>{{ item.Name }}</h3>
       
-      <!-- Seller Name -->
       <p>{{ sellerName }}</p>
       
-      <!-- Location -->
       <p>Location: {{ item.Location }}</p>
       
-      <!-- Price (moved to top right) -->
       <p class="price">Price: {{ item.Price }}</p>
       
-      <!-- Button (moved to bottom right) -->
       <div class="button-container">
         <div v-if="isUserItem" class="deal-request-btn">
           <p>My Item</p>
@@ -167,16 +160,15 @@ export default {
 .group-image {
   flex: 1;
   max-width: 30%;
-  width: 100px; /* Fixed width for the image container */
+  width: 100px; 
 }
 
 .group-image img {
   width: 100%;
   height: 120px;
   width: 120px;
-  object-fit: cover; /* Maintain aspect ratio */
+  object-fit: cover; 
   border-radius: 10px;
-  /* border: 1px solid lightgrey; */
 }
 
 .group-details {

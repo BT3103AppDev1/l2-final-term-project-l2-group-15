@@ -6,7 +6,6 @@
 
 <template>
   <body>
-    <!-- Global Navbar -->
     <div class="global-nav">
       <Navbar_global />
     </div>
@@ -50,26 +49,24 @@ export default {
   margin-top:67px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distribute items evenly */
+  justify-content: space-between; 
 }
 
-/* List of items */
 .list {
-  width: 85%; /* Adjust the width as needed */
+  width: 85%; 
 }
 
 img {
   padding-top: 25px;
   max-width: 100px;
 }
-/* Market Navbar */
+
 .nav {
-  width: 15%; /* Adjust the width as needed */
+  width: 15%;
   position: fixed;
-  overflow-y: auto; /* Allow scrolling if needed */
+  overflow-y: auto;
 }
 
-/* Global Navbar */
 .global-nav {
   position: fixed;
   top: 0;

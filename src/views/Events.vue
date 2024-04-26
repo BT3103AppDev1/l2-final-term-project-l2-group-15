@@ -63,10 +63,10 @@ export default {
   }
 
   hr {
-    border: none; /* Remove the default border */
-    height: 1.041px; /* Set the height of the horizontal line */
-    background-color: #ffffff; /* Set the background color to white */
-    margin: 0; /* Optional: Add some margin above and below the horizontal line */
+    border: none; 
+    height: 1.041px; 
+    background-color: #ffffff; 
+    margin: 0;
     padding: none;
   }
 

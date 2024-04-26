@@ -9,16 +9,13 @@
 
 <template>
   <div>
-    <!-- Global Navbar -->
     <div class="navbar-global">
       <Navbar_global />
     </div>
-    <!-- Market Navbar -->
     <div class="navbar-market">
       <NavBar_market />
     </div>
 
-    <!-- Modal -->
     <div v-if="isOpen" class="modal-overlay">
       <div class="modal">
         <button class="close-btn" @click="isOpen = false">Close</button>
@@ -27,9 +24,7 @@
         <CreateListing @open="toggleSuccess"/>
       </div>
     </div>
-    <!-- Main Content -->
     <body>
-              <!-- Success Message -->
       <div v-if="showSuccess" class="success">
         <MarketSuccess :message="message" @close="toggleSuccessClose"/>
       </div>
@@ -81,16 +76,14 @@ export default {
 }
 </script>
 <style scoped>
-/* Global Navbar */
 .navbar-global {
   position: sticky;
   top: 0;
   left: 0;
-  right: 0; /* Ensure it's above other content */
+  right: 0; 
   z-index:1000;
 }
 
-/* Market Navbar */
 .navbar-market {
   position: fixed;
   top: 65px; 
@@ -119,7 +112,7 @@ export default {
 }
 
 .create-group-btn {
-  background-color: #007bff; /* Bootstrap primary */
+  background-color: #007bff; 
   cursor: pointer;
   padding: 10px 20px;
   border: none;
@@ -156,26 +149,25 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
-  display: flex;
+  background-color: rgba(0, 0, 0, 0.5); 
   justify-content: center;
   align-items: center;
 }
 
 .modal {
   position: relative;
-  max-width: 600px; /* max width for larger screens */
+  max-width: 600px; 
   background-color: white;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* makes modal content scrollable */
-  max-height: 90%; /* limits the modal height to encourage scrolling */
+  overflow-y: auto; 
+  max-height: 90%;
 }
 
 .modal-content {
   position: relative;
-  overflow-y: auto; /* ensure scrollability of content within modal if needed */
+  overflow-y: auto;
 }
 
 .success {

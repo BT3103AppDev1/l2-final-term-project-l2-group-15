@@ -193,7 +193,7 @@
 
 .approve-btn {
   margin-left: 10px; 
-  background-color: #4CAF50; /* Green */
+  background-color: #4CAF50; 
   border: none;
   color: white;
   padding: 10px 20px;
@@ -210,7 +210,7 @@
 
 .reject-btn {
   margin-left: 10px; 
-  background-color: red; /* Green */
+  background-color: red;
   border: none;
   color: white;
   padding: 10px 20px;
@@ -226,11 +226,11 @@
 }
 
 .approve-btn:hover {
-  background-color: #2b7b2d; /* Darker Green */
+  background-color: #2b7b2d; 
 }
 
 .reject-btn:hover {
-  background-color: rgb(159, 7, 7); /* Darker Red */
+  background-color: rgb(159, 7, 7);/
 }
 
 @media (max-width: 768px) {

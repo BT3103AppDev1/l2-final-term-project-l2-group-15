@@ -144,7 +144,7 @@ export default {
 
       // function to compute distance
       calculateDistance(lat1, lon1, lat2, lon2) {
-        const earthRadiusKm = 6371; // Radius of the Earth in kilometers
+        const earthRadiusKm = 6371; 
         const dLat = this.degreesToRadians(lat2 - lat1);
         const dLon = this.degreesToRadians(lon2 - lon1);
 

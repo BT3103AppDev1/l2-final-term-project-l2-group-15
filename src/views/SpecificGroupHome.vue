@@ -80,21 +80,21 @@ h1 {
 }
 
 hr {
-  border: none; /* Remove the default border */
-  height: 1.041px; /* Set the height of the horizontal line */
-  background-color: #ffffff; /* Set the background color to white */
-  margin: 0; /* Optional: Add some margin above and below the horizontal line */
+  border: none; 
+  height: 1.041px;
+  background-color: #ffffff; 
+  margin: 0;
   padding: none;
 }
 
 .about {
   text-align: left;
-  border: 2px solid #ccc; /* Border style */
-  padding: 20px; /* Add padding to create space between content and border */
+  border: 2px solid #ccc; 
+  padding: 20px; 
   width: 48%; 
   height: auto;
-  box-sizing: border-box; /* Include padding and border in the width calculation */
-  float: right; /* Align the container to the right */
+  box-sizing: border-box; 
+  float: right; 
   background-color: white;
   margin: 10px;
   height: 60%;
@@ -104,12 +104,12 @@ hr {
 
 .events {
   text-align: left;
-  border: 2px solid #ccc; /* Border style */
-  padding: 10px; /* Add padding to create space between content and border */
+  border: 2px solid #ccc; 
+  padding: 10px; 
   width: 48%; 
   height: auto;
-  box-sizing: border-box; /* Include padding and border in the width calculation */
-  float: right; /* Align the container to the right */
+  box-sizing: border-box;
+  float: right; 
   background-color: white;
   margin: 10px;
   height: 60%;
@@ -119,12 +119,12 @@ hr {
 
 .discussions {
   text-align: left;
-  border: 2px solid #ccc; /* Border style */
-  padding: 20px; /* Add padding to create space between content and border */
+  border: 2px solid #ccc;
+  padding: 20px; 
   width: 48%; 
   height: auto;
-  box-sizing: border-box; /* Include padding and border in the width calculation */
-  float: right; /* Align the container to the right */
+  box-sizing: border-box; 
+  float: right; 
   background-color: white;
   margin: 10px;
   height: 60%;
@@ -134,12 +134,12 @@ hr {
 
 .membership {
   text-align: left;
-    border: 2px solid #ccc; /* Border style */
-    padding: 20px; /* Add padding to create space between content and border */
+    border: 2px solid #ccc; 
+    padding: 20px; 
     width: 48%; 
     height: auto;
-    box-sizing: border-box; /* Include padding and border in the width calculation */
-    float: right; /* Align the container to the right */
+    box-sizing: border-box; 
+    float: right;
     background-color: white;
     margin: 10px;
     height: 60%;
@@ -160,10 +160,4 @@ hr {
     overflow: scroll;
     overflow-x: hidden;
   }
-
-/* .about-content { */
-  /* text-align: left; Align content to the right within the container */
-  /* width: 100%; Set the content width to 100% */
-  /* height: 50%; */
-/* } */
 </style>

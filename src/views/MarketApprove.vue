@@ -136,7 +136,6 @@ export default {
   justify-content: space-between;
 }
 
-/* List of items */
 .list {
   width: 85%; 
 }
@@ -146,7 +145,7 @@ img {
   height: 300px;
   margin-top: 20px;
 }
-/* Market Navbar */
+
 .nav {
   width: 15%; 
   position: fixed;
@@ -154,7 +153,7 @@ img {
   overflow-y: auto; 
 }
 
-/* Global Navbar */
+
 .nav-global {
   position: fixed;
   top: 0;
@@ -167,15 +166,15 @@ img {
 }
 
 .info-header h1 {
-  margin-left: 35px; /* Adjust this as needed */
+  margin-left: 35px; 
   font-size: 40px;
-  margin-bottom: 10px; /* Add some space between each element */
+  margin-bottom: 10px;
 }
 
 .info-header h2 {
-  margin-left: 35px; /* Adjust this as needed */
+  margin-left: 35px;
   font-size: 25px;
-  margin-bottom: 10px; /* Add some space between each element */
+  margin-bottom: 10px;
 }
 
 hr {  

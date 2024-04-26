@@ -161,14 +161,14 @@
  .group-image {
    flex: 1;
    max-width: 30%;
-   width: 100px; /* Fixed width for the image container */
+   width: 100px; 
  }
  
  .group-image img {
    width: 200px;
    margin-left: -200px;
-   height: 200px; /* Fixed height for the image */
-   object-fit: cover; /* Maintain aspect ratio */
+   height: 200px;
+   object-fit: cover; 
    border-radius: 15px;
    /* border: 1px solid gray; */
  }

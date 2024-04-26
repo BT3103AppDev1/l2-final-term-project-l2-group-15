@@ -21,7 +21,6 @@ export default {
           user_id: this.$route.params.userId,
       };
   },
-  //this is just to test
   mounted() {
       console.log(this.$route.params.userId)
   },

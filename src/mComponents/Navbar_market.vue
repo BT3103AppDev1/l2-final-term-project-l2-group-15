@@ -53,7 +53,6 @@ export default {
         text-decoration: none;
         margin-bottom: 12px;
         text-align: center;
-        /* margin-top: 10px; */
     }
     
         /* li a.active {

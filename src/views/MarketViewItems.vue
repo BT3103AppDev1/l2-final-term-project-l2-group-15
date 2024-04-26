@@ -6,19 +6,15 @@
 
 <template>
   <body>
-    <!-- Global Navbar -->
     <div class="nav-global">
       <Navbar_global />
     </div>
     
-    <!-- Market Navbar -->
     <div class="nav">
       <NavBar_market />
     </div>
 
-    <!-- Container for main content -->
     <div class="container">
-      <!-- List of items -->
       <div class="list">
         <ItemList/>
       </div>
@@ -44,34 +40,30 @@ export default {
 </script>
 
 <style scoped>
-/* Container for main content */
 .container {
   padding: 0;
   margin-left: 100px;
   display: flex;
-  justify-content: space-between; /* Distribute items evenly */
+  justify-content: space-between; 
 }
 
 .vertnav {
         margin-top: 66px;
     }
 
-/* List of items */
 .list {
-  width: 85%; /* Adjust the width as needed */
+  width: 85%; 
 }
 
-/* Market Navbar */
 .nav {
-  width: 15%; /* Adjust the width as needed */
+  width: 15%; 
   position: sticky;
   top: 100px;
   border-top: 66px;
-  height: 10vh; /* Make it full height */
-  overflow-y: auto; /* Allow scrolling if needed */
+  height: 10vh;
+  overflow-y: auto; 
 }
 
-/* Global Navbar */
 .nav-global {
   position: fixed;
   top: 0;

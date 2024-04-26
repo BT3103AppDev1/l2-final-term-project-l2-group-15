@@ -2,22 +2,18 @@
     <div class="container">
         <form id="myform" class="form-layout">
 
-            <!-- Image Upload or Preview Section -->
             <div class="image-section">
-                <!-- If no Image -->
                 <div class="upload-box" @click="openFileInput" v-if="!imageUrl">
                     <input type="file" accept="image/*" ref="fileInput" @change="handleImageChange" class="file-input"></input>
                     <span>Upload Image</span>
                 </div>
 
-                <!-- Else -->
                 <div class="image-preview" v-else>
                     <img :src="imageUrl" alt="Uploaded Image" />
                     <button class="delete-button" @click="deleteImage">Delete Image</button>
                 </div>
             </div>
 
-            <!-- Input Fields Section -->
             <div class="fields-section">
                 <div class="form-group">
                     <label for="groupName">Group Name:</label>
@@ -34,7 +30,6 @@
                     <textarea class="textHolder" id="groupDescription" required placeholder="Enter Group Description"></textarea>
                 </div>
                 
-                <!-- Create Group Button -->
                 <div class="save">
                     <button id="savebutton" type="button" @click="createGroup">Create Group</button>
                 </div>
@@ -85,7 +80,7 @@ export default {
             if (file) {
                 this.formData.image = file
                 this.imageFile = file
-                this.imageUrl = URL.createObjectURL(file) // For preview
+                this.imageUrl = URL.createObjectURL(file) 
             }
         },
 
@@ -127,15 +122,12 @@ export default {
             let groupName = document.getElementById("groupName").value
             let groupLocation = document.getElementById("groupLocation").value
             let groupDescription = document.getElementById("groupDescription").value
-            // Need to solve Firebase Cloud Storage Issue
-            // let groupImage = this.imageFile
             let groupImage = "Check firebase storage"
             let groupID = this.generateGroupID()
             if (!this.imageFile || !groupName || !groupLocation || !groupDescription) {
                 alert('Please ensure all forms are filled');
                 return;
             }
-            // Need to add User ID to GroupAdmin and GroupMembers
             const groupData = {
                 GroupName: groupName,
                 GroupLocation: groupLocation,
@@ -209,7 +201,7 @@ export default {
     width: 90%; 
     max-width: 450px;
     height: 200px; 
-    position: relative; /* This makes it the positioning context for the delete button */
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -227,15 +219,15 @@ export default {
     top: 0;
     right: 0;
     padding: 0.5rem;
-    background-color: orange; /* Light gray background */
-    color: #333; /* Dark text for contrast */
+    background-color: orange; 
+    color: #333;
     border: none;
     cursor: pointer;
-    border-radius: 0 0 0 5px; /* Rounded corner on the bottom left */
+    border-radius: 0 0 0 5px; 
 }
 
 .delete-button:hover {
-    background-color: #bbb; /* Slightly darker on hover */
+    background-color: #bbb; 
 }
 
 .form-group {

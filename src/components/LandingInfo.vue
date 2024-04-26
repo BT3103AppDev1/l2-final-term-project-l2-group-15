@@ -60,11 +60,11 @@
   font-weight: 400;
   font-size: 17px;  
   margin-top: 0;
-  text-align: center; /* Center align the text */
-  overflow: hidden; /* Ensures the text is initially hidden */
-  white-space: nowrap; /* Prevents wrapping */
-  border-right: .15em solid orange; /* Typing cursor */
-  animation: typewriter 3s steps(40); /* Typing animation with slower speed */
+  text-align: center; 
+  overflow: hidden; 
+  white-space: nowrap; 
+  border-right: .15em solid orange;
+  animation: typewriter 3s steps(40); 
 }
 
 @keyframes typewriter {

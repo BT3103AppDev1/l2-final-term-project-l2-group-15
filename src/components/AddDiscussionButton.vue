@@ -11,7 +11,7 @@ export default {
 <style scoped>
   button {
     font-family: "Roboto", sans-serif;
-    margin-left: 20px; /* Adjust as needed */
+    margin-left: 20px; 
     background-color: #d7d2d2;
     color: black;
     border: 0.5px gray solid;

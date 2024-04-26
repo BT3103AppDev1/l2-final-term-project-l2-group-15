@@ -26,51 +26,51 @@
   <style scoped>
 .modal {
     position: fixed;
-    z-index: 1000;  /* rounded to a clean number */
+    z-index: 1000; 
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    display: flex;  /* Using flex to center the modal content vertically and horizontally */
-    align-items: center;  /* Centers content vertically */
-    justify-content: center;  /* Centers content horizontally */
-    background-color: rgba(0, 0, 0, 0.5);  /* Using RGBA for better clarity on transparency */
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal-content {
-    position: relative;  /* Ensures that close button is positioned relative to this container */
+    position: relative; 
     background-color: #fff;
-    padding: 40px;  /* More padding for a better visual appearance */
-    border-radius: 8px;  /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
-    width: 50%;  /* Optimal width for desktop */
-    max-width: 600px;  /* Max width to avoid too wide of a modal on large screens */
+    padding: 40px;
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  
+    width: 50%;  
+    max-width: 600px;
 }
 
 .close {
-    position: absolute;  /* Positioned relative to the modal-content */
-    top: 10px;  /* Spacing from the top corner */
-    right: 10px;  /* Spacing from the right corner */
-    color: #888;  /* Less harsh color */
-    font-size: 32px;  /* Slightly larger for better clickability */
+    position: absolute;
+    top: 10px; 
+    right: 10px; 
+    color: #888;
+    font-size: 32px; 
     cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
-    color: #333;  /* Darker shade on hover for better visibility */
-    text-decoration: none;  /* Removing any underline */
+    color: #333;  
+    text-decoration: none;
 }
 
 h3 {
-    margin-bottom: 20px;  /* Space after the header */
+    margin-bottom: 20px;
 }
 
 ol {
-    padding-left: 20px;  /* Proper indentation for the list */
+    padding-left: 20px;
 }
 
 li {
-    line-height: 1.6;  /* Improved line spacing for readability */
+    line-height: 1.6;  
 }
 </style>

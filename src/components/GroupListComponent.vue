@@ -26,13 +26,13 @@
                       </div>
                   <div class="modal-title">
                       <h3>{{ group.GroupName }}</h3>
-                      <p class="distance">{{ distance }} km away from you</p> <!-- Add distance here -->
+                      <p class="distance">{{ distance }} km away from you</p> 
                   </div>
               </div>
               <div class="modal-body">
                   <p class="description">Group Description: {{ group.GroupDescription }}</p>
                   <div class="group-stats">
-                      <p><strong>Total members:</strong> {{ group.GroupMembers.length }} </p>  <!-- change to update-->
+                      <p><strong>Total members:</strong> {{ group.GroupMembers.length }} </p> 
                       <p><strong>Last event:</strong> 12/5/2023</p>
                       <p><strong>Admin:</strong> {{ groupAdminName }}</p>
                   </div>
@@ -49,17 +49,6 @@
 
       <SuccessMessage v-if="showSuccess" :condition="message_passed" :group="this.fileID" :user="this.user"/>
       
-      <!-- old success message-->
-      <!-- <div v-if="showSuccess" class="modal">
-            <div class="modal-content">
-                <span class="close" @click="toggleSuccess">&times;</span>
-                    <div class="modal-header">
-                </div>
-                <div class="success-msg">
-                  <h1>Success</h1>
-                </div>
-            </div>
-        </div> -->
 </template>
 
 <script> 
@@ -109,11 +98,6 @@ export default {
       toggle() {
         this.showPopup = !this.showPopup
       },
-
-      // toggleSuccess() {
-      //   this.showSuccess = false
-      //   this.$router.push({ name: 'SpecificGroupHome', params: { group: this.fileID, user: this.user } })
-      // },
 
       joinGroup() {
         let group_id = this.group.id
@@ -245,8 +229,8 @@ export default {
 }
 
 .group-image {
-  width: 150px; /* Adjust as needed */
-  height: 150px; /* Adjust as needed */
+  width: 150px; 
+  height: 150px; 
   overflow: hidden;
   margin: 20px;
   border-radius: 10px;
@@ -255,7 +239,7 @@ export default {
 .group-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the image covers the entire space */
+  object-fit: cover;
 }
 
 .group-details {
@@ -322,7 +306,6 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Modal box styles */
 .modal-content {
   background-color: #fff;
   margin: 10% auto;
@@ -332,7 +315,6 @@ export default {
   max-width: 500px;
 }
 
-/* Close button styles */
 .close {
   float: right;
   font-size: 1.5rem;
@@ -340,14 +322,12 @@ export default {
   cursor: pointer;
 }
 
-/* Header styles */
 .modal-header {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
 }
 
-/* Image styles */
 .modal-image {
   flex-shrink: 0;
   background-color: #ccc; 
@@ -381,7 +361,6 @@ export default {
   font-size: 0.875rem;
 }
 
-/* Body styles */
 .modal-body {
   font-size: 0.875rem;
 }
@@ -414,7 +393,6 @@ export default {
 }
 
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .modal-content {
     margin: 20% auto;

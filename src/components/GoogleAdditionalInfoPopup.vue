@@ -125,9 +125,9 @@ h3 {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  overflow: auto; /* Enable scrolling if content exceeds viewport */
+  justify-content: center; 
+  align-items: center;
+  overflow: auto;
 }
 
 .popup {
@@ -148,7 +148,7 @@ h3 {
   border-radius: 5px;
   color: white;
   font-weight: bold;
-  background-color: #007bff; /* Bootstrap primary */
+  background-color: #007bff; 
   margin-bottom: 0px;
 }
 

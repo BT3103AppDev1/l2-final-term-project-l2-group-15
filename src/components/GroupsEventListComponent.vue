@@ -1,14 +1,11 @@
 <template>
   <div class="event-list-item">
     <div class="event-card">
-      <!-- Flex Container for Image and Details -->
       <div class="event-content">
-        <!-- Image Display Section -->
         <div class="event-image-container" v-if="eventobj.ImageUrl">
           <img :src="eventobj.ImageUrl" alt="Event Image" class="event-image" />
         </div>
 
-        <!-- Event Details Section -->
         <div class="event-details">
           <h3>{{ eventobj.EventName }}</h3>
           <p class="event-date">
@@ -230,37 +227,6 @@ export default {
       }
     },
 
-    // async fetchEvent(event) {
-    //     const eventRef = doc(db, "Events", event);
-    //     try {
-    //         const docSnap = await getDoc(eventRef);
-    //         if (docSnap.exists()) {
-    //             // console.log("Event data:", docSnap.data());
-    //             this.eventobj = docSnap.data();
-    //             const participantPromises = this.eventobj.EventParticipants.map(async (userId) => {
-    //                 const userRef = doc(db, "users", userId); // Reference to the user document
-    //                 const userSnap = await getDoc(userRef);
-    //                 // console.log(userSnap.data())
-    //                 if (userSnap.exists()) {
-    //                     console.log(userSnap.data().username, "LOL")
-    //                     return userSnap.data().username;
-    //                 } else {
-    //                     console.log(`No user found for ID: ${userId}`);
-    //                     return null; // Return null or some default value if user not found
-    //                 }
-    //             });
-
-    //             // Resolve all promises and update the participants array with names
-    //             this.participants = await Promise.all(participantPromises);
-    //             console.log("Participants loaded:", this.participants);
-    //         } else {
-    //             console.log("No such event!");
-    //         }
-    //     } catch (error) {
-    //         console.error("Error fetching event:", error);
-    //     }
-    // },
-
     joinEvent(event_id) {
       let user_id = this.user;
       this.updateUserDBJoin(user_id, event_id);
@@ -391,13 +357,12 @@ export default {
 </script>
 
 <style scoped>
-/* Base styles for buttons */
 .leave-event-btn,
 .delete-event-btn {
   margin-right: 5px;
   padding: 5px 10px;
-  background-color: #ff0000; /* Red background for emphasis */
-  color: #fff; /* White text color */
+  background-color: #ff0000; 
+  color: #fff;
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -412,28 +377,24 @@ export default {
   border-radius: 5px;
 }
 
-/* Styles for the image within the event card */
 .event-image {
-  width: 100%; /* Full width for consistency */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 12px; /* Rounded corners */
-  margin-bottom: 15px; /* Space below the image */
+  width: 100%; 
+  height: auto;
+  border-radius: 12px; 
+  margin-bottom: 15px;
 }
 
-/* Styles for the main container */
 .events-container {
-  width: auto; /* Automatically adjusts to the parent size */
+  width: auto; 
 }
 
-/* Header styles for clarity and emphasis */
 h2 {
   margin-top: 30px;
-  color: #334155; /* Dark slate for contrast */
+  color: #334155;
   text-align: center;
-  font-size: 2rem; /* Larger font for headers */
+  font-size: 2rem;
 }
 
-/* Thicker horizontal rule for visual separation */
 hr {
   border: 0;
   height: 2px;
@@ -446,7 +407,6 @@ hr {
   margin-bottom: 40px;
 }
 
-/* Main card styles, including hover effects */
 .event-card {
   background-color: #ffffff;
   border: 1px solid #e2e8f0;
@@ -465,30 +425,27 @@ hr {
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-/* Text styles for event details */
 h3,
 .event-date,
 .event-location {
-  color: #475569; /* Uniform color for text */
-  margin: 10px 0; /* Standard margin for spacing */
-  display: block; /* Ensures each element is treated as a block */
+  color: #475569;
+  margin: 10px 0; 
+  display: block; 
 }
 
 h3 {
-  font-size: 1.5rem; /* Slightly larger for headings */
+  font-size: 1.5rem; 
 }
 
-/* Flexbox layout for content within the card */
 .event-content {
   display: flex;
   align-items: flex-start;
   gap: 10px;
 }
 
-/* Flexbox settings for responsive design */
 .event-image-container {
   flex: 0.27;
-  padding-right: 10px; /* Space between the image and details */
+  padding-right: 10px; 
 }
 
 .event-details {
@@ -497,20 +454,19 @@ h3 {
   flex-direction: column;
 }
 
-/* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
   .event-content {
     flex-direction: column;
   }
 
   .event-image-container {
-    padding-right: 0; /* Full width images on smaller screens */
+    padding-right: 0; 
   }
 
   .event-card,
   h2 {
-    padding: 15px; /* Reduced padding for compact appearance */
-    font-size: 1.75rem; /* Slightly smaller font size for mobile */
+    padding: 15px; 
+    font-size: 1.75rem;
   }
 }
 </style>

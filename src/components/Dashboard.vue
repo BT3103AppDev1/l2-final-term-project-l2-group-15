@@ -140,8 +140,8 @@ p {
   .feature {
     flex-basis: auto;
     width: 90%;
-    margin: 0 auto; /* Center align the feature blocks */
-    margin-bottom: 20px; /* Space between the features */
+    margin: 0 auto;
+    margin-bottom: 20px;
   }
 }
 </style>

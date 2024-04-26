@@ -237,88 +237,88 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px; /* Space between discussion items */
+  margin-bottom: 20px; 
 }
 
 .discussionHeader {
-  border-bottom: 1px solid #eaeaea; /* Separator line */
-  padding-bottom: 20px; /* Spacing below the header */
-  margin-bottom: 20px; /* Spacing between header and replies */
-  border-radius: 15px; /* Rounded corners */
-  padding: 20px; /* Space inside the box */
+  border-bottom: 1px solid #eaeaea; 
+  padding-bottom: 20px; 
+  margin-bottom: 20px; 
+  border-radius: 15px; 
+  padding: 20px; 
   background-color: #f8f8f8;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .discussionHeader h1 {
-  margin: 0 0 10px 0; /* Spacing below the title */
+  margin: 0 0 10px 0; 
 }
 
 .discussionInfo p {
-  text-align: right; /* Aligns text inside paragraphs to the right */
-  margin: 0; /* Reset margin for the paragraph */
-  color: #0f1135; /* Darker text color for contrast */
+  text-align: right; 
+  margin: 0; 
+  color: #0f1135;
 }
 
 .discussionReplies {
-  margin-bottom: 20px; /* Spacing between replies and the reply form */
+  margin-bottom: 20px; 
 }
 
 .replyItem {
   display: flex;
-  align-items: center; /* Aligns items vertically */
-  padding: 10px 0; /* Spacing above and below each reply */
-  border-bottom: 1px solid #eaeaea; /* Separator line */
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eaeaea; 
 }
 
 .replyItem:last-child {
-  border-bottom: none; /* Removes border from the last item */
+  border-bottom: none; 
 }
 
 .replyContent {
-  flex-grow: 1; /* Allows the reply content to fill the space */
+  flex-grow: 1; 
   margin-left: 20px;
 }
 
 .reply-text {
   font-size: 17px;
-  margin: 0 0 10px 0; /* Spacing below the reply text */
+  margin: 0 0 10px 0;
 }
 
 .reply-dt {
-  align-self: flex-end; /* Align date to the right */
-  font-size: 0.8em; /* Smaller font size for the date */
-  color: #666; /* Dimmed color for the date */
-  margin-top: auto; /* Push the date to the bottom */
+  align-self: flex-end;
+  font-size: 0.8em; 
+  color: #666; 
+  margin-top: auto; 
 }
 
 .reply-metadata {
-  text-align: center; /* Center the username below the image */
+  text-align: center;
 }
 
 .reply-metadata img {
-  width: 50px; /* Adjust size as needed */
+  width: 50px; 
   height: 50px;
-  border-radius: 50%; /* Circular avatar */
-  margin-bottom: 10px; /* Space between image and username */
+  border-radius: 50%; 
+  margin-bottom: 10px;
 }
 
 #replyForm {
   display: flex;
-  flex-direction: column; /* Stacks the textarea and button vertically */
+  flex-direction: column; 
 }
 
 #replyBox {
-  resize: none; /* Disables resizing of the textarea */
-  margin-bottom: 10px; /* Spacing between textarea and button */
-  padding: 10px; /* Padding inside the textarea */
-  border: 1px solid #eaeaea; /* Border color */
-  border-radius: 4px; /* Slightly rounded corners for the textarea */
+  resize: none; 
+  margin-bottom: 10px;
+  padding: 10px; 
+  border: 1px solid #eaeaea; 
+  border-radius: 4px; 
 }
 
 .post-reply-button {
   padding: 10px 20px;
-  background-color: #007bff; /* Example button color */
+  background-color: #007bff; 
   color: white;
   border: none;
   border-radius: 4px;
@@ -326,13 +326,13 @@ export default {
 }
 
 .post-reply-button:hover {
-  background-color: #0056b3; /* Darker button color on hover */
+  background-color: #0056b3; 
 }
 
 .delete-reply-button{
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  margin-left: 20px; /* Adjust as needed */
+  margin-left: 20px; 
   background-color: lightgrey;
   color: black;
   border: 0.5px gray solid;

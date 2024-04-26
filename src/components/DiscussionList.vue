@@ -238,13 +238,13 @@ export default {
 }
 
 .discussion-item {
-  background-color: #f8f8f8; /* Light grey background */
-  border-radius: 8px; /* Rounded corners */
+  background-color: #f8f8f8;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   padding: 10px;
-  margin-bottom: 10px; /* Space between panels */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -282,7 +282,7 @@ export default {
 .view-discussion-button {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  margin-left: 20px; /* Adjust as needed */
+  margin-left: 20px;
   background-color: #d7d2d2;
   color: black;
   border: 0.5px gray solid;
@@ -294,14 +294,14 @@ export default {
 }
 
 .view-discussion-button:hover {
-  background-color: darkgrey; /* Background color on hover */
+  background-color: darkgrey;
 }
 
 
 .delete-discussion-button {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  margin-left: 20px; /* Adjust as needed */
+  margin-left: 20px;
   background-color: salmon;
   color: black;
   border: 0.5px gray solid;
@@ -313,10 +313,10 @@ export default {
 }
 
 .view-discussion-button:hover {
-  background-color: darkgrey; /* Background color on hover */
+  background-color: darkgrey;
 }
 
 .discussion-item .delete-discussion-button:hover {
-  background-color: rgb(189, 2, 2); /* Background color on hover for delete button */
+  background-color: rgb(189, 2, 2);
 }
 </style>

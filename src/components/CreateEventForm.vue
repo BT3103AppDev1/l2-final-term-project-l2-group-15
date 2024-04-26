@@ -2,15 +2,12 @@
     <div class="container">
         <form id="myform" class="form-layout">
 
-            <!-- Image Upload or Preview Section -->
             <div class="image-section">
-                <!-- If no Image -->
                 <div class="upload-box" @click="openFileInput" v-if="!imageUrl">
                     <input type="file" accept="image/*" ref="fileInput" @change="handleImageChange" class="file-input"></input>
                     <span>Upload Image</span>
                 </div>
 
-                <!-- Else -->
                 <div class="image-preview" v-else>
                     <img :src="imageUrl" alt="Uploaded Image" />
                     <button class="delete-button" @click="deleteImage">Delete Image</button>
@@ -98,7 +95,7 @@ export default {
             if (file) {
                 this.formData.image = file;
                 this.imageFile = file;
-                this.imageUrl = URL.createObjectURL(file); // For preview
+                this.imageUrl = URL.createObjectURL(file); 
             }
         },
 
@@ -157,9 +154,6 @@ export default {
                 console.error("Error adding value to array: ", error)
             }
 
-            //Need to add to groups >> like their collated total events
-            //Need to obtain the groupids to reflect the events joined
-            // Adding eventID to the group's event list
             let groupRef = doc(db, "group", this.groupId);
 
             try {
@@ -234,7 +228,7 @@ export default {
 .image-preview {
     width: 300px;
     height: 300px;
-    position: relative; /* Add this line */
+    position: relative; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -243,14 +237,14 @@ export default {
 .image-preview img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* This ensures the image covers the area nicely */
+    object-fit: cover;
 }
 
 .delete-button {
     position: absolute;
-    bottom: 10px; /* Adjust this value as needed */
+    bottom: 10px; 
     left: 50%;
-    transform: translateX(-50%); /* Centers the button horizontally */
+    transform: translateX(-50%);
     padding: 5px 10px;
     background-color: red;
     color: white;

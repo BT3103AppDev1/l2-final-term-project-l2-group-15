@@ -112,14 +112,14 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 0 10px;
-  background-color: #F8F9FA; /* Light grey background for slight contrast */
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1); /* Soft shadow for depth */
+  background-color: #F8F9FA; 
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1); 
 }
 
 h1 {
-  color: #343A40; /* Dark grey for improved readability */
-  font-size: 2rem; /* Increase size for importance */
-  margin: 0; /* Reset margin for cleaner alignment */
+  color: #343A40; 
+  font-size: 2rem;
+  margin: 0;
 }
 
 .create-event-btn, .close-btn {
@@ -129,21 +129,21 @@ h1 {
   border-radius: 5px;
   color: white;
   font-weight: bold;
-  text-transform: uppercase; /* Stylistic choice for buttons */
-  font-size: 0.9rem; /* Slightly smaller text, uppercase compensates for readability */
-  transition: background-color 0.2s; /* Smooth transition for hover effects */
+  text-transform: uppercase;
+  font-size: 0.9rem; 
+  transition: background-color 0.2s; 
 }
 
 .create-event-btn {
-  background-color: #007bff; /* Primary blue */
+  background-color: #007bff;
 }
 
 .create-event-btn:hover {
-  background-color: #0056b3; /* Darker blue on hover for interactive feedback */
+  background-color: #0056b3;
 }
 
 .close-btn {
-  background-color: #dc3545; /* Danger red */
+  background-color: #dc3545;
   position: absolute; 
   right: 0; 
   top: 0;
@@ -152,12 +152,12 @@ h1 {
 }
 
 .close-btn:hover {
-  background-color: #c82333; /* Darker red on hover */
+  background-color: #c82333;
 }
 
 .modal {
   position: fixed;
-  z-index: 1000; /* Ensure modal is above everything */
+  z-index: 1000; 
   left: 0;
   top: 0;
   width: 100%;
@@ -166,7 +166,7 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5); /* Darker backdrop for better focus on modal */
+  background-color: rgba(0, 0, 0, 0.5); 
 }
 
 .modal-content {

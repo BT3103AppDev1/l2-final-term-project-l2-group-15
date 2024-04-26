@@ -1,14 +1,3 @@
-<!-- <template>
-    <h2>My Events</h2><hr>
-    <div v-for = "events in this.user_events" :key="this.user_events.event_id">
-        <h3>{{ events.event_name }}</h3>
-        <p>Date: {{ events.time }}</p>
-        <p>{{ events.location }}</p>
-        <br>
-    </div>
-
-</template> -->
-
 <template>
     <div class="events-container">
         <h2>My Events</h2>

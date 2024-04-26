@@ -156,7 +156,7 @@ export default {
 
       // function to compute distance
       calculateDistance(lat1, lon1, lat2, lon2) {
-        const earthRadiusKm = 6371; // Radius of the Earth in kilometers
+        const earthRadiusKm = 6371;
         const dLat = this.degreesToRadians(lat2 - lat1);
         const dLon = this.degreesToRadians(lon2 - lon1);
 
@@ -169,7 +169,6 @@ export default {
         return distance;
       },
 
-      // helper
       degreesToRadians(degrees) {
         return degrees * (Math.PI / 180);
       },
@@ -206,8 +205,8 @@ h1 {
 }
 
 .create-group-btn {
-  background-color: #2ea24f; /* Bootstrap primary */
-  margin-right: 20px; /* Adjust as needed */
+  background-color: #2ea24f;
+  margin-right: 20px;
   font-weight: 400;
   border: 1px solid grey;
 }
@@ -215,7 +214,7 @@ h1 {
 .filter-distance-btn {
   font-family: "Roboto", sans-serif;
   font-weight: 400;
-  margin-left: 20px; /* Adjust as needed */
+  margin-left: 20px;
   background-color: #d7d2d2;
   color: black;
   border: 0.5px gray solid;
@@ -233,14 +232,14 @@ h1 {
   position: absolute;
   margin-left: 23.5px;
   display: grid;
-  background-color: #e4e4e493; /* Match the color palette */
+  background-color: #e4e4e493; 
   width: 120px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   color: black;
 }
 
 .close-btn {
-  background-color: #dc3545; /* Bootstrap danger */
+  background-color: #dc3545;
 }
 
 .modal {
@@ -251,16 +250,16 @@ h1 {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
   background-color: white;
-  margin: 10% auto; /* 10% from the top and centered */
+  margin: 10% auto; 
   padding: 20px;
   border: 1px solid #888;
-  width: 50%; /* Could be more or less, depending on screen size */
-  height: 100% auto; /* Adjust based on content */
+  width: 50%; 
+  height: 100% auto; 
 }
 
 </style>

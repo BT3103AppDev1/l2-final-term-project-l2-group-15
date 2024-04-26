@@ -76,14 +76,14 @@ export default {
   height: auto;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Adding transition effect */
-  display: flex; /* Use flexbox */
+  transition: background-color 0.3s ease, color 0.3s ease; 
+  display: flex; 
   align-items: center;
   justify-content: center;
 }
 
 .common-header ul li:hover {
-  color: white; /* Change text color on hover */
-  background-color: #0066ff; /* Change background color on hover */
+  color: white;
+  background-color: #0066ff;
 }
 </style>

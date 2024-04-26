@@ -142,18 +142,18 @@ input[type="text"], textarea {
 }
 
 .newDiscussionForm button {
-    background-color: #04AA6D; /* Green background */
-    color: white; /* White text */
-    padding: 14px 20px; /* Padding inside the button */
-    border: none; /* No border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    width: 100%; /* Full width */
-    box-sizing: border-box; /* Include padding and border in the width */
-    font-size: 16px; /* Font size */
+    background-color: #04AA6D; 
+    color: white; 
+    padding: 14px 20px; 
+    border: none; 
+    border-radius: 4px; 
+    cursor: pointer;
+    width: 100%; 
+    box-sizing: border-box; 
+    font-size: 16px; 
   }
 
 .newDiscussionForm button:hover {
-    background-color: #037f58; /* Darker green on hover */
+    background-color: #037f58;
   }
 </style>

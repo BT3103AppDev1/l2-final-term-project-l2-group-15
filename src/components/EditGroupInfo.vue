@@ -354,7 +354,7 @@ export default {
 .deleteGroupButton {
   padding: 10px 20px;
   font-size: 1.2rem;
-  background-color: #ff4136; /* Red color for striking appearance */
+  background-color: #ff4136;
   color: white;
   border: none;
   border-radius: 5px;
@@ -363,7 +363,7 @@ export default {
 }
 
 .deleteGroupButton:hover {
-  background-color: #e82c20; /* Darker shade of red for hover effect */
+  background-color: #e82c20;
 }
 
 .change-image {
@@ -371,13 +371,13 @@ export default {
 }
 .image-container {
   position: relative;
-  display: inline-block; /* Makes the container as wide as its content */
+  display: inline-block;
   margin-top: 10px;
 }
 
 .image-container img {
-  width: 40%; /* Adjust based on your needs */
-  height: auto; /* Maintain aspect ratio */
+  width: 40%;
+  height: auto;
 }
 
 .group-form {
@@ -427,7 +427,6 @@ export default {
   background-color: #006ae1;
 }
 
-/* Members list styling */
 .members-section {
   background-color: #f9f9f9;
   padding: 20px;
@@ -468,7 +467,6 @@ export default {
   background-color: #ff3333;
 }
 
-/* Modal Overlay */
 .modal-overlay {
   position: fixed;
   top: 0;

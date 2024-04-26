@@ -13,7 +13,7 @@ import MarketSuccess from '@/mComponents/MarketSuccess.vue';
       <ContactPopup :userId="current_user" v-if="showPopup" @closePopup="runClose"/>
       <div class = "groupFlexbox">
         <div v-if="item_list.length === 0" class="no-item-msg">
-            <h1> No Sent Req </h1>
+            <h1> You have no Active Sent Listings </h1>
         </div>
         <div v-for="item in item_list" :key="item.id" class="group">
           <SentListingComponent :item="item" @openPopup="runOpen" :showPopup="showPopup" @open="toggleSuccess"/>

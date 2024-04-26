@@ -230,7 +230,7 @@
 }
 
 .reject-btn:hover {
-  background-color: rgb(159, 7, 7);/
+  background-color: rgb(159, 7, 7);
 }
 
 @media (max-width: 768px) {
